@@ -1,0 +1,23 @@
+{
+  "name": "eslint-config-percolate",
+  "version": "0.0.0",
+  "engines": {
+    "node": "0.10.x"
+  },
+  "description": "Percolate's JavaScript style guide.",
+  "scripts": {
+    "test": "./node_modules/.bin/eslint --ext '.js,.jsx' ./test/"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/percolate/eslint-config-percolate.git"
+  },
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/percolate/eslint-config-percolate/issues"
+  },
+  "dependencies": {
+    "eslint": "^0.24.0",
+    "eslint-plugin-react": "^2.6.3"
+  }
+}

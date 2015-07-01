@@ -1,0 +1,65 @@
+{
+  "ecmaFeatures": {
+    "jsx": true
+  },
+  "env": {
+    "browser": true,
+    "jasmine": true,
+    "mocha": true,
+    "node": true
+  },
+  "plugins": [
+    "react"
+  ],
+  "rules": {
+    "block-scoped-var": 2,
+    "camelcase": [2, { "properties": "never" }],
+    "curly": [2, "multi-line"],
+    "guard-for-in": 2,
+    "indent": [2, 4],
+    "linebreak-style": [2, "unix"],
+    "new-cap": [2, { "capIsNewExceptions": ["Deferred", "Event"] }], // $.Deferred, $.Event
+    "no-multiple-empty-lines": 2,
+    "no-nested-ternary": 2,
+    "no-script-url": 1,
+    "no-underscore-dangle": 0,
+    "no-unneeded-ternary": 2,
+    "no-use-before-define": [2, "nofunc"],
+    "one-var": [2, "never"],
+    "quote-props": [2, "as-needed"],
+    "quotes": [2, "single", "avoid-escape"],
+    "radix": 2,
+    "semi-spacing": 0,
+    "space-after-keywords": [2, "always"],
+    "space-before-blocks": [2, "always"],
+    "space-before-function-paren": [2, "always"],
+    "space-in-parens": [2, "never"],
+    "space-infix-ops": 0,
+    "spaced-line-comment": [2, "always"],
+    "strict": [2, "never"],
+
+    // The rules below should be errors
+    "comma-dangle": [1, "always-multiline"], // add a trailing comma so diffs are smaller
+    "consistent-this": [1, "self"], // we should use func.call(this) as opposed to passing it in
+    "no-alert": 1, // we can use a confirmation view instead
+    "no-extra-parens": 0, // no need to add extra parens around logical operators (conflicts with react/wrap-multilines)
+    "no-new": 1, // we shouldn't be newing up an object if we don't need it
+    "semi": [1, "never"], // death to the semicolon
+    "no-inline-comments": 1, // comments should be stacked
+    "no-unused-expressions": 1, // mostly caused by options || (options = {})
+
+    // https://github.com/yannickcr/eslint-plugin-react
+    "react/display-name": 2,
+    "react/jsx-boolean-value": [2, "never"],
+    "react/jsx-no-undef": 2,
+    "react/jsx-quotes": [2, "double", "avoid-escape"],
+    "react/jsx-uses-react": 2,
+    "react/no-did-mount-set-state": 2,
+    "react/no-did-update-set-state": 2,
+    "react/no-multi-comp": 2,
+    "react/no-unknown-property": 2,
+    "react/prop-types": [2, { "ignore": "children" }],
+    "react/self-closing-comp": 2,
+    "react/wrap-multilines": 2
+  }
+}
