@@ -7,7 +7,7 @@ Percolate's JavaScript style guide.
 ## Installation
 
 ```sh
-$ npm install git+ssh://git@github.com/percolate/eslint-config-percolate.git
+$ npm install git+https://git@github.com/percolate/eslint-config-percolate.git
 ```
 
 ## Usage
