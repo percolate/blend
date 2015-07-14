@@ -1,6 +1,8 @@
 {
   "ecmaFeatures": {
-    "jsx": true
+    "es6": true,
+    "jsx": true,
+    "modules": false, // https://github.com/eslint/eslint/issues/2967
   },
   "env": {
     "browser": true,
@@ -46,7 +48,7 @@
     "no-new": 1, // we shouldn't be newing up an object if we don't need it
     "semi": [1, "never"], // death to the semicolon
     "no-inline-comments": 1, // comments should be stacked
-    "no-unused-expressions": 1, // mostly caused by options || (options = {})
+    "no-unused-expressions": 0, // mostly caused by `options || (options = {})`, doesn't play well with mocha chai `expect().to.be.true`
 
     // https://github.com/yannickcr/eslint-plugin-react
     "react/display-name": 2,
