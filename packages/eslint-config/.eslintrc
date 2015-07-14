@@ -1,11 +1,11 @@
 {
   "ecmaFeatures": {
-    "es6": true,
     "jsx": true,
     "modules": false, // https://github.com/eslint/eslint/issues/2967
   },
   "env": {
     "browser": true,
+    "es6": true,
     "jasmine": true,
     "mocha": true,
     "node": true
