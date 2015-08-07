@@ -1,7 +1,7 @@
 {
   "ecmaFeatures": {
     "jsx": true,
-    "modules": false, // https://github.com/eslint/eslint/issues/2967
+    "modules": true,
   },
   "env": {
     "browser": true,
@@ -36,8 +36,8 @@
     "space-before-blocks": [2, "always"],
     "space-before-function-paren": [2, "always"],
     "space-in-parens": [2, "never"],
-    "space-infix-ops": 0,
-    "spaced-line-comment": [2, "always"],
+    "space-infix-ops": 2,
+    "spaced-comment": [2, "always"],
     "strict": [2, "never"],
 
     // The rules below should be errors
@@ -53,6 +53,9 @@
     // https://github.com/yannickcr/eslint-plugin-react
     "react/display-name": 2,
     "react/jsx-boolean-value": [2, "never"],
+    "react/jsx-curly-spacing": [2, "never"],
+    "react/jsx-no-duplicate-props": 2,
+    "react/jsx-no-literals": 0, // currently broken but would be good to turn on
     "react/jsx-no-undef": 2,
     "react/jsx-quotes": [2, "double", "avoid-escape"],
     "react/jsx-uses-react": 2,

@@ -1,6 +1,6 @@
-var _ = require('lodash')
+import _ from 'lodash'
 
-var MY_CONTSTANT = 'A constant!'
+const MY_CONTSTANT = 'A constant!'
 
 var mySmallNumber = 1
 var myLargeNumber = 1e3
@@ -16,7 +16,7 @@ var myLargeObject = {
 }
 var myResult = _.chain(myLargeArray)
     .map(function (n) {
-        return n*2
+        return n * 2
     })
     .filter(myFunction)
     .value()
@@ -47,11 +47,11 @@ _.extend(MyConstructor, {
 _.extend(MyConstructor.prototype, {
 
     myMethod: function () {
-        return this.myOwnProperty*2
+        return this.myOwnProperty * 2
     },
 
 })
 
 function myFunction (n) {
-    return (n%2 === 0)
+    return (n % 2 === 0)
 }
