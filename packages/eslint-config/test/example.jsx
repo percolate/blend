@@ -7,7 +7,7 @@ export default React.createClass({
         name: React.PropTypes.string.isRequired,
     },
 
-    render: function () {
+    render () {
         return (
             <div className="hello">
                 <h1>Hello, {this.props.name}!</h1>
