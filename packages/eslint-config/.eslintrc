@@ -43,6 +43,7 @@
     "id-match": 0,
     "indent": [2, 4, { "SwitchCase": 1 }],
     "init-declarations": 0,
+    "jsx-quotes": [ 2, "prefer-double" ],
     "key-spacing": [2, { "beforeColon": false, "afterColon": true }],
     "linebreak-style": [2, "unix"],
     "lines-around-comment": 0,
@@ -180,7 +181,6 @@
     "react/jsx-no-duplicate-props": 2,
     "react/jsx-no-literals": 0, // currently broken but would be good to turn on
     "react/jsx-no-undef": 2,
-    "react/jsx-quotes": [2, "double", "avoid-escape"],
     "react/jsx-uses-react": 2,
     "react/no-did-mount-set-state": 2,
     "react/no-did-update-set-state": 2,
