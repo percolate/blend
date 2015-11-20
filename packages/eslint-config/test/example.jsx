@@ -11,6 +11,14 @@ export default React.createClass({
         return (
             <div className="hello">
                 <h1>Hello, {this.props.name}!</h1>
+                <div
+                    multilineProp
+                >
+                    <div/>
+                </div>
+                <div
+                    selfClosingMultilineProp
+                />
             </div>
         )
     },
