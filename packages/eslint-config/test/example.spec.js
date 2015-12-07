@@ -11,7 +11,7 @@ describe('the thing', function () {
         sandbox.mock()
     })
     afterEach(function () {
-        sandbox.resotre()
+        sandbox.restore()
     })
 
     it('should do stuff', function () {
