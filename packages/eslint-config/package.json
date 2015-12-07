@@ -17,7 +17,7 @@
     "url": "https://github.com/percolate/eslint-config-percolate/issues"
   },
   "devDependencies": {
-    "eslint": "1.1.0",
+    "eslint": "1.10.3",
     "eslint-plugin-react": "3.2.0"
   },
   "peerDependencies": {
