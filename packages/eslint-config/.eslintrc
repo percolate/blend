@@ -11,6 +11,7 @@
     "node": true
   },
   "plugins": [
+    "mocha",
     "react",
     "percolate"
   ],
@@ -173,6 +174,8 @@
     "wrap-iife": [2, "inside"],
     "wrap-regex": 0,
     "yoda": 2,
+
+    "mocha/no-exclusive-tests": 2,
 
     // https://github.com/yannickcr/eslint-plugin-react
     "react/display-name": 2,
