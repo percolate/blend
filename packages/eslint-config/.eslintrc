@@ -12,7 +12,7 @@
   },
   "plugins": [
     "react",
-    "percolate"
+    "sinon"
   ],
   "rules": {
     "accessor-pairs": 0,
@@ -191,7 +191,7 @@
     "react/self-closing-comp": 2,
     "react/wrap-multilines": 2,
 
-    // percolate
-    "percolate/no-fakes": 2
+    // sinon
+    "sinon/no-fakes": 2
   }
 }

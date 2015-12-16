@@ -19,10 +19,11 @@
   "devDependencies": {
     "eslint": "1.10.3",
     "eslint-plugin-react": "3.2.0",
-    "eslint-plugin-percolate": "file:rules"
+    "eslint-plugin-sinon": "0.1.0"
   },
   "peerDependencies": {
     "eslint": "1.10.3",
-    "eslint-plugin-react": "3.2.0"
+    "eslint-plugin-react": "3.2.0",
+    "eslint-plugin-sinon": "0.1.0"
   }
 }
