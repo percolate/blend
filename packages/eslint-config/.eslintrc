@@ -4,11 +4,24 @@
     "modules": true,
   },
   "env": {
-    "browser": true,
     "es6": true,
     "jasmine": true,
     "mocha": true,
     "node": true
+  },
+  "globals": {
+    "document": false,
+    "location": false,
+    "self": false,
+    "sessionStorage": false,
+    "window": false,
+    "Blob": false,
+    "CustomEvent": false,
+    "FormData": false,
+    "Image": false,
+    "KeyboardEvent": false,
+    "URL": false,
+    "XMLHttpRequest": false
   },
   "plugins": [
     "mocha",
