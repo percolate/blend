@@ -1,6 +1,6 @@
 {
   "name": "eslint-config-percolate",
-  "version": "1.4.0",
+  "version": "1.5.0",
   "engines": {
     "node": "0.10.x || 0.12.x || 4.x.x"
   },
