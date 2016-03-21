@@ -1,5 +1,5 @@
-import { expect } from 'chai'
-import sinon from 'sinon'
+const { expect } = require('chai')
+const sinon = require('sinon')
 
 describe('the thing', function () {
     var sandbox

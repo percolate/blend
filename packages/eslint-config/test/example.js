@@ -1,4 +1,4 @@
-import _ from 'lodash'
+const _ = require('lodash')
 
 const MY_CONTSTANT = 'A constant!'
 
