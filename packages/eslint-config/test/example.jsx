@@ -1,6 +1,6 @@
-import React from 'react'
+const React = require('react')
 
-export default React.createClass({
+module.exports = React.createClass({
 
     displayName: 'MyComponent',
     propTypes: {
