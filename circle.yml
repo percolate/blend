@@ -1,0 +1,13 @@
+machine:
+  node:
+    version: 4.2.3
+
+dependencies:
+  override:
+    - npm install:
+        pwd: packages/eslint-config/
+
+test:
+  override:
+    - npm test:
+        pwd: packages/eslint-config/
