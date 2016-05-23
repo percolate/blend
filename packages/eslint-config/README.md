@@ -1,13 +1,11 @@
-# eslint-config-percolate
-
-[![Circle CI](https://circleci.com/gh/percolate/eslint-config-percolate.svg?style=svg&circle-token=a2dfaae06d0d2ce659ee32eb8b060d602d58445c)](https://circleci.com/gh/percolate/eslint-config-percolate)
+# Percolate's [eslint](http://eslint.org/) config
 
 Percolate's JavaScript style guide.
 
 ## Installation
 
 ```sh
-$ npm install git+https://git@github.com/percolate/eslint-config-percolate.git
+$ npm install prclt-eslint-config
 ```
 
 ## Usage
@@ -16,12 +14,12 @@ $ npm install git+https://git@github.com/percolate/eslint-config-percolate.git
 
 ```json
 {
-  "extends": "./node_modules/eslint-config-percolate/.eslintrc"
+  "extends": "./node_modules/prclt-eslint-config/.eslintrc"
 }
 ```
 
 Or use the package directly:
 
 ```sh
-$ ./node_modules/eslint-config-percolate/node_modules/.bin/eslint -c ./node_modules/eslint-config-percolate/.eslintrc ./lib/ ./test/
+$ ./node_modules/prclt-eslint-config/node_modules/.bin/eslint -c ./node_modules/prclt-eslint-config/.eslintrc ./lib/ ./test/
 ```

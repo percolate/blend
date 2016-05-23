@@ -1,5 +1,5 @@
 {
-  "name": "eslint-config-percolate",
+  "name": "prclt-eslint-config",
   "version": "1.6.0",
   "engines": {
     "node": "0.10.x || 0.12.x || 4.x.x"
@@ -10,11 +10,11 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/percolate/eslint-config-percolate.git"
+    "url": "https://github.com/percolate/blend.git"
   },
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/percolate/eslint-config-percolate/issues"
+    "url": "https://github.com/percolate/blend/issues"
   },
   "devDependencies": {
     "eslint": "1.10.3",
