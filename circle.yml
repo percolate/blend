@@ -5,9 +5,9 @@ machine:
 dependencies:
   override:
     - npm install:
-        cwd: packages/eslint-config
+        pwd: packages/eslint-config/
 
 test:
   override:
     - npm test:
-        cwd: packages/eslint-config
+        pwd: packages/eslint-config/
