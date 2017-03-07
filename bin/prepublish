@@ -1,0 +1,14 @@
+#!/bin/bash -e
+
+# prompts user to update versions, creates git tags, and commits changes
+./node_modules/.bin/lerna publish --skip-npm
+# prompt to push
+read -r -p "About to run \"git push --follow-tags\", continue? [y/N] " response
+case "$response" in
+    [yY][eE][sS]|[yY])
+        git push --follow-tags
+        ;;
+    *)
+        exit 1
+        ;;
+esac

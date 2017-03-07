@@ -1,0 +1,5 @@
+#!/bin/bash -e
+
+# Installs all packages dependencies and links any cross-dependencies.
+npm install
+./node_modules/.bin/lerna bootstrap

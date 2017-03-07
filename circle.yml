@@ -1,0 +1,9 @@
+machine:
+  node:
+    version: 6.10.0
+
+deployment:
+  live:
+    branch: master
+    commands:
+      - ./node_modules/.bin/lerna exec -- ../publisher/bin/publish --npm-token="$NPMJS_TOKEN"
