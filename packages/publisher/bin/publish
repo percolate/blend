@@ -45,7 +45,7 @@ Options:
 
     // silent output of npm show since it's handled below
     log('fetching remote version')
-    const versionExec = sh.exec(`npm show ${package.name} version`, { silent: true  })
+    const versionExec = sh.exec(`npm show ${package.name} version`, { silent: true })
 
     // report error without failing
     if (versionExec.stderr) skip(`npm show version error:\n${versionExec.stderr}`)
@@ -54,14 +54,17 @@ Options:
     const remoteVersion = clean(versionExec.stdout)
     log(`verifying ${remoteVersion} <= ${package.version}...`)
     if (satisfies(remoteVersion, `<=${package.version}`)) {
-        skip(`remote is already published`)
+        skip(`version already published`)
     }
 
+    // publish
     log('publishing...')
-    const publishExec = sh.exec('npm publish')
+    const publishExec = sh.exec('npm publish', { silent: true })
     if (publishExec.stderr) {
+        log(`publishing error:\n${publishExec.stderr}`)
         return sh.exit(1)
     } else {
-        log('publishing...done')
+        log(`published successfully:\n${publishExec.stdout}`)
+        return sh.exit(0)
     }
 })()
