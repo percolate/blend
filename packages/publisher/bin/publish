@@ -1,0 +1,72 @@
+#!/usr/bin/env node
+
+const sh = require('shelljs')
+const { docopt } = require('docopt')
+const { gt } = require('semver')
+const { resolve } = require('path')
+
+const DOC = `
+Publish packages only if their version is newer than npm's.
+
+Usage:
+    publish [options]
+    publish -h | --help
+
+Options:
+    --npm-token=STRING   Update ~/.npmrc with npm token for authentication
+    -h --help            Show this screen
+`
+
+;(() => {
+    const args = docopt(DOC)
+    const npmToken = args['--npm-token']
+
+    // write to $HOME directory so `npm publish` picks up config
+    if (npmToken && !sh.test('-f', '~/.npmrc')) {
+        sh.ShellString(`//registry.npmjs.org/:_authToken=${npmToken}`).to('~/.npmrc')
+    }
+
+    const pwd = sh.pwd().toString()
+    const packageJsonPath = resolve(pwd, 'package.json')
+
+    // ensure package.json is in present working dir
+    if (!sh.test('-f', packageJsonPath)) {
+        sh.echo(`Unable to find package.json in ${packageJsonPath}`)
+        return sh.exit(1)
+    }
+
+    // load package.json information
+    const package = require(packageJsonPath)
+
+    // helper functions
+    const log = function (msg) {
+        sh.echo(`[${package.name}@${package.version}] ${msg}`)
+    }
+    const skip = function (msg) {
+        log(`[SKIPPED] ${msg}`)
+        return sh.exit(0)
+    }
+
+    // skip private packages
+    if (package.private) skip('private package')
+
+    // silent output of npm show since it's handled below
+    const versionExec = sh.exec(`npm show ${package.name} version`, { silent: true  })
+
+    // report error without failing
+    if (versionExec.stderr) skip(`npm show version error:\n${versionExec.stderr}`)
+
+    // check if remote version is newer
+    const remoteVersion = versionExec.stdout.trim()
+    if (gt(remoteVersion, package.version)) {
+        skip(`newer version found (${remoteVersion})`)
+    }
+
+    log('publishing...')
+    const publishExec = sh.exec('npm publish')
+    if (publishExec.stderr) {
+        return sh.exit(1)
+    } else {
+        log('publishing...done')
+    }
+})()

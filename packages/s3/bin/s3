@@ -1,0 +1,278 @@
+#!/usr/bin/env node
+
+/* eslint no-process-env:0 */
+require('console.table')
+var docopt = require('docopt').docopt
+var fs = require('fs')
+var mime = require('mime-types')
+var minimatch = require('minimatch')
+var path = require('path')
+var s3 = require('s3')
+
+const doc = `s3
+
+<s3-uri> is defined by "s3://<bucket-name>/<key>" for example s3://cdn.devolate.com/rosetta/font/
+
+s3 get-file:
+    Downloads a single file from <s3-uri> to <dest>
+
+s3 del:
+    Deletes a complete path defined by <s3-uri>
+
+s3 region:
+    Determine the region of a bucket
+
+s3 upload-dir:
+    Uploads a directory to the <s3-uri>. This will override files with the same
+    path and ignore existing files on <s3-uri> and make files public.
+
+s3 upload-file:
+    Uploads a single file to the <s3-uri> location (make sure <s3-uri> includes the filename)
+    and makes the file public. This will override the <s3-uri> if it already exists.
+
+s3 list:
+    Recursively lists all paths in <s3-uri>
+
+Usage:
+    s3 del <s3-uri> [options]
+    s3 get-file <s3-uri> <dest> [options]
+    s3 list <s3-uri> [options]
+    s3 region <s3-uri> [options]
+    s3 upload-file <file> <s3-uri> [options]
+    s3 upload-dir <dir> <s3-uri> [options]
+    s3 -h | --help
+
+Options:
+    --default-content-type=STRING   [default: application/octet-stream]
+    --cache-control=STRING          Cache control is set to a year by default [default: public, max-age=31449600]
+    --exclude=GLOB                  A glob pattern to exclude specific files
+    --region=STRING                 The region associated with the bucket
+    --aws-access-key-id=STRING      The AWS access key ID (defaults to $AWS_ACCESS_KEY_ID)
+    --aws-secret-access-key=STRING  The AWS secret access key (defaults to $AWS_SECRET_ACCESS_KEY)
+`
+const args = docopt(doc)
+const s3UriRe = /^[sS]3:\/\/(.*?)\/(.*)/
+const match = args['<s3-uri>'].match(s3UriRe)
+const excludePatterns = '@(._*|.Ds_Store|Thumbs.db)'
+
+if (!match) throw new Error(`Invalid <s3-uri>: ${args['<s3-uri>']} (ex. s3://my-bucket.com/path/to/dir/)`)
+
+const s3Bucket = match[1]
+const s3Key = match[2]
+const s3AccessKey = args['--aws-access-key-id'] || process.env.AWS_ACCESS_KEY_ID
+const s3Secret = args['--aws-secret-access-key'] || process.env.AWS_SECRET_ACCESS_KEY
+
+if (!s3AccessKey || !s3Secret) throw new Error('Missing aws-access-key-id or aws-secret-access-key')
+
+function main () {
+    if (args.region) return getRegion()
+
+    if (args['--region']) {
+        return exec(args['--region'])
+    } else {
+        console.log('Determining region...')
+        getRegion(exec)
+    }
+}
+
+// execute commands
+function exec (region) {
+    var client = getClient(region)
+    if (args['upload-dir']) uploadDir(client)
+    if (args['upload-file']) uploadFile(client)
+    if (args['get-file']) getFile(client)
+    if (args.list) listBucket(client)
+    if (args.del) deleteBucket(client)
+}
+
+function getClient (region) {
+    return s3.createClient({
+        s3Options: {
+            accessKeyId: s3AccessKey,
+            secretAccessKey: s3Secret,
+            region: region,
+        },
+    })
+}
+
+function getRegion (callback) {
+    var client = getClient()
+    client.s3.getBucketLocation({
+        Bucket: s3Bucket,
+    }, function (err, data) {
+        if (err) throw err
+
+        var region = data.LocationConstraint
+        console.log(`Region: "${region}"`)
+        if (callback) callback(region)
+    })
+}
+
+function getFile (client) {
+    var destination = args['<dest>']
+    var params = {
+        localFile: destination,
+        s3Params: {
+            Bucket: s3Bucket,
+            Key: s3Key,
+        },
+    }
+    var downloader = client.downloadFile(params)
+    downloader.on('error', function (err) {
+        console.log('\nUnable to download:')
+        throw err
+    })
+    downloader.on('progress', onProgress)
+    downloader.on('end', function () {
+        console.log(`\ndownloaded to ${destination}`)
+    })
+}
+
+function listBucket (client) {
+    var tableValues = []
+    var params = {
+        recursive: true,
+        s3Params: {
+            Bucket: s3Bucket,
+            Prefix: s3Key,
+            Delimiter: null,
+        },
+    }
+    var finder = client.listObjects(params)
+    finder.on('data', function (data) {
+        data.CommonPrefixes.forEach(function (dirObject) {
+            tableValues.push([`DIR ${dirObject}`, '', ''])
+        })
+        data.Contents.forEach(function (object) {
+            tableValues.push([object.Key, object.Size, object.LastModified])
+        })
+    })
+    finder.on('error', function (err) {
+        console.error(`Error: ${err.message}`)
+    })
+    finder.on('end', function () {
+        tableValues.sort(function (a, b) {
+            return a[0].localeCompare(b[0])
+        })
+        console.table(['Path', 'Size', 'Last modified'], tableValues)
+    })
+}
+
+function deleteBucket (client) {
+    var deleter = client.deleteDir({
+        Bucket: s3Bucket,
+        Prefix: s3Key,
+    })
+    deleter.on('error', function (err) {
+        console.log('\nunable to delete dir:')
+        throw err
+    })
+    deleter.on('progress', onProgress)
+    deleter.on('end', function () {
+        console.log(`\ndone deleting`)
+    })
+}
+
+function uploadFile (client) {
+    if (!isFile(args['<file>'])) throw new Error(`${args['<file>']} does not exist`)
+
+    var s3Params = Object.assign(getS3FileParams(args['<file>']), {
+        ACL: 'public-read',
+        Bucket: s3Bucket,
+        Key: s3Key,
+    })
+
+    var uploader = client.uploadFile({
+        localFile: args['<file>'],
+        s3Params: s3Params,
+    })
+    uploader.on('error', function (err) {
+        console.log('\nUnable to upload:')
+        throw err
+    })
+    uploader.on('end', function () {
+        console.log(`Uploaded to ${s3.getPublicUrlHttp(s3Bucket, s3Key)}`)
+    })
+}
+
+function uploadDir (client) {
+    if (!isDir(args['<dir>'])) throw new Error(`${args['<dir>']} does not exist`)
+
+    var uploader = client.uploadDir({
+        deleteRemoved: false,
+        getS3Params: function (localFile, s3Object, callback) {
+            if (isExcluded(localFile)) {
+                return callback(undefined, null)
+            }
+            callback(undefined, getS3FileParams(localFile))
+        },
+        localDir: args['<dir>'],
+
+        s3Params: {
+            ACL: 'public-read',
+            Bucket: s3Bucket,
+            Prefix: s3Key,
+        },
+    })
+    uploader.on('error', function (err) {
+        console.log('\nUnable to upload:')
+        throw err
+    })
+    uploader.on('fileUploadEnd', function (localFilePath, s3Dest) {
+        console.log(`Uploaded to ${s3.getPublicUrlHttp(s3Bucket, s3Dest)}`)
+    })
+}
+
+function getS3FileParams (filepath) {
+    return {
+        CacheControl: args['--cache-control'],
+        ContentType: mime.lookup(filepath) || args['--default-content-type'],
+    }
+}
+
+function isExcluded (filepath) {
+    if (!filepath) return false
+
+    // resolve to absolute so **/* works with ../../ paths
+    filepath = path.resolve(filepath)
+
+    var matcheDefaults = minimatch(filepath, excludePatterns, {
+        matchBase: true,
+        nocase: true,
+        dot: true,
+    })
+
+    var excluded = !!args['--exclude'] && minimatch(filepath, args['--exclude'], {
+        matchBase: true,
+        nocase: true,
+    })
+
+    if (matcheDefaults || excluded) {
+        console.log(`Skipping ${filepath}`)
+        return true
+    }
+}
+
+function onProgress () {
+    process.stdout.clearLine()
+    process.stdout.cursorTo(0)
+    process.stdout.write(`progress ${this.progressAmount}/${this.progressTotal}`)
+}
+
+function isFile (filepath) {
+    try {
+        return fs.statSync(filepath).isFile()
+    } catch (e) {
+        return false
+    }
+}
+
+function isDir (filepath) {
+    try {
+        return fs.statSync(filepath).isDirectory()
+    } catch (e) {
+        return false
+    }
+}
+
+main()

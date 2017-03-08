@@ -1,0 +1,20 @@
+{
+  "name": "@percolate/s3",
+  "version": "0.0.2",
+  "description": "CLI for various S3 commands",
+  "license": "SEE LICENSE IN /LICENSE.md",
+  "repository": "https://github.com/percolate/blend/tree/master/packages/s3",
+  "bin": {
+    "s3": "./bin/s3"
+  },
+  "dependencies": {
+    "console.table": "0.7.0",
+    "docopt": "0.6.2",
+    "mime-types": "2.1.11",
+    "minimatch": "3.0.3",
+    "s3": "4.4.0"
+  },
+  "publishConfig": {
+    "access": "public"
+  }
+}
