@@ -13,18 +13,11 @@ Usage:
     publish -h | --help
 
 Options:
-    --npm-token=STRING   Update ~/.npmrc with npm token for authentication
-    -h --help            Show this screen
+    -h --help  Show this screen
 `
 
 ;(() => {
-    const args = docopt(DOC)
-    const npmToken = args['--npm-token']
-
-    // write to $HOME directory so `npm publish` picks up config
-    if (npmToken && !sh.test('-f', '~/.npmrc')) {
-        sh.ShellString(`//registry.npmjs.org/:_authToken=${npmToken}`).to('~/.npmrc')
-    }
+    docopt(DOC)
 
     const pwd = sh.pwd().toString()
     const packageJsonPath = resolve(pwd, 'package.json')
