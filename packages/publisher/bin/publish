@@ -2,7 +2,7 @@
 
 const sh = require('shelljs')
 const { docopt } = require('docopt')
-const { gt } = require('semver')
+const { clean, satisfies } = require('semver')
 const { resolve } = require('path')
 
 const DOC = `
@@ -44,15 +44,17 @@ Options:
     if (package.private) skip('private package')
 
     // silent output of npm show since it's handled below
+    log('fetching remote version')
     const versionExec = sh.exec(`npm show ${package.name} version`, { silent: true  })
 
     // report error without failing
     if (versionExec.stderr) skip(`npm show version error:\n${versionExec.stderr}`)
 
     // check if remote version is newer
-    const remoteVersion = versionExec.stdout.trim()
-    if (gt(remoteVersion, package.version)) {
-        skip(`newer version found (${remoteVersion})`)
+    const remoteVersion = clean(versionExec.stdout)
+    log(`verifying ${remoteVersion} <= ${package.version}...`)
+    if (satisfies(remoteVersion, `<=${package.version}`)) {
+        skip(`remote is already published`)
     }
 
     log('publishing...')
