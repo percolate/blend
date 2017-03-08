@@ -1,6 +1,6 @@
 {
   "name": "@percolate/atatus",
-  "version": "0.0.1-beta.1",
+  "version": "0.0.2",
   "license": "SEE LICENSE IN /LICENSE.md",
   "description": "Atatus sourcemap uploader",
   "repository": "https://github.com/percolate/blend/tree/master/packages/atatus",
