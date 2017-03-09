@@ -2,7 +2,7 @@
 
 const sh = require('shelljs')
 const { docopt } = require('docopt')
-const { gt } = require('semver')
+const { clean, satisfies } = require('semver')
 const { resolve } = require('path')
 
 const DOC = `
@@ -13,18 +13,11 @@ Usage:
     publish -h | --help
 
 Options:
-    --npm-token=STRING   Update ~/.npmrc with npm token for authentication
-    -h --help            Show this screen
+    -h --help  Show this screen
 `
 
 ;(() => {
-    const args = docopt(DOC)
-    const npmToken = args['--npm-token']
-
-    // write to $HOME directory so `npm publish` picks up config
-    if (npmToken && !sh.test('-f', '~/.npmrc')) {
-        sh.ShellString(`//registry.npmjs.org/:_authToken=${npmToken}`).to('~/.npmrc')
-    }
+    docopt(DOC)
 
     const pwd = sh.pwd().toString()
     const packageJsonPath = resolve(pwd, 'package.json')
@@ -51,22 +44,27 @@ Options:
     if (package.private) skip('private package')
 
     // silent output of npm show since it's handled below
-    const versionExec = sh.exec(`npm show ${package.name} version`, { silent: true  })
+    log('fetching remote version')
+    const versionExec = sh.exec(`npm show ${package.name} version`, { silent: true })
 
     // report error without failing
     if (versionExec.stderr) skip(`npm show version error:\n${versionExec.stderr}`)
 
     // check if remote version is newer
-    const remoteVersion = versionExec.stdout.trim()
-    if (gt(remoteVersion, package.version)) {
-        skip(`newer version found (${remoteVersion})`)
+    const remoteVersion = clean(versionExec.stdout)
+    log(`verifying ${remoteVersion} <= ${package.version}...`)
+    if (satisfies(remoteVersion, `<=${package.version}`)) {
+        skip(`version already published`)
     }
 
+    // publish
     log('publishing...')
-    const publishExec = sh.exec('npm publish')
+    const publishExec = sh.exec('npm publish', { silent: true })
     if (publishExec.stderr) {
+        log(`publishing error:\n${publishExec.stderr}`)
         return sh.exit(1)
     } else {
-        log('publishing...done')
+        log(`published successfully:\n${publishExec.stdout}`)
+        return sh.exit(0)
     }
 })()
