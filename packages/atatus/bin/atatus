@@ -28,7 +28,7 @@ var fs = require('fs')
 var path = require('path')
 var request = require('request')
 var sh = require('shelljs')
-var retry = require('async-retry').default
+var retry = require('async-retry')
 sh.config.fatal = true
 
 const args = docopt(doc)
