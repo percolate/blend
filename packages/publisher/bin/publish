@@ -52,8 +52,8 @@ Options:
 
     // check if remote version is newer
     const remoteVersion = clean(versionExec.stdout)
-    log(`verifying ${remoteVersion} <= ${package.version}...`)
-    if (satisfies(remoteVersion, `<=${package.version}`)) {
+    log(`verifying ${package.version} <= ${remoteVersion}...`)
+    if (satisfies(package.version, `<=${remoteVersion}`)) {
         skip(`version already published`)
     }
 
