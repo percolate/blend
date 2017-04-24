@@ -4,13 +4,19 @@ machine:
 
 dependencies:
   cache_directories:
-    - "packages/atatus/node_modules/"
-    - "packages/publisher/node_modules/"
-    - "packages/s3/node_modules/"
+    - packages/atatus/node_modules/
+    - packages/eslint-plugin-percolate/node_modules/
+    - packages/publisher/node_modules/
+    - packages/s3/node_modules/
   pre:
     - echo "//registry.npmjs.org/:_authToken=$NPMJS_TOKEN" >> ~/.npmrc
   override:
     - bin/install
+
+test:
+  override:
+    - npm test:
+        pwd: packages/eslint-plugin-percolate
 
 deployment:
   live:
