@@ -12,6 +12,9 @@ dependencies:
     - echo "//registry.npmjs.org/:_authToken=$NPMJS_TOKEN" >> ~/.npmrc
   override:
     - bin/install
+
+test:
+  override:
     - npm test:
         pwd: packages/eslint-plugin-percolate
 
