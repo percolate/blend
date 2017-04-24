@@ -47,11 +47,16 @@ Options:
     log('fetching remote version')
     const versionExec = sh.exec(`npm show ${package.name} version`, { silent: true })
 
+    let remoteVersion
     // report error without failing
-    if (versionExec.stderr) skip(`npm show version error:\n${versionExec.stderr}`)
+    if (versionExec.stderr) {
+        remoteVersion = '0.0.0'
+        log(`npm show version not found: defaulting to ${remoteVersion}`)
+    } else {
+        remoteVersion = clean(versionExec.stdout)
+    }
 
     // check if remote version is newer
-    const remoteVersion = clean(versionExec.stdout)
     log(`verifying ${package.version} <= ${remoteVersion}...`)
     if (satisfies(package.version, `<=${remoteVersion}`)) {
         skip(`version already published`)
