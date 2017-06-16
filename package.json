@@ -2,9 +2,12 @@
   "license": "SEE LICENSE IN /LICENSE.md",
   "repository": "https://github.com/percolate/blend",
   "scripts": {
-    "test": "echo \"no test specified\""
+    "test": "eslint \"packages/**/*.js\""
   },
   "devDependencies": {
-    "lerna": "2.0.0-beta.38"
+    "eslint": "^4.0.0",
+    "eslint-plugin-prettier": "^2.1.2",
+    "lerna": "2.0.0-beta.38",
+    "prettier": "^1.4.4"
   }
 }

@@ -15,6 +15,7 @@ dependencies:
 
 test:
   override:
+    - npm test
     - npm test:
         pwd: packages/eslint-plugin-percolate
 

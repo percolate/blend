@@ -9,9 +9,9 @@ module.exports = {
         },
     },
 
-    create: function (context) {
+    create: function(context) {
         return {
-            JSXAttribute: function (node) {
+            JSXAttribute: function(node) {
                 if (node.name.name !== 'id') return
                 if (!htmlTags.includes(node.parent.name.name)) return
 
