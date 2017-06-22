@@ -19,9 +19,9 @@ Examples of **incorrect** code for this rule:
 /* eslint react-link: ["error", { modules: [{ import: '/mylink.jsx', props: [{ routePropName: 'to', paramsPropName: 'params' }]}], routeRegex: '^/.*$' }] */
 
 <a {...props}>link</a>          // Unable to determine value of href because of spread
-<a href={url}>link</a>          // <a href="#" /> must be a button otherwise use "/mylink.jsx"
-<a href="/foo">link</a>         // <a href="#" /> must be a button otherwise use "/mylink.jsx"
-<a href="mailto:...">link</a>   // <a href="#" /> must be a button otherwise use "/mylink.jsx"
+<a href={url}>link</a>          // Convert <a href /> to a button or use "/mylink.jsx"
+<a href="/foo">link</a>         // Convert <a href /> to a button or use "/mylink.jsx"
+<a href="mailto:...">link</a>   // Convert <a href /> to a button or use "/mylink.jsx"
 
 import mylink from "/mylink.jsx"
 

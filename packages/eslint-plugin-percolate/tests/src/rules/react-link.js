@@ -151,32 +151,32 @@ ruleTester.run('react-link', rule, {
             options,
             errors: [
                 'Unable to determine value of href because of spread',
-                '<a href /> must be a button or use "/link.jsx", "/redirect.jsx"',
+                'Convert <a href /> to a button or use "/link.jsx", "/redirect.jsx"',
             ],
         },
         {
             code: 'function Button() { var url = "/foo"; return <a href={url}>link</a> }',
             options,
             parserOptions,
-            errors: ['<a href /> must be a button or use "/link.jsx", "/redirect.jsx"'],
+            errors: ['Convert <a href /> to a button or use "/link.jsx", "/redirect.jsx"'],
         },
         {
             code: 'function Button() { return <a href="/foo">link</a> }',
             options,
             parserOptions,
-            errors: ['<a href /> must be a button or use "/link.jsx", "/redirect.jsx"'],
+            errors: ['Convert <a href /> to a button or use "/link.jsx", "/redirect.jsx"'],
         },
         {
             code: 'function Button() { return <a href="mailto:hello@example.com">link</a> }',
             options,
             parserOptions,
-            errors: ['<a href /> must be a button or use "/link.jsx", "/redirect.jsx"'],
+            errors: ['Convert <a href /> to a button or use "/link.jsx", "/redirect.jsx"'],
         },
         {
             code: 'function Button() { return <a href="/foo">link</a> }',
             options,
             parserOptions,
-            errors: ['<a href /> must be a button or use "/link.jsx", "/redirect.jsx"'],
+            errors: ['Convert <a href /> to a button or use "/link.jsx", "/redirect.jsx"'],
         },
     ],
 })

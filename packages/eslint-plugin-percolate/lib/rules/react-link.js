@@ -100,7 +100,7 @@ module.exports = {
                     const imports = modules.map(module => `"${module.import}"`).join(', ')
                     return context.report({
                         node,
-                        message: `<a href /> must be a button or use ${imports}`,
+                        message: `Convert <a href /> to a button or use ${imports}`,
                     })
                 }
 
