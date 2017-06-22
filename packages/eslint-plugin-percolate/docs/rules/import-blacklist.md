@@ -7,7 +7,7 @@ This rule disallows importing specific modules or specific keys from their expor
 Examples of **incorrect** code for this rule:
 
 ```jsx
-/* eslint react-link: ["error", [{ module: 'jquery' }, { module: 'react-router', allowAllExcept: ['Link', 'Redirect'], reason: 'Use /our/router.jsx instead' }]] */
+/* eslint react-link: ["error", [{ import: 'jquery' }, { import: 'react-router', allowAllExcept: ['Link', 'Redirect'], reason: 'Use /our/router.jsx instead' }]] */
 
 
 import "jquery" // jquery" is blackedlisted
@@ -21,7 +21,7 @@ import { Link } from "react-router"
 Examples of **correct** code for this rule:
 
 ```jsx
-/* eslint react-link: ["error", [{ module: 'react-router', allowAllExcept: ['Link', 'Redirect'], reason: 'Use /our/router.jsx instead' }]] */
+/* eslint react-link: ["error", [{ import: 'react-router', allowAllExcept: ['Link', 'Redirect'], reason: 'Use /our/router.jsx instead' }]] */
 
 import { Router } from "react-router"
 import { Router, Route } from "react-router"
@@ -31,6 +31,6 @@ import { Router, Route } from "react-router"
 
 This rule supports an array of options, each defining a module to blacklist:
 
-- `module`: The name or path of the module that can't be imported (ex. `react-router`)
-- `allowAllExcept`: A list of export keys to blacklist from the `module` import (ex. `['Link']`)
+- `import`: The import name or path of the module that can't be imported (ex. `react-router`)
+- `allowAllExcept`: A list of export keys to blacklist from the imported module (ex. `['Link']`)
 - `reason`: The reason why this module is blacklisted (ex. `Use /our/router.jsx instead`)

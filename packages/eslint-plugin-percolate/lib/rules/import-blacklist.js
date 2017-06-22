@@ -10,11 +10,11 @@ module.exports = {
                 minItems: 1,
                 items: {
                     type: 'object',
-                    requires: ['module'],
+                    requires: ['import'],
                     properties: {
-                        module: {
+                        import: {
                             type: 'string',
-                            description: "The name or path of the module that can't be imported",
+                            description: "The import name or path of the module that can't be imported",
                             example: 'react-router',
                         },
                         allowAllExcept: {
@@ -45,15 +45,15 @@ module.exports = {
                 if (!options.length) {
                     return context.report({
                         node,
-                        message: 'At least one option is required (ex. [{ module: "jquery" }]',
+                        message: 'At least one option is required (ex. [{ import: "jquery" }]',
                     })
                 }
 
-                options.forEach(opt => {
-                    const { module, allowAllExcept = [], reason } = opt
+                options.forEach(module => {
+                    const { allowAllExcept = [], reason } = module
 
                     // ignore if import source doesn't match module
-                    if (module !== node.source.value) return
+                    if (module.import !== node.source.value) return
 
                     // ignore when none of the specifiers match the allowAllExcept
                     if (
@@ -71,8 +71,8 @@ module.exports = {
                     const message = []
                         .concat(
                             allowAllExcept.length
-                                ? `{ ${allowAllExcept.join(', ')} } from "${module}" is blackedlisted`
-                                : `"${module}" is blackedlisted`,
+                                ? `{ ${allowAllExcept.join(', ')} } from "${module.import}" is blackedlisted`
+                                : `"${module.import}" is blackedlisted`,
                             reason ? `(${reason})` : []
                         )
                         .join(' ')

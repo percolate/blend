@@ -11,17 +11,17 @@ ruleTester.run('import-blacklist', rule, {
     valid: [
         {
             code: 'import "foo"',
-            options: [[{ module: 'bar' }]],
+            options: [[{ import: 'bar' }]],
             parserOptions,
         },
         {
             code: 'import { Router } from "react-router"',
-            options: [[{ module: 'react-router', allowAllExcept: ['Link'] }]],
+            options: [[{ import: 'react-router', allowAllExcept: ['Link'] }]],
             parserOptions,
         },
         {
             code: 'import { Router, Route } from "react-router"',
-            options: [[{ module: 'react-router', allowAllExcept: ['Link'] }]],
+            options: [[{ import: 'react-router', allowAllExcept: ['Link'] }]],
             parserOptions,
         },
     ],
@@ -29,41 +29,41 @@ ruleTester.run('import-blacklist', rule, {
         {
             code: 'import "foo"',
             parserOptions,
-            errors: ['At least one option is required (ex. [{ module: "jquery" }]'],
+            errors: ['At least one option is required (ex. [{ import: "jquery" }]'],
         },
         {
             code: 'import "jquery"',
-            options: [[{ module: 'jquery' }]],
+            options: [[{ import: 'jquery' }]],
             parserOptions,
             errors: ['"jquery" is blackedlisted'],
         },
         {
             code: 'import "prototype"',
-            options: [[{ module: 'prototype', allowAllExcept: ['$'], reason: 'Browsers have caught up' }]],
+            options: [[{ import: 'prototype', allowAllExcept: ['$'], reason: 'Browsers have caught up' }]],
             parserOptions,
             errors: ['{ $ } from "prototype" is blackedlisted (Browsers have caught up)'],
         },
         {
             code: 'import * as foo from "foo"',
-            options: [[{ module: 'foo' }]],
+            options: [[{ import: 'foo' }]],
             parserOptions,
             errors: ['"foo" is blackedlisted'],
         },
         {
             code: 'import * as router from "react-router"',
-            options: [[{ module: 'react-router', allowAllExcept: ['Route'] }]],
+            options: [[{ import: 'react-router', allowAllExcept: ['Route'] }]],
             parserOptions,
             errors: ['{ Route } from "react-router" is blackedlisted'],
         },
         {
             code: 'import { Router, Route, Link } from "react-router"',
-            options: [[{ module: 'react-router', allowAllExcept: ['Link'] }]],
+            options: [[{ import: 'react-router', allowAllExcept: ['Link'] }]],
             parserOptions,
             errors: ['{ Link } from "react-router" is blackedlisted'],
         },
         {
             code: 'import { Router, Route, Link, Redirect } from "react-router"',
-            options: [[{ module: 'react-router', allowAllExcept: ['Link', 'Redirect'] }]],
+            options: [[{ import: 'react-router', allowAllExcept: ['Link', 'Redirect'] }]],
             parserOptions,
             errors: ['{ Link, Redirect } from "react-router" is blackedlisted'],
         },
@@ -71,8 +71,8 @@ ruleTester.run('import-blacklist', rule, {
             code: 'import _ from "underscore"; import backbone from "Backbone"',
             options: [
                 [
-                    { module: 'Backbone', reason: 'replaced with React' },
-                    { module: 'underscore', reason: 'replaced with Lodash' },
+                    { import: 'Backbone', reason: 'replaced with React' },
+                    { import: 'underscore', reason: 'replaced with Lodash' },
                 ],
             ],
             parserOptions,
