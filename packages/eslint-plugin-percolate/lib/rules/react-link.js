@@ -1,5 +1,6 @@
+const DEFAULT_PROPS = [{ routePropName: 'to', paramsPropName: 'params' }]
 const DEFAULT_SKIP_VALIDATION_PROP_NAME = 'dangerouslySetExternalUrl'
-const DEFAULT_PATH_PROP_NAMES = ['path']
+const PARAM_REGEX = /:\w+/g
 
 module.exports = {
     meta: {
@@ -11,29 +12,53 @@ module.exports = {
         fixable: false,
         schema: [
             {
-                type: 'array',
-                minItems: 1,
-                items: {
-                    type: 'object',
-                    require: ['source'],
-                    properties: {
-                        source: {
-                            type: 'string',
-                            description: 'The name or path your react component',
-                            example: '/path/to/custom/link.jsx',
+                type: 'object',
+                required: ['modules'],
+                properties: {
+                    modules: {
+                        type: 'array',
+                        minItems: 1,
+                        items: {
+                            type: 'object',
+                            required: ['import'],
+                            properties: {
+                                import: {
+                                    type: 'string',
+                                    description: 'The name or path your react component',
+                                    example: '/path/to/custom/link.jsx',
+                                },
+                                props: {
+                                    type: 'array',
+                                    minLength: 1,
+                                    require: ['route'],
+                                    items: {
+                                        type: 'object',
+                                        properties: {
+                                            routePropName: {
+                                                type: 'string',
+                                                description: 'Prop name to enforce',
+                                                example: 'to',
+                                            },
+                                            paramsPropName: {
+                                                type: 'string',
+                                                description: 'Prop name for related params',
+                                                example: 'params',
+                                            },
+                                        },
+                                        additionalProperties: false,
+                                    },
+                                },
+                                skipValidationPropName: {
+                                    type: 'string',
+                                    description: 'The prop name that bypasses route validation',
+                                },
+                            },
+                            additionalProperties: false,
                         },
-                        routePropNames: {
-                            description: 'Prop names to enforce',
-                            example: ['from', 'to'],
-                            type: 'array',
-                            default: DEFAULT_PATH_PROP_NAMES,
-                            items: [{ type: 'string' }],
-                        },
-                        skipValidationPropName: {
-                            type: 'string',
-                            description: 'The prop name that bypasses path validation',
-                            default: DEFAULT_SKIP_VALIDATION_PROP_NAME,
-                        },
+                    },
+                    routeRegex: {
+                        type: 'string',
+                        description: 'A regex pattern route props must match',
                     },
                 },
                 additionalProperties: false,
@@ -43,16 +68,16 @@ module.exports = {
 
     create: function(context) {
         const specifierLookup = {}
+        const { modules = [] } = context.options[0] || {}
 
         return {
             ImportDeclaration: function(node) {
-                const customModules = getOptions(context)
-
                 // ensure options exist
-                if (!customModules.length) {
+                if (!modules.length) {
                     context.report({
                         node,
-                        message: 'At least one option is required (ex. [{ source: "/path/to/link.jsx" }]',
+                        message:
+                            'At least one option is required (ex. { modules: [{ import: "/path/to/link.jsx" }]}',
                     })
                 }
 
@@ -60,7 +85,7 @@ module.exports = {
                 if (!node.specifiers.length) return
 
                 // ignore if source doesn't match any custom modules
-                const matchingModule = customModules.find(module => module.source === node.source.value)
+                const matchingModule = modules.find(module => module.import === node.source.value)
                 if (!matchingModule) return
 
                 // create specifier lookup
@@ -72,10 +97,10 @@ module.exports = {
             'JSXElement:exit': function(node) {
                 // <a href="..." used as a link is forbidden
                 if (isLink(context, node)) {
-                    const sources = getOptions(context).map(module => `"${module.source}"`).join(', ')
+                    const imports = modules.map(module => `"${module.import}"`).join(', ')
                     return context.report({
                         node,
-                        message: `<a href="#" /> must be a button otherwise use ${sources}`,
+                        message: `<a href /> must be a button or use ${imports}`,
                     })
                 }
 
@@ -86,7 +111,7 @@ module.exports = {
 }
 
 function getOptions(context) {
-    return context.options[0] || []
+    return context.options[0] || {}
 }
 
 function validateCustomModule(context, node, specifierLookup) {
@@ -95,36 +120,88 @@ function validateCustomModule(context, node, specifierLookup) {
     // ignore if tag doesn't match any import specifier (ex. <div> !== <Link>)
     if (!module) return
 
+    const { props = DEFAULT_PROPS, skipValidationPropName = DEFAULT_SKIP_VALIDATION_PROP_NAME } = module
+    const { routeRegex } = getOptions(context)
+
     const skipValidationAttr = node.openingElement.attributes.find(
-        attr =>
-            attr.type === 'JSXAttribute' &&
-            attr.name.name === (module.skipValidationPropName || DEFAULT_SKIP_VALIDATION_PROP_NAME)
+        attr => attr.type === 'JSXAttribute' && attr.name.name === skipValidationPropName
     )
 
-    const routePropNames = module.routePropNames || DEFAULT_PATH_PROP_NAMES
-    const pathAttrs = node.openingElement.attributes.filter(
-        attr => attr.type === 'JSXAttribute' && routePropNames.some(name => name === attr.name.name)
-    )
+    let totalMissingAttrs = 0
+    props.forEach(({ routePropName, paramsPropName }) => {
+        const routeAttr = node.openingElement.attributes.find(
+            attr => attr.type === 'JSXAttribute' && attr.name.name === routePropName
+        )
 
-    if (!pathAttrs.length) {
-        return context.report({
-            node,
-            message: `missing required prop: ${routePropNames.map(name => `"${name}"`).join(', ')}`,
-        })
-    }
+        // record missing route prop
+        if (!routeAttr) {
+            totalMissingAttrs++
+            return
+        }
 
-    pathAttrs.forEach(pathAttr => {
         // dangerouslySetExternalUrl is present allow anything
         if (skipValidationAttr) return
 
-        // path attribute can only be a string (ex. <Link path="/path">)
-        if (pathAttr.value.type === 'Literal') return
+        // route attribute can only be a string (ex. <Link to="/path">)
+        if (routeAttr.value.type !== 'Literal') {
+            return context.report({
+                node,
+                message: `"${routeAttr.name.name}" property must be a string literal`,
+            })
+        }
 
-        context.report({
-            node,
-            message: `"${pathAttr.name.name}" property must be a string literal`,
+        // matches route regex
+        if (routeRegex && !routeAttr.value.value.match(new RegExp(routeRegex))) {
+            return context.report({
+                node,
+                message: `"${routeAttr.value.value}" does not match routeRegex /${routeRegex}/`,
+            })
+        }
+
+        const matches = (routeAttr.value.value.match(PARAM_REGEX) || []).map(name => name.replace(':', ''))
+        const paramsAttr = node.openingElement.attributes.find(
+            attr => attr.type === 'JSXAttribute' && attr.name.name === paramsPropName
+        )
+
+        // route has no params and no params prop is specified (ex. <Link to="/static/url" />)
+        if (!matches.length && !paramsAttr) return
+
+        // route has params (ex. <Link to="/user/:user_id" />)
+        if (matches.length && !paramsAttr) {
+            return context.report({ node, message: `"${paramsPropName}" prop missing` })
+        }
+
+        // params prop is not an object (ex. params={var})
+        if (
+            paramsAttr.value.type !== 'JSXExpressionContainer' ||
+            paramsAttr.value.expression.type !== 'ObjectExpression'
+        ) {
+            return context.report({
+                node,
+                message: `"${paramsPropName}" must be an object with keys declared inline`,
+            })
+        }
+
+        const params = paramsAttr.value.expression.properties.map(prop => prop.key.name)
+        matches.forEach(match => {
+            if (!params.some(param => param === match)) {
+                context.report({ node, message: `"${paramsPropName}" missing "${match}" definition` })
+            }
+        })
+        params.forEach(param => {
+            if (!matches.some(match => match === param)) {
+                context.report({ node, message: `"${routePropName}" missing "/:${param}" in route` })
+            }
         })
     })
+
+    // no route props found
+    if (totalMissingAttrs === props.length) {
+        context.report({
+            node,
+            message: `missing required prop: ${props.map(prop => `"${prop.routePropName}"`).join(', ')}`,
+        })
+    }
 }
 
 function isLink(context, node) {
