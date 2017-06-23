@@ -9,7 +9,10 @@ const parserOptions = {
 const options = [
     {
         modules: [
-            { import: '/link.jsx', skipValidationPropName: 'skip' },
+            {
+                import: '/link.jsx',
+                props: [{ routePropName: 'to', paramsPropName: 'params' }],
+            },
             {
                 import: '/redirect.jsx',
                 props: [
@@ -18,6 +21,7 @@ const options = [
                 ],
             },
         ],
+        skipValidationPropName: 'skip',
         routeRegex: '^/.*$',
     },
 ]
@@ -30,58 +34,67 @@ ruleTester.run('react-link', rule, {
             parserOptions,
         },
         {
-            code: 'import Link from "/link.jsx"; function Foo() { return <Link to="/path" /> }',
+            code: 'import Link from "/link.jsx"; <Link to="/path" />',
+            options,
+            parserOptions,
+        },
+        {
+            code: 'import Link from "/link.jsx"; const url = "example.com"; <Link to={url} skip />',
             options,
             parserOptions,
         },
         {
             code:
-                'import Link from "/link.jsx"; function Foo() { const url = "example.com"; return <Link to={url} skip /> }',
+                'import Link from "/link.jsx"; var props = { other: "stuff" }; <Link to="/path" {...props} />',
             options,
             parserOptions,
         },
         {
             code:
-                'import Link from "/link.jsx"; function Foo() { var props = { other: "stuff" }; return <Link to="/path" {...props} /> }',
+                'import Redirect from "/redirect.jsx"; var bar = 1; <Redirect from="/foo" to="/foo/:foo/:bar" to_params={{ bar, foo: 1 }} />',
             options,
             parserOptions,
         },
         {
             code:
-                'import Redirect from "/redirect.jsx"; function Foo() { var bar = 1; return <Redirect from="/foo" to="/foo/:foo/:bar" to_params={{ bar, foo: 1 }} /> }',
+                'import Redirect from "/redirect.jsx"; var bar = "/bar"; <Redirect from="/foo" to={bar} skip />',
             options,
             parserOptions,
         },
         {
             code:
-                'import Redirect from "/redirect.jsx"; function Foo() { var bar = "/bar"; return <Redirect from="/foo" to={bar} dangerouslySetExternalUrl /> }',
-            options,
+                'import ExternalLink from "/external_link.jsx"; var url = "example.com"; <ExternalLink to={url} />',
+            options: [
+                {
+                    modules: [{ import: '/external_link.jsx' }],
+                },
+            ],
             parserOptions,
         },
 
         // <a href="..." />
         {
-            code: 'function Button() { return <a>button</a> }',
+            code: 'function Button() { <a>button</a> }',
             options,
             parserOptions,
         },
         {
-            code: 'function Button() { return <a onClick={function () {}}>button</a> }',
+            code: 'function Button() { <a onClick={function () {}}>button</a> }',
             options,
             parserOptions,
         },
         {
-            code: 'function Button() { return <a href="javascript:void(0)">button</a> }',
+            code: 'function Button() { <a href="javascript:void(0)">button</a> }',
             options,
             parserOptions,
         },
         {
-            code: 'function Button() { return <a href="javascript:void(0)" data-id="button">button</a> }',
+            code: 'function Button() { <a href="javascript:void(0)" data-id="button">button</a> }',
             options,
             parserOptions,
         },
         {
-            code: 'function Button() { return <a href="#">link</a> }',
+            code: 'function Button() { <a href="#">link</a> }',
             options,
             parserOptions,
         },
@@ -93,48 +106,46 @@ ruleTester.run('react-link', rule, {
             errors: ['At least one option is required (ex. { modules: [{ import: "/path/to/link.jsx" }]}'],
         },
         {
-            code:
-                'import Link from "/link.jsx"; function Foo() { var foo = "/path"; return <Link to={foo} /> }',
+            code: 'import Link from "/link.jsx"; var foo = "/path"; <Link to={foo} />',
             options,
             parserOptions,
             errors: ['"to" property must be a string literal'],
         },
         {
             code:
-                'import Redirect from "/redirect.jsx"; function Foo() { var props = { path: "/path" }; return <Redirect {...props} /> }',
+                'import Redirect from "/redirect.jsx"; var props = { path: "/path" }; <Redirect {...props} />',
             options,
             parserOptions,
             errors: ['missing required prop: "from", "to"'],
         },
         {
-            code:
-                'import Redirect from "/redirect.jsx"; function Foo() { var bar = "/bar"; return <Redirect from="/foo" to={bar} /> }',
+            code: 'import Redirect from "/redirect.jsx"; var bar = "/bar"; <Redirect from="/foo" to={bar} />',
             options,
             parserOptions,
             errors: ['"to" property must be a string literal'],
         },
         {
-            code: 'import Link from "/link.jsx"; function Foo() { return <Link to="foo" /> }',
+            code: 'import Link from "/link.jsx"; <Link to="foo" />',
             options,
             parserOptions,
             errors: ['"foo" does not match routeRegex /^/.*$/'],
         },
         {
-            code: 'import Redirect from "/redirect.jsx"; function Foo() { return <Redirect to="/:foo" /> }',
+            code: 'import Redirect from "/redirect.jsx"; <Redirect to="/:foo" />',
             options,
             parserOptions,
             errors: ['"to_params" prop missing'],
         },
         {
             code:
-                'import Redirect from "/redirect.jsx"; function Foo() { var params = { foo: 1 } ;return <Redirect to="/:foo" to_params={params} /> }',
+                'import Redirect from "/redirect.jsx"; var params = { foo: 1 } ;<Redirect to="/:foo" to_params={params} />',
             options,
             parserOptions,
             errors: ['"to_params" must be an object with keys declared inline'],
         },
         {
             code:
-                'import Redirect from "/redirect.jsx"; function Foo() { return <Redirect from="/:bar" from_params={{ foo: 1 }} to="/:foo/:bar" to_params={{ foo: 1 }} /> }',
+                'import Redirect from "/redirect.jsx"; <Redirect from="/:bar" from_params={{ foo: 1 }} to="/:foo/:bar" to_params={{ foo: 1 }} />',
             options,
             parserOptions,
             errors: [
@@ -143,40 +154,46 @@ ruleTester.run('react-link', rule, {
                 '"to_params" missing "bar" definition',
             ],
         },
+        {
+            code: 'import Redirect from "/redirect.jsx"; <Redirect to="/foo" from="/bar" skip />',
+            options,
+            parserOptions,
+            errors: ['"skip" prop is not needed'],
+        },
 
         // <a href="..." />
         {
-            code: 'function Button() { var props = { anything: "bar" }; return <a {...props}>link</a> }',
+            code: 'function Button() { var props = { anything: "bar" }; <a {...props}>link</a> }',
             parserOptions,
             options,
             errors: [
                 'Unable to determine value of href because of spread',
-                'Convert <a href /> to a button or use "/link.jsx", "/redirect.jsx"',
+                '<a href /> can only be used as a button',
             ],
         },
         {
-            code: 'function Button() { var url = "/foo"; return <a href={url}>link</a> }',
+            code: 'function Button() { var url = "/foo"; <a href={url}>link</a> }',
             options,
             parserOptions,
-            errors: ['Convert <a href /> to a button or use "/link.jsx", "/redirect.jsx"'],
+            errors: ['<a href /> can only be used as a button'],
         },
         {
-            code: 'function Button() { return <a href="/foo">link</a> }',
+            code: 'function Button() { <a href="/foo">link</a> }',
             options,
             parserOptions,
-            errors: ['Convert <a href /> to a button or use "/link.jsx", "/redirect.jsx"'],
+            errors: ['<a href /> can only be used as a button'],
         },
         {
-            code: 'function Button() { return <a href="mailto:hello@example.com">link</a> }',
+            code: 'function Button() { <a href="mailto:hello@example.com">link</a> }',
             options,
             parserOptions,
-            errors: ['Convert <a href /> to a button or use "/link.jsx", "/redirect.jsx"'],
+            errors: ['<a href /> can only be used as a button'],
         },
         {
-            code: 'function Button() { return <a href="/foo">link</a> }',
+            code: 'function Button() { <a href="/foo">link</a> }',
             options,
             parserOptions,
-            errors: ['Convert <a href /> to a button or use "/link.jsx", "/redirect.jsx"'],
+            errors: ['<a href /> can only be used as a button'],
         },
     ],
 })

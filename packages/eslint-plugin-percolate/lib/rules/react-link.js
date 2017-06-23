@@ -1,5 +1,3 @@
-const DEFAULT_PROPS = [{ routePropName: 'to', paramsPropName: 'params' }]
-const DEFAULT_SKIP_VALIDATION_PROP_NAME = 'dangerouslySetExternalUrl'
 const PARAM_REGEX = /:\w+/g
 
 module.exports = {
@@ -30,7 +28,7 @@ module.exports = {
                                 props: {
                                     type: 'array',
                                     minLength: 1,
-                                    require: ['route'],
+                                    required: ['routePropName', 'paramsPropName'],
                                     items: {
                                         type: 'object',
                                         properties: {
@@ -48,13 +46,18 @@ module.exports = {
                                         additionalProperties: false,
                                     },
                                 },
-                                skipValidationPropName: {
-                                    type: 'string',
-                                    description: 'The prop name that bypasses route validation',
+                                validate: {
+                                    type: 'boolean',
+                                    description: 'Whether to validate or not',
+                                    default: true,
                                 },
                             },
                             additionalProperties: false,
                         },
+                    },
+                    skipValidationPropName: {
+                        type: 'string',
+                        description: 'The prop name that bypasses route validation',
                     },
                     routeRegex: {
                         type: 'string',
@@ -95,12 +98,11 @@ module.exports = {
                 }
             },
             'JSXElement:exit': function(node) {
-                // <a href="..." used as a link is forbidden
+                // <a href /> used as a link is forbidden
                 if (isLink(context, node)) {
-                    const imports = modules.map(module => `"${module.import}"`).join(', ')
                     return context.report({
                         node,
-                        message: `Convert <a href /> to a button or use ${imports}`,
+                        message: `<a href /> can only be used as a button`,
                     })
                 }
 
@@ -120,39 +122,40 @@ function validateCustomModule(context, node, specifierLookup) {
     // ignore if tag doesn't match any import specifier (ex. <div> !== <Link>)
     if (!module) return
 
-    const { props = DEFAULT_PROPS, skipValidationPropName = DEFAULT_SKIP_VALIDATION_PROP_NAME } = module
-    const { routeRegex } = getOptions(context)
+    const { props = [] } = module
+    const { routeRegex, skipValidationPropName } = getOptions(context)
 
-    const skipValidationAttr = node.openingElement.attributes.find(
-        attr => attr.type === 'JSXAttribute' && attr.name.name === skipValidationPropName
-    )
+    const shouldSkipValidation =
+        skipValidationPropName &&
+        node.openingElement.attributes.some(
+            attr => attr.type === 'JSXAttribute' && attr.name.name === skipValidationPropName
+        )
 
     let totalMissingAttrs = 0
+    let totalDynRouteAttrs = 0
     props.forEach(({ routePropName, paramsPropName }) => {
         const routeAttr = node.openingElement.attributes.find(
             attr => attr.type === 'JSXAttribute' && attr.name.name === routePropName
         )
 
-        // record missing route prop
-        if (!routeAttr) {
-            totalMissingAttrs++
-            return
-        }
-
-        // dangerouslySetExternalUrl is present allow anything
-        if (skipValidationAttr) return
+        // record missing route prop and exit
+        if (!routeAttr) return totalMissingAttrs++
 
         // route attribute can only be a string (ex. <Link to="/path">)
         if (routeAttr.value.type !== 'Literal') {
-            return context.report({
-                node,
-                message: `"${routeAttr.name.name}" property must be a string literal`,
-            })
+            if (!shouldSkipValidation) {
+                context.report({
+                    node,
+                    message: `"${routeAttr.name.name}" property must be a string literal`,
+                })
+            }
+            // the following validation only works on string literals
+            return totalDynRouteAttrs++
         }
 
         // matches route regex
         if (routeRegex && !routeAttr.value.value.match(new RegExp(routeRegex))) {
-            return context.report({
+            context.report({
                 node,
                 message: `"${routeAttr.value.value}" does not match routeRegex /${routeRegex}/`,
             })
@@ -195,8 +198,13 @@ function validateCustomModule(context, node, specifierLookup) {
         })
     })
 
+    // check that skip validation is needed
+    if (totalDynRouteAttrs === 0 && shouldSkipValidation) {
+        context.report({ node, message: `"${skipValidationPropName}" prop is not needed` })
+    }
+
     // no route props found
-    if (totalMissingAttrs === props.length) {
+    if (totalMissingAttrs > 0 && totalMissingAttrs === props.length) {
         context.report({
             node,
             message: `missing required prop: ${props.map(prop => `"${prop.routePropName}"`).join(', ')}`,
