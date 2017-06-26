@@ -131,15 +131,14 @@ function validateCustomModule(context, node, specifierLookup) {
             attr => attr.type === 'JSXAttribute' && attr.name.name === skipValidationPropName
         )
 
-    let totalMissingAttrs = 0
     let totalDynRouteAttrs = 0
     props.forEach(({ routePropName, paramsPropName }) => {
         const routeAttr = node.openingElement.attributes.find(
             attr => attr.type === 'JSXAttribute' && attr.name.name === routePropName
         )
 
-        // record missing route prop and exit
-        if (!routeAttr) return totalMissingAttrs++
+        // ignore missing route
+        if (!routeAttr) return
 
         // route attribute can only be a string (ex. <Link to="/path">)
         if (routeAttr.value.type !== 'Literal') {
@@ -201,14 +200,6 @@ function validateCustomModule(context, node, specifierLookup) {
     // check that skip validation is needed
     if (totalDynRouteAttrs === 0 && shouldSkipValidation) {
         context.report({ node, message: `"${skipValidationPropName}" prop is not needed` })
-    }
-
-    // no route props found
-    if (totalMissingAttrs > 0 && totalMissingAttrs === props.length) {
-        context.report({
-            node,
-            message: `missing required prop: ${props.map(prop => `"${prop.routePropName}"`).join(', ')}`,
-        })
     }
 }
 

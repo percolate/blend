@@ -112,13 +112,6 @@ ruleTester.run('react-link', rule, {
             errors: ['"to" property must be a string literal'],
         },
         {
-            code:
-                'import Redirect from "/redirect.jsx"; var props = { path: "/path" }; <Redirect {...props} />',
-            options,
-            parserOptions,
-            errors: ['missing required prop: "from", "to"'],
-        },
-        {
             code: 'import Redirect from "/redirect.jsx"; var bar = "/bar"; <Redirect from="/foo" to={bar} />',
             options,
             parserOptions,
