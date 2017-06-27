@@ -34,5 +34,5 @@ ruleTester.run('no-react-proptypes', rule, {
             parserOptions,
             errors: ['React.PropTypes is deprecated. Please import "prop-types" module.'],
         },
-    ]
+    ],
 })
