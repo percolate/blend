@@ -1,10 +1,9 @@
-const Exports = require("eslint-plugin-import/lib/ExportMap").default
 const message = 'React.PropTypes is deprecated. Please import "prop-types" module.'
 module.exports = {
     meta: {
         docs: {
-            description: "Prevents use of React.PropTypes",
-            category: "Possible Errors",
+            description: 'Prevents use of React.PropTypes',
+            category: 'Possible Errors',
             recommended: true,
         },
         fixable: false,
@@ -20,14 +19,14 @@ module.exports = {
                     })
                 }
             },
-            MemberExpression: function (node) {
+            MemberExpression: function(node) {
                 if (node.object.name === 'React' && node.property.name === 'PropTypes') {
                     context.report({
                         node,
                         message,
                     })
                 }
-            }
+            },
         }
     },
 }

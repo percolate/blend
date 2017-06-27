@@ -31,7 +31,7 @@ ruleTester.run('cjs-default', rule, {
             code: 'var Foo = require("./es7.js")',
             filename,
             parserOptions,
-            errors: ['Parse errors in imported module \'./es7.js\':Unexpected token = (6:16)'],
+            errors: ["Parse errors in imported module './es7.js':Unexpected token = (6:16)"],
         },
         {
             code: 'var CoolClass = require("./default-class")',
@@ -51,5 +51,5 @@ ruleTester.run('cjs-default', rule, {
             parserOptions,
             errors: ['No default export found in module.'],
         },
-    ]
+    ],
 })

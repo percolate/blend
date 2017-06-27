@@ -10,9 +10,9 @@ module.exports = {
         fixable: true,
     },
 
-    create: function (context) {
+    create: function(context) {
         return {
-            CallExpression: function (node) {
+            CallExpression: function(node) {
                 // verify `require()` with one argument
                 if (node.callee.name !== 'require' || node.arguments.length !== 1) return null
 
@@ -26,10 +26,9 @@ module.exports = {
 
                 // report parse errors for imported file
                 if (imports.errors.length) {
-                    var message = `Parse errors in imported module '${srcPath}':` +
-                        `${imports.errors
-                            .map(e => `${e.message} (${e.lineNumber}:${e.column})`)
-                            .join(', ')}`
+                    var message =
+                        `Parse errors in imported module '${srcPath}':` +
+                        `${imports.errors.map(e => `${e.message} (${e.lineNumber}:${e.column})`).join(', ')}`
                     return context.report({
                         message,
                         node,
@@ -37,16 +36,16 @@ module.exports = {
                 }
 
                 var exportHasDefault = imports.get('default')
-                var requireHasDefault = node.parent.type === 'MemberExpression'
-                    && node.parent.property.name === 'default'
+                var requireHasDefault =
+                    node.parent.type === 'MemberExpression' && node.parent.property.name === 'default'
 
                 if (exportHasDefault && !requireHasDefault) {
                     context.report({
                         message: 'requiring ES module must reference default',
                         node,
-                        fix: function (fixer) {
+                        fix: function(fixer) {
                             return fixer.insertTextAfter(node, '.default')
-                        }
+                        },
                     })
                 } else if (requireHasDefault && !exportHasDefault) {
                     context.report({
