@@ -7,7 +7,7 @@ This rule disallows importing specific modules or specific keys from their expor
 Examples of **incorrect** code for this rule:
 
 ```jsx
-/* eslint react-link: ["error", [{ import: 'jquery' }, { import: 'react-router', allowAllExcept: ['Link', 'Redirect'], reason: 'Use /our/router.jsx instead' }]] */
+/* eslint import-blacklist: ["error", [{ import: 'jquery' }, { import: 'react-router', allowAllExcept: ['Link', 'Redirect'], reason: 'Use /our/router.jsx instead' }]] */
 
 
 import "jquery" // jquery" is blackedlisted
@@ -21,7 +21,7 @@ import { Link } from "react-router"
 Examples of **correct** code for this rule:
 
 ```jsx
-/* eslint react-link: ["error", [{ import: 'react-router', allowAllExcept: ['Link', 'Redirect'], reason: 'Use /our/router.jsx instead' }]] */
+/* eslint import-blacklist: ["error", [{ import: 'react-router', allowAllExcept: ['Link', 'Redirect'], reason: 'Use /our/router.jsx instead' }]] */
 
 import { Router } from "react-router"
 import { Router, Route } from "react-router"
