@@ -28,7 +28,7 @@ module.exports = {
                                 props: {
                                     type: 'array',
                                     minLength: 1,
-                                    required: ['routePropName', 'paramsPropName'],
+                                    required: ['routePropName'],
                                     items: {
                                         type: 'object',
                                         properties: {
@@ -159,6 +159,9 @@ function validateCustomModule(context, node, specifierLookup) {
                 message: `"${routeAttr.value.value}" does not match routeRegex /${routeRegex}/`,
             })
         }
+
+        // ignore param validation
+        if (!paramsPropName) return
 
         const matches = (routeAttr.value.value.match(PARAM_REGEX) || []).map(name => name.replace(':', ''))
         const paramsAttr = node.openingElement.attributes.find(

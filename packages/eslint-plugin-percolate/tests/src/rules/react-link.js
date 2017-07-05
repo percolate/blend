@@ -20,6 +20,10 @@ const options = [
                     { routePropName: 'to', paramsPropName: 'to_params' },
                 ],
             },
+            {
+                import: '/route.jsx',
+                props: [{ routePropName: 'path' }],
+            },
         ],
         skipValidationPropName: 'skip',
         routeRegex: '^/.*$',
@@ -69,6 +73,11 @@ ruleTester.run('react-link', rule, {
                     modules: [{ import: '/external_link.jsx' }],
                 },
             ],
+            parserOptions,
+        },
+        {
+            code: 'import Route from "/route.jsx"; <Route path="/foo/:fooId" />',
+            options,
             parserOptions,
         },
 
