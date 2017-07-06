@@ -1,4 +1,4 @@
-const PARAM_REGEX = /:\w+/g
+const PARAM_IDENTIFIER_REGEX = /^:(.*$)/
 
 module.exports = {
     meta: {
@@ -28,7 +28,7 @@ module.exports = {
                                 props: {
                                     type: 'array',
                                     minLength: 1,
-                                    required: ['routePropName', 'paramsPropName'],
+                                    required: ['routePropName'],
                                     items: {
                                         type: 'object',
                                         properties: {
@@ -60,8 +60,10 @@ module.exports = {
                         description: 'The prop name that bypasses route validation',
                     },
                     routeRegex: {
-                        type: 'string',
                         description: 'A regex pattern route props must match',
+                    },
+                    paramRegex: {
+                        description: 'A regex pattern individual route params must match',
                     },
                 },
                 additionalProperties: false,
@@ -123,7 +125,7 @@ function validateCustomModule(context, node, specifierLookup) {
     if (!module) return
 
     const { props = [] } = module
-    const { routeRegex, skipValidationPropName } = getOptions(context)
+    const { paramRegex, routeRegex, skipValidationPropName } = getOptions(context)
 
     const shouldSkipValidation =
         skipValidationPropName &&
@@ -156,20 +158,39 @@ function validateCustomModule(context, node, specifierLookup) {
         if (routeRegex && !routeAttr.value.value.match(new RegExp(routeRegex))) {
             context.report({
                 node,
-                message: `"${routeAttr.value.value}" does not match routeRegex /${routeRegex}/`,
+                message: `"${routeAttr.value.value}" does not match routeRegex ${routeRegex}`,
             })
         }
 
-        const matches = (routeAttr.value.value.match(PARAM_REGEX) || []).map(name => name.replace(':', ''))
+        // gather route params and validate their structure
+        const routeParams = []
+        routeAttr.value.value.split('/').forEach(part => {
+            const match = part.match(PARAM_IDENTIFIER_REGEX)
+            if (!match) return
+
+            const param = match[1]
+            routeParams.push(param)
+
+            if (paramRegex && !param.match(paramRegex)) {
+                context.report({
+                    node,
+                    message: `"${part}" does not match paramRegex ${paramRegex}`,
+                })
+            }
+        })
+
+        // ignore param validation
+        if (!paramsPropName) return
+
         const paramsAttr = node.openingElement.attributes.find(
             attr => attr.type === 'JSXAttribute' && attr.name.name === paramsPropName
         )
 
         // route has no params and no params prop is specified (ex. <Link to="/static/url" />)
-        if (!matches.length && !paramsAttr) return
+        if (!routeParams.length && !paramsAttr) return
 
         // route has params (ex. <Link to="/user/:user_id" />)
-        if (matches.length && !paramsAttr) {
+        if (routeParams.length && !paramsAttr) {
             return context.report({ node, message: `"${paramsPropName}" prop missing` })
         }
 
@@ -184,14 +205,17 @@ function validateCustomModule(context, node, specifierLookup) {
             })
         }
 
-        const params = paramsAttr.value.expression.properties.map(prop => prop.key.name)
-        matches.forEach(match => {
+        const params = paramsAttr.value.expression.properties.map(prop => {
+            // Identifier keys use "name" while Literal keys use "value"
+            return prop.key.name || prop.key.value
+        })
+        routeParams.forEach(match => {
             if (!params.some(param => param === match)) {
                 context.report({ node, message: `"${paramsPropName}" missing "${match}" definition` })
             }
         })
         params.forEach(param => {
-            if (!matches.some(match => match === param)) {
+            if (!routeParams.some(match => match === param)) {
                 context.report({ node, message: `"${routePropName}" missing "/:${param}" in route` })
             }
         })
