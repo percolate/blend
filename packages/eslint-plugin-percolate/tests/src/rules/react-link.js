@@ -6,6 +6,8 @@ const parserOptions = {
     parser: 'babel-eslint',
     sourceType: 'module',
 }
+const routeRegex = /^\/.*$/
+const paramRegex = /^[a-z_]+$/
 const options = [
     {
         modules: [
@@ -26,7 +28,8 @@ const options = [
             },
         ],
         skipValidationPropName: 'skip',
-        routeRegex: '^/.*$',
+        routeRegex,
+        paramRegex,
     },
 ]
 const ruleTester = new RuleTester()
@@ -76,7 +79,7 @@ ruleTester.run('react-link', rule, {
             parserOptions,
         },
         {
-            code: 'import Route from "/route.jsx"; <Route path="/foo/:fooId" />',
+            code: 'import Route from "/route.jsx"; <Route path="/foo/:foo_id" />',
             options,
             parserOptions,
         },
@@ -130,7 +133,7 @@ ruleTester.run('react-link', rule, {
             code: 'import Link from "/link.jsx"; <Link to="foo" />',
             options,
             parserOptions,
-            errors: ['"foo" does not match routeRegex /^/.*$/'],
+            errors: [`"foo" does not match routeRegex ${routeRegex}`],
         },
         {
             code: 'import Redirect from "/redirect.jsx"; <Redirect to="/:foo" />',
@@ -161,6 +164,16 @@ ruleTester.run('react-link', rule, {
             options,
             parserOptions,
             errors: ['"skip" prop is not needed'],
+        },
+        {
+            code:
+                'import Redirect from "/redirect.jsx"; <Redirect to="/:foo1" from="/:foo-bar" to_params={{ foo1: 1 }} from_params={{ "foo-bar": 1 }}/>',
+            options,
+            parserOptions,
+            errors: [
+                `":foo-bar" does not match paramRegex ${paramRegex}`,
+                `":foo1" does not match paramRegex ${paramRegex}`,
+            ],
         },
 
         // <a href="..." />

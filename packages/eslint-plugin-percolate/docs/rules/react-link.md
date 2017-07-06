@@ -3,7 +3,7 @@
 This rule enforces the use a React link components instead of `<a href="..." />`. `<a>` tags can still be used as buttons only if `href` is missing or starts with "javascript:" or "#".
 
 It validates that route prop values are passed as string literals (ex. `to="/my/path"`) and optionally match a `routeRegex`.
-Parameters inside routes (aka dynamic routes) must match `/:\w+/` and be handled by your link components (ex. `<Link to="/user/:user_id" params={ user_id: 1 } />` routes to "/user/1").
+Parameters inside routes (aka dynamic routes) are identified by `/^:(.*$)/` (anything that starts with a colon between two `/`) and be handled by your link components (ex. `<Link to="/user/:user_id" params={ user_id: 1 } />` routes to "/user/1"). Route params can optionally match a `paramRegex`
 
 Repeating static routes isn't DRY but there are good reasons for doing it:
 
@@ -64,4 +64,5 @@ This rule supports an object with the following properties:
         - `routePropName`: The route prop name (ex. `"to"`)
         - `paramsPropName`: Prop name for route params defined as key/value pairs (ex. `"params"`)
 - `routeRegex`: When present, this enforces that all routes match a specific pattern
+- `paramRegex`: When present, this enforces that all route params match a specific pattern
 - `skipValidationPropName`: When present, this prop bypasses static route analysis
