@@ -8,6 +8,22 @@ module.exports = {
             recommended: true,
         },
         fixable: true,
+        schema: [
+            {
+                type: 'object',
+                required: ['basePaths'],
+                properties: {
+                    basePaths: {
+                        description: 'An array of basePaths',
+                        type: 'array',
+                        minItems: 1,
+                        Items: {
+                            type: 'string',
+                        },
+                    },
+                },
+            },
+        ],
     },
 
     create: function(context) {
