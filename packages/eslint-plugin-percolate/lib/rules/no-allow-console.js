@@ -20,7 +20,10 @@ module.exports = {
                 context.report({
                     node,
                     message: 'allowConsole is forbidden',
-                    fix: fixer => fixer.remove(node),
+                    fix: fixer => {
+                        const ancestors = context.getAncestors()
+                        return fixer.remove(ancestors[ancestors.length - 1])
+                    },
                 })
             },
         }
