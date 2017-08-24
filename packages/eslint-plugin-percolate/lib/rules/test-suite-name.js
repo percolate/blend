@@ -43,7 +43,12 @@ module.exports = {
                     ? relative(basePath, join(dirname(filename), basename(filename, extname(filename))))
                     : null
                 const suiteName = node.expression.arguments[0]
-                if (suiteName.type === 'Literal' && relativePath === suiteName.value) return
+                if (
+                    suiteName.type === 'Literal' &&
+                    (relativePath === suiteName.value || relativePath + extname(filename) === suiteName.value)
+                ) {
+                    return
+                }
 
                 context.report({
                     node: node.expression.arguments[0],

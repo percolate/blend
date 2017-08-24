@@ -10,6 +10,10 @@ ruleTester.run('test-suite-name', rule, {
             filename: '/foo/bar.spec.js',
         },
         {
+            code: 'describe("foo/bar.js")',
+            filename: '/foo/bar.js',
+        },
+        {
             code: 'describe("bar.spec")',
             filename: '/foo/bar.spec.js',
             options: [{ basePaths: ['/foo'] }],
@@ -40,6 +44,12 @@ ruleTester.run('test-suite-name', rule, {
         {
             code: 'describe("/not/foo/bar.spec.js", function() {})',
             filename: '/foo/bar.spec.js',
+            errors: ['The suit name must match the filename'],
+        },
+        {
+            code: 'describe("/notfoo/bar.spec", function() {})',
+            filename: '/foo/bar.spec.js',
+            options: [{ basePaths: ['/foo'] }],
             errors: ['The suit name must match the filename'],
         },
     ],
