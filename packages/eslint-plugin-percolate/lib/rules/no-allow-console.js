@@ -5,7 +5,6 @@ module.exports = {
             category: 'Best Practices',
             recommended: false,
         },
-        fixable: true,
     },
 
     create: function(context) {
@@ -20,10 +19,6 @@ module.exports = {
                 context.report({
                     node,
                     message: 'allowConsole is forbidden',
-                    fix: fixer => {
-                        const ancestors = context.getAncestors()
-                        return fixer.remove(ancestors[ancestors.length - 1])
-                    },
                 })
             },
         }
