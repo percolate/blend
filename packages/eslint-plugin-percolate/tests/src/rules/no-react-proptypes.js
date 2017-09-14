@@ -4,7 +4,6 @@ const { resolve } = require('path')
 
 const filename = resolve(__dirname, '../../fixtures/foo.js')
 const parserOptions = {
-    ecmaVersion: 6,
     sourceType: 'module',
 }
 const ruleTester = new RuleTester()

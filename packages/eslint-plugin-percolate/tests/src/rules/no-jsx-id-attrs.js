@@ -3,7 +3,6 @@ const RuleTester = require('eslint').RuleTester
 
 const parserOptions = {
     ecmaFeatures: { jsx: true },
-    parser: 'babel-eslint',
 }
 const ruleTester = new RuleTester()
 ruleTester.run('no-jsx-id-attrs', rule, {
