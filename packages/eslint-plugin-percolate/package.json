@@ -1,6 +1,6 @@
 {
   "name": "eslint-plugin-percolate",
-  "version": "0.0.7",
+  "version": "0.1.0",
   "description": "Percolate's Eslint rules",
   "keywords": [
     "eslint",
@@ -14,16 +14,16 @@
     "test": "mocha tests/src --recursive"
   },
   "dependencies": {
-    "html-tags": "1.1.1",
-    "eslint-plugin-import": "2.2.0",
+    "html-tags": "2.0.0",
+    "eslint-plugin-import": "2.7.0",
     "requireindex": "1.1.0"
   },
   "peerDependencies": {
-    "eslint-plugin-import": "2.2.0"
+    "eslint-plugin-import": "2.7.0"
   },
   "devDependencies": {
-    "babel-eslint": "7.2.3",
-    "eslint": "3.19.0",
-    "mocha": "3.3.0"
+    "babel-eslint": "8.0.0",
+    "eslint": "4.6.1",
+    "mocha": "3.5.3"
   }
 }
