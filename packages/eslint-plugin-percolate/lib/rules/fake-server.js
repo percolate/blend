@@ -32,16 +32,18 @@ module.exports = {
             },
             AssignmentExpression: node => {
                 if (node.left.type === 'MemberExpression' && node.left.property.name === 'autoRespond') {
+                    const isTrue = node.right.type === 'Literal' && node.right.value === true
                     context.report({
                         node,
-                        message:
-                            node.right.type === 'Literal' && node.right.value === true
-                                ? 'fakeServer.autoRespond is on by default'
-                                : 'should always be true because fakeServer.respond() is no longer async',
-                        fix: fixer => {
-                            const ancestors = context.getAncestors()
-                            return fixer.remove(ancestors[ancestors.length - 1])
-                        },
+                        message: isTrue
+                            ? 'fakeServer.autoRespond is on by default'
+                            : 'should always be true because fakeServer.respond() is no longer async',
+                        fix: isTrue
+                            ? fixer => {
+                                  const ancestors = context.getAncestors()
+                                  return fixer.remove(ancestors[ancestors.length - 1])
+                              }
+                            : undefined,
                     })
                 }
             },
