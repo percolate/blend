@@ -26,7 +26,7 @@ module.exports = {
                         message:
                             calleeName === 'respond'
                                 ? 'fakeServer.respond is no longer synchronous'
-                                : `fakeServer.${calleeName}() is deprecated in favor of respondWith`,
+                                : `fakeServer.${calleeName} is deprecated in favor of respondWith`,
                     })
                 }
             },
@@ -36,8 +36,8 @@ module.exports = {
                     context.report({
                         node,
                         message: isTrue
-                            ? 'fakeServer.autoRespond is on by default'
-                            : 'should always be true because fakeServer.respond() is no longer async',
+                            ? 'autoRespond is on by default'
+                            : 'fakeServer.respond is no longer synchronous',
                         fix: isTrue
                             ? fixer => {
                                   const ancestors = context.getAncestors()

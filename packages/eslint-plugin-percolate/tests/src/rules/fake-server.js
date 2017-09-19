@@ -16,23 +16,23 @@ ruleTester.run('fake-server', rule, {
         },
         {
             code: 'fakeServer.respondTo()',
-            errors: ['fakeServer.respondTo() is deprecated in favor of respondWith'],
+            errors: ['fakeServer.respondTo is deprecated in favor of respondWith'],
         },
         {
             code: 'fakeServer.promiseRespond()',
-            errors: ['fakeServer.promiseRespond() is deprecated in favor of respondWith'],
+            errors: ['fakeServer.promiseRespond is deprecated in favor of respondWith'],
         },
         {
             code: 'fakeServer.promiseRespondTo()',
-            errors: ['fakeServer.promiseRespondTo() is deprecated in favor of respondWith'],
+            errors: ['fakeServer.promiseRespondTo is deprecated in favor of respondWith'],
         },
         {
             code: 'this.fakeServer.autoRespond = false',
-            errors: ['should always be true because fakeServer.respond() is no longer async'],
+            errors: ['fakeServer.respond is no longer synchronous'],
         },
         {
             code: 'this.fakeServer.autoRespond = true',
-            errors: ['fakeServer.autoRespond is on by default'],
+            errors: ['autoRespond is on by default'],
         },
     ],
 })
