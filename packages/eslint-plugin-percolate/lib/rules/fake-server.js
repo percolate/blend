@@ -25,7 +25,7 @@ module.exports = {
                         node,
                         message:
                             calleeName === 'respond'
-                                ? 'Promises make fakeServer.respond() please use respondWith'
+                                ? 'fakeServer.respond is no longer synchronous'
                                 : `fakeServer.${calleeName}() is deprecated in favor of respondWith`,
                     })
                 }

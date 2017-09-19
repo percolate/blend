@@ -8,11 +8,11 @@ ruleTester.run('fake-server', rule, {
     invalid: [
         {
             code: 'this.fakeServer.respond()',
-            errors: ['Promises make fakeServer.respond() please use respondWith'],
+            errors: ['fakeServer.respond is no longer synchronous'],
         },
         {
             code: 'fakeServer.respond()',
-            errors: ['Promises make fakeServer.respond() please use respondWith'],
+            errors: ['fakeServer.respond is no longer synchronous'],
         },
         {
             code: 'fakeServer.respondTo()',
