@@ -18,7 +18,7 @@ module.exports = {
 
                 context.report({
                     node,
-                    message: 'allowConsole is forbidden',
+                    message: 'Console output should be handled or mocked',
                 })
             },
         }

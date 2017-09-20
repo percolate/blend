@@ -8,11 +8,11 @@ ruleTester.run('no-allow-console', rule, {
     invalid: [
         {
             code: 'this.allowConsole()',
-            errors: ['allowConsole is forbidden'],
+            errors: ['Console output should be handled or mocked'],
         },
         {
             code: 'allowConsole.call(this)',
-            errors: ['allowConsole is forbidden'],
+            errors: ['Console output should be handled or mocked'],
         },
     ],
 })
