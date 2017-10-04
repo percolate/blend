@@ -7,6 +7,10 @@ ruleTester.run('no-async', rule, {
     valid: [
         {
             code: 'function Foo() { return foo() }',
+        },
+        {
+            code: 'async function Foo() { await foo() }',
+            filename: '/foo/bar.spec.js',
             parser,
         },
     ],
