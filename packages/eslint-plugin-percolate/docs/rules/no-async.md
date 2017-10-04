@@ -16,6 +16,11 @@ Examples of **correct** code for this rule:
 
 ```js
 function getFoo() { return foo() }
+
+// filename something.spec.js
+async function getFoo() {
+    await foo()
+}
 ```
 
 ## When Not To Use It

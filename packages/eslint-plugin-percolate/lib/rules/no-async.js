@@ -1,3 +1,4 @@
+const IS_SPEC = /\.spec\.js$/
 module.exports = {
     meta: {
         docs: {
@@ -9,6 +10,7 @@ module.exports = {
 
     create: function(context) {
         const verify = function(node) {
+            if (IS_SPEC.test(context.getFilename())) return
             if (!node.async) return
 
             context.report({
