@@ -8,7 +8,7 @@ Tooling for frontend repos
 ## Development
 
 ```
-./bin/install
+make install
 ```
 
 ## Publishing
@@ -19,7 +19,7 @@ Publishing is done in two parts:
 
 ```
 # follow instructions
-./bin/prepublish
+make prepublish
 ```
 
 ## License
