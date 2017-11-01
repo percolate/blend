@@ -1,6 +1,11 @@
 module.exports = {
     extends: ['eslint:recommended'],
     env: { node: true, es6: true },
+    parserOptions: {
+        ecmaFeatures: {
+            experimentalObjectRestSpread: true
+        }
+    },
     plugins: ['prettier'],
     rules: {
         'no-extra-semi': 'off', // prettier conflict,
