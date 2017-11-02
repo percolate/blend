@@ -32,19 +32,18 @@ class S3 {
         })
     }
 
-    listAll(ops, results = []) {
-        const myOps = {
+    listAll(options, results = []) {
+        const _options = {
             Bucket: this.bucket,
-            // Delimiter: undefined,
-            ...ops,
+            ...options,
         }
         return this.client
-            .listObjectsV2(myOps)
+            .listObjectsV2(_options)
             .promise()
             .then(({ Contents, NextContinuationToken, IsTruncated }) => {
                 return IsTruncated
                     ? this.listAll(
-                          { ...myOps, ContinuationToken: NextContinuationToken },
+                          { ..._options, ContinuationToken: NextContinuationToken },
                           results.concat(Contents)
                       )
                     : results.concat(Contents)

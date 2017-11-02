@@ -8,8 +8,8 @@ const { resolve } = require('path')
 
 const MD5CHKSUM = 'md5chksum'
 
-module.exports = function(ops = {}) {
-    const { acl, cacheControl, contentTypeFallback, cwd, debug, force, path, s3, s3Key } = ops
+module.exports = function(options = {}) {
+    const { acl, cacheControl, contentTypeFallback, cwd, debug, force, path, s3, s3Key } = options
 
     const absPath = resolve(cwd || process.cwd(), path)
     if (!isFile(absPath)) return Promise.reject(new Error(`${absPath} must be a file`))
