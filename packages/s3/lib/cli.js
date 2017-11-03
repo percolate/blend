@@ -37,7 +37,8 @@ Options:
     --content-type-fallback=STRING  When content type cannot be determined [default: application/octet-stream]
     --debug                         Output upload information
     --exclude=GLOB                  A glob pattern matching files to exclude
-    --force                         Force upload regardless of remote presence and checksum mismatch
+    --force                         Force upload
+    --skip-checksum                 Overrides remote file when checksum is different
     --aws-access-key-id=STRING      The AWS access key ID or $AWS_ACCESS_KEY_ID
     --aws-secret-access-key=STRING  The AWS secret access key or $AWS_SECRET_ACCESS_KEY
 `
@@ -67,6 +68,7 @@ module.exports = function() {
         force: args['--force'],
         s3,
         s3Key,
+        skipChecksum: args['--skip-checksum'],
     }
 
     if (args['upload-dir']) return uploadDir({ ...opts, dir: resolve(args['<dir>']) })
