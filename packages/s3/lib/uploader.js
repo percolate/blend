@@ -20,8 +20,8 @@ module.exports = function(options = {}) {
         checksum({ path: absPath }),
         verifyUpload({ s3, s3Key }),
         (checksum, { isUploaded, s3Checksum }) => {
-            if (!force && isUploaded) {
                 if (checksum !== s3Checksum) {
+            if (!force && isUploaded && s3Checksum) {
                     return Promise.reject(
                         new Promise.OperationalError(`checksum error: ${path} (${checksum} vs ${s3Checksum})`)
                     )
