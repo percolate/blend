@@ -9,7 +9,18 @@ const { resolve } = require('path')
 const MD5CHKSUM = 'md5chksum'
 
 module.exports = function(options = {}) {
-    const { acl, cacheControl, contentTypeFallback, cwd, debug, force, path, s3, s3Key } = options
+    const {
+        acl,
+        cacheControl,
+        contentTypeFallback,
+        cwd,
+        debug,
+        force,
+        path,
+        s3,
+        s3Key,
+        skipChecksum,
+    } = options
 
     const absPath = resolve(cwd || process.cwd(), path)
     if (!isFile(absPath)) return Promise.reject(new Error(`${absPath} must be a file`))
@@ -20,13 +31,13 @@ module.exports = function(options = {}) {
         checksum({ path: absPath }),
         verifyUpload({ s3, s3Key }),
         (checksum, { isUploaded, s3Checksum }) => {
-            if (!force && isUploaded) {
-                if (checksum !== s3Checksum) {
+            if (!force && isUploaded && s3Checksum) {
+                if (checksum === s3Checksum) {
+                    return `skipped: ${path}`
+                } else if (!skipChecksum) {
                     return Promise.reject(
                         new Promise.OperationalError(`checksum error: ${path} (${checksum} vs ${s3Checksum})`)
                     )
-                } else {
-                    return `skipped: ${path}`
                 }
             }
 
