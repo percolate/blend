@@ -1,6 +1,6 @@
 # Forbids arrow functions in the root
 
-Using arrow functions in the root binds context to the window which adds no value.
+Using arrow functions in the root binds context to the module namespace which adds no value.
 It also affects editors "jump to definition" and React displayNames of inline functions.
 
 ## Rule Details
