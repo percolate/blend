@@ -38,6 +38,11 @@ ruleTester.run('no-root-arrow-fn', rule, {
             code: 'export class UserTasks extends React.PureComponent {}',
             parserOptions,
         },
+        {
+            code: 'module.exports = { myComp: function() {}, ...supportSpread }',
+            parser: 'babel-eslint',
+            parserOptions,
+        },
     ],
     invalid: [
         {
