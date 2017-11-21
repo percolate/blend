@@ -38,7 +38,9 @@ module.exports = {
                 if (node.parent.type !== 'Program') return
                 if (node.expression.type !== 'AssignmentExpression') return
                 if (node.expression.right.type === 'ObjectExpression') {
-                    node.expression.right.properties.forEach(node => verify(node, node.value))
+                    node.expression.right.properties.forEach(node => {
+                        if (node.type === 'Property') verify(node, node.value)
+                    })
                 } else {
                     verify(node, node.expression.right)
                 }
