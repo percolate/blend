@@ -8,7 +8,7 @@
     "s3": "./bin/s3"
   },
   "dependencies": {
-    "aws-sdk": "^2.142.0",
+    "aws-sdk": "^2.260.1",
     "bluebird": "^3.5.1",
     "console.table": "^0.9.1",
     "docopt": "^0.6.2",
