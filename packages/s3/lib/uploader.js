@@ -6,6 +6,7 @@ const S3 = require('./s3')
 const { inspect } = require('util')
 const { resolve } = require('path')
 const { performance } = require('perf_hooks')
+const { log } = require('./log')
 
 const MD5CHKSUM = 'md5chksum'
 
@@ -60,7 +61,7 @@ module.exports = function(options = {}) {
                 .catch(e => Promise.reject(new Promise.OperationalError(`error: ${path} (${e.message})`)))
                 .finally(() => {
                     const end = performance.now()
-                    process.stdout.write(`Upload took ${end - start}ms`)
+                    log(`Upload took ${end - start}ms`)
                 })
         }
     )
@@ -81,7 +82,7 @@ function verifyUpload({ s3, s3Key }) {
             isUploaded: true,
             s3Checksum: metadata[MD5CHKSUM],
         }))
-        .error(() => ({ isUploaded: false }))
+        .catch(() => ({ isUploaded: false }))
 }
 
 function checksum({ path }) {

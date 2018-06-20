@@ -7,6 +7,7 @@ const readDir = require('fs-readdir-recursive')
 const S3 = require('./s3')
 const uploader = require('./uploader')
 const { resolve } = require('path')
+const { log, forceExit } = require('./log')
 
 const DOC = `S3 file manager
 
@@ -123,7 +124,7 @@ function uploadDir(opts) {
 function uploadFile(opts) {
     return uploader(opts)
         .then(message => log(message))
-        .catch(e => forceExit(e.message))
+        .catch(e => forceExit(`Code: ${e.code}, Message: ${e.message}`))
 }
 
 function listAll(opts) {
@@ -154,13 +155,4 @@ function deleteAll(opts) {
         .deleteAll({ Prefix: s3Key })
         .then(total => log(`Deleted ${total}`))
         .catch(e => forceExit(e.message))
-}
-
-function log(message) {
-    process.stdout.write(`${message}\n`)
-}
-
-function forceExit(message) {
-    process.stderr.write(`${message}\n`)
-    process.exit(1)
 }
