@@ -5,6 +5,7 @@ const Promise = require('bluebird')
 const S3 = require('./s3')
 const { inspect } = require('util')
 const { resolve } = require('path')
+const { performance } = require('perf_hooks')
 
 const MD5CHKSUM = 'md5chksum'
 
@@ -49,6 +50,7 @@ module.exports = function(options = {}) {
                 Key: s3Key,
                 Metadata: { [MD5CHKSUM]: checksum },
             }
+            const start = performance.now()
             return s3
                 .upload({ Body: fs.createReadStream(absPath), ...request })
                 .then(response => {
@@ -56,6 +58,10 @@ module.exports = function(options = {}) {
                     return `success: ${path} -> ${s3.getPublicUrl({ Key: s3Key })}${details}`
                 })
                 .catch(e => Promise.reject(new Promise.OperationalError(`error: ${path} (${e.message})`)))
+                .finally(() => {
+                    const end = performance.now()
+                    process.stdout.write(`Upload took ${end - start}ms`)
+                })
         }
     )
 }
