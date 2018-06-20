@@ -81,7 +81,7 @@ function verifyUpload({ s3, s3Key }) {
             isUploaded: true,
             s3Checksum: metadata[MD5CHKSUM],
         }))
-        .error(() => ({ isUploaded: false }))
+        .catch(() => ({ isUploaded: false }))
 }
 
 function checksum({ path }) {

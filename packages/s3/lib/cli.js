@@ -123,7 +123,7 @@ function uploadDir(opts) {
 function uploadFile(opts) {
     return uploader(opts)
         .then(message => log(message))
-        .catch(e => forceExit(e.message))
+        .catch(e => forceExit(`Code: ${e.code}, Message: ${e.message}`))
 }
 
 function listAll(opts) {
