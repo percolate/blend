@@ -92,7 +92,7 @@ class S3 {
     }
 
     upload(opts) {
-        return this.client.upload({ Bucket: this.bucket, ...opts }, { queueSize: 1 }).promise()
+        return this.client.upload({ Bucket: this.bucket, ...opts }).promise()
     }
 }
 
