@@ -8,6 +8,7 @@
     "s3": "./bin/s3"
   },
   "dependencies": {
+    "async-retry": "^1.2.1",
     "aws-sdk": "^2.142.0",
     "bluebird": "^3.5.1",
     "console.table": "^0.9.1",

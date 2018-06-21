@@ -7,6 +7,7 @@ const { inspect } = require('util')
 const { resolve } = require('path')
 const { performance } = require('perf_hooks')
 const { log } = require('./log')
+const retry = require('async-retry')
 
 const MD5CHKSUM = 'md5chksum'
 
@@ -51,24 +52,35 @@ module.exports = function(options = {}) {
                 Key: s3Key,
                 Metadata: { [MD5CHKSUM]: checksum },
             }
-            const start = performance.now()
-            return s3
-                .upload({ Body: fs.createReadStream(absPath), ...request })
-                .then(response => {
-                    const details = debug ? `\n${inspect({ request, response })}\n` : ''
-                    return `success: ${path} -> ${s3.getPublicUrl({ Key: s3Key })}${details}`
+            return Promise.resolve(
+                retry((bail, num) => doUpload({ s3, absPath, request, debug, path, s3Key, attempt: num }), {
+                    minTimeout: 5 * 60 * 1000,
+                    retries: 3,
                 })
-                .catch(e =>
-                    Promise.reject(
-                        new Promise.OperationalError(`code: ${e.code}, error: ${path} (${e.message})`)
-                    )
-                )
-                .finally(() => {
-                    const end = performance.now()
-                    log(`Upload took ${end - start}ms`)
-                })
+            )
         }
     )
+}
+
+function doUpload({ s3, absPath, request, debug, path, s3Key, attempt }) {
+    const start = performance.now()
+    if (attempt > 1) {
+        log(`Uploading ${path} again, attempt: ${attempt}`)
+    }
+
+    return s3
+        .upload({ Body: fs.createReadStream(absPath), ...request })
+        .then(response => {
+            const details = debug ? `\n${inspect({ request, response })}\n` : ''
+            return `success: ${path} -> ${s3.getPublicUrl({ Key: s3Key })}${details}`
+        })
+        .catch(e =>
+            Promise.reject(new Promise.OperationalError(`code: ${e.code}, error: ${path} (${e.message})`))
+        )
+        .finally(() => {
+            const end = performance.now()
+            log(`Upload took ${end - start}ms`)
+        })
 }
 
 function isFile(path) {
