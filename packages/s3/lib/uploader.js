@@ -54,7 +54,7 @@ module.exports = function(options = {}) {
             }
             return Promise.resolve(
                 retry((bail, num) => doUpload({ s3, absPath, request, debug, path, s3Key, attempt: num }), {
-                    minTimeout: 5 * 60 * 1000,
+                    minTimeout: 60 * 1000,
                     retries: 3,
                 })
             )
