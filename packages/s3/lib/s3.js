@@ -92,7 +92,7 @@ class S3 {
     }
 
     upload(opts) {
-        return this.client.upload({ Bucket: this.bucket, ...opts }).promise()
+        return this.client.putObject({ Bucket: this.bucket, ...opts }).promise()
     }
 }
 
