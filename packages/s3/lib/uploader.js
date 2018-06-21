@@ -58,7 +58,11 @@ module.exports = function(options = {}) {
                     const details = debug ? `\n${inspect({ request, response })}\n` : ''
                     return `success: ${path} -> ${s3.getPublicUrl({ Key: s3Key })}${details}`
                 })
-                .catch(e => Promise.reject(new Promise.OperationalError(`error: ${path} (${e.message})`)))
+                .catch(e =>
+                    Promise.reject(
+                        new Promise.OperationalError(`code: ${e.code}, error: ${path} (${e.message})`)
+                    )
+                )
                 .finally(() => {
                     const end = performance.now()
                     log(`Upload took ${end - start}ms`)
