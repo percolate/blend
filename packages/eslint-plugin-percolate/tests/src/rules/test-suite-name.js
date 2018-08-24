@@ -6,15 +6,11 @@ const ruleTester = new RuleTester()
 ruleTester.run('test-suite-name', rule, {
     valid: [
         {
-            code: 'describe("foo/bar.spec")',
-            filename: '/foo/bar.spec.js',
-        },
-        {
             code: 'describe("foo/bar.js")',
             filename: '/foo/bar.js',
         },
         {
-            code: 'describe("bar.spec")',
+            code: 'describe("bar.spec.js")',
             filename: '/foo/bar.spec.js',
             options: [{ basePaths: ['/foo'] }],
         },
@@ -23,11 +19,11 @@ ruleTester.run('test-suite-name', rule, {
             filename: '/foo/bar.spec.js',
         },
         {
-            code: 'describe("foo/bar.spec", function() { describe("foo", function() {})})',
+            code: 'describe("foo/bar.spec.js", function() { describe("foo", function() {})})',
             filename: '/foo/bar.spec.js',
         },
         {
-            code: 'describe("foo/bar")',
+            code: 'describe("foo/bar.jsx")',
             filename: '/foo/bar.jsx',
         },
         {
@@ -36,6 +32,11 @@ ruleTester.run('test-suite-name', rule, {
         },
     ],
     invalid: [
+        {
+            code: 'describe("foo/bar.spec")',
+            filename: '/foo/bar.spec.js',
+            errors: ['The suit name must match the filename'],
+        },
         {
             code: 'describe("Foo", function() {})',
             filename: '/foo/bar.spec.js',

@@ -1,4 +1,4 @@
-const { basename, dirname, extname, join, relative } = require('path')
+const { basename, dirname, join, relative } = require('path')
 
 module.exports = {
     meta: {
@@ -40,13 +40,10 @@ module.exports = {
                 const filename = context.getFilename()
                 const basePath = basePaths.find(path => filename.indexOf(path) === 0)
                 const relativePath = basePath
-                    ? relative(basePath, join(dirname(filename), basename(filename, extname(filename))))
+                    ? relative(basePath, join(dirname(filename), basename(filename)))
                     : null
                 const suiteName = node.expression.arguments[0]
-                if (
-                    suiteName.type === 'Literal' &&
-                    (relativePath === suiteName.value || relativePath + extname(filename) === suiteName.value)
-                ) {
+                if (suiteName.type === 'Literal' && relativePath === suiteName.value) {
                     return
                 }
 
