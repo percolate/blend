@@ -21,7 +21,7 @@ Examples of **correct** code for this rule:
 ```js
 
 // given filename /path/to/test.js
-describe('/path/to/test')
+describe('/path/to/test.js')
 
 ```
 
