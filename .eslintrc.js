@@ -2,9 +2,7 @@ module.exports = {
     extends: ['eslint:recommended'],
     env: { node: true, es6: true },
     parserOptions: {
-        ecmaFeatures: {
-            experimentalObjectRestSpread: true
-        }
+        ecmaVersion: '2018',
     },
     plugins: ['prettier'],
     rules: {

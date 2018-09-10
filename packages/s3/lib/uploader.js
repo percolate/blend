@@ -104,8 +104,7 @@ function verifyUpload({ s3, s3Key }) {
 function checksum({ path }) {
     return new Promise((resolve, reject) => {
         const md5 = crypto.createHash('md5')
-        fs
-            .createReadStream(path)
+        fs.createReadStream(path)
             .on('data', data => md5.update(data))
             .on('error', e => reject(e))
             .on('end', () => resolve(md5.digest('base64')))
