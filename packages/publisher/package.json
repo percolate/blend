@@ -1,6 +1,6 @@
 {
   "name": "@percolate/publisher",
-  "version": "0.0.5",
+  "version": "0.0.6",
   "description": "NPM publish built for Continuous Deployment",
   "repository": "https://github.com/percolate/blend/tree/master/packages/publisher",
   "bin": {
@@ -12,7 +12,7 @@
   },
   "dependencies": {
     "docopt": "0.6.2",
-    "semver": "5.3.0",
-    "shelljs": "0.7.6"
+    "semver": "5.5.1",
+    "shelljs": "0.8.2"
   }
 }

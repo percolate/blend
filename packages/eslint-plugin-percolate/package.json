@@ -1,6 +1,6 @@
 {
   "name": "eslint-plugin-percolate",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Percolate's Eslint rules",
   "keywords": [
     "eslint",
@@ -22,7 +22,7 @@
     "eslint-plugin-import": "^2.0.0"
   },
   "devDependencies": {
-    "babel-eslint": "^8.2.6",
+    "babel-eslint": "^9.0.0",
     "eslint": "^5.4.0",
     "mocha": "^5.2.0"
   }

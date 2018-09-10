@@ -11,47 +11,21 @@ jobs:
       - add_ssh_keys
 
       - restore_cache:
-          key: v1-root-yarn-deps-{{ arch }}-{{ checksum "yarn.lock" }}
-      - restore_cache:
-          key: v1-atatus-yarn-deps-{{ arch }}-{{ checksum "packages/atatus/yarn.lock" }}
-      - restore_cache:
-          key: v1-eslint-yarn-deps-{{ arch }}-{{ checksum "packages/eslint-plugin-percolate/yarn.lock" }}
-      - restore_cache:
-          key: v1-publisher-yarn-deps-{{ arch }}-{{ checksum "packages/publisher/yarn.lock" }}
-      - restore_cache:
-          key: v1-s3-yarn-deps-{{ arch }}-{{ checksum "packages/s3/yarn.lock" }}
+          key: v1-yarn-deps-{{ arch }}-{{ checksum "yarn.lock" }}
 
-      - run: yarn install --pure-lock --cache-folder ".yarn_cache"
-      - run: ./node_modules/.bin/lerna bootstrap -- --pure-lock --cache-folder ".yarn_cache"
+      - run: yarn install --frozen-lockfile --cache-folder /tmp/.yarn_cache
 
       - save_cache:
-          key: v1-root-yarn-deps-{{ arch }}-{{ checksum "yarn.lock" }}
+          key: v1-yarn-deps-{{ arch }}-{{ checksum "yarn.lock" }}
           paths:
-            - .yarn_cache
-            - node_modules
-      - save_cache:
-          key: v1-atatus-yarn-deps-{{ arch }}-{{ checksum "packages/atatus/yarn.lock" }}
-          paths:
-            - packages/atatus/.yarn_cache
+            - /tmp/.yarn_cache
             - packages/atatus/node_modules
-      - save_cache:
-          key: v1-eslint-yarn-deps-{{ arch }}-{{ checksum "packages/eslint-plugin-percolate/yarn.lock" }}
-          paths:
-            - packages/eslint-plugin-percolate/.yarn_cache
             - packages/eslint-plugin-percolate/node_modules
-      - save_cache:
-          key: v1-publisher-yarn-deps-{{ arch }}-{{ checksum "packages/publisher/yarn.lock" }}
-          paths:
-            - packages/publisher/.yarn_cache
             - packages/publisher/node_modules
-      - save_cache:
-          key: v1-s3-yarn-deps-{{ arch }}-{{ checksum "packages/s3/yarn.lock" }}
-          paths:
-            - packages/s3/.yarn_cache
             - packages/s3/node_modules
 
       - run: yarn test
-      - run: ./node_modules/.bin/lerna run test
+      - run: ./node_modules/.bin/lerna run test -- --colors
       - deploy:
           command: |
             if [ "${CIRCLE_BRANCH}" != "master" ]; then
