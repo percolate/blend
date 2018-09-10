@@ -25,7 +25,7 @@ jobs:
             - packages/s3/node_modules
 
       - run: yarn test
-      - run: ./node_modules/.bin/lerna run test
+      - run: ./node_modules/.bin/lerna run test -- --colors
       - deploy:
           command: |
             if [ "${CIRCLE_BRANCH}" != "master" ]; then
