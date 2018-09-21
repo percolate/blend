@@ -7,6 +7,7 @@
   "bin": {
     "s3": "./bin/s3"
   },
+  "main": "lib/index.js",
   "dependencies": {
     "async-retry": "^1.2.1",
     "aws-sdk": "^2.142.0",
