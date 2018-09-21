@@ -86,8 +86,10 @@ class S3 {
             .promise()
             .then(data => data.Metadata)
             .catch(e => {
-                if (e.name !== 'NotFound') throw e
-                return Promise.reject(new Promise.OperationalError('NotFound'))
+                if (e.name === 'NoSuchKey' || e.name === 'NotFound') {
+                    return Promise.reject(new Promise.OperationalError('NotFound'))
+                }
+                throw e
             })
     }
 
