@@ -84,15 +84,10 @@ function uploadDir(opts) {
     if (!fs.existsSync(dir)) forceExit('<dir> does not exist')
     if (!fs.statSync(dir).isDirectory()) forceExit('<dir> must be a directory')
 
-    const files = readDir(dir, file => {
-        return !(file[0] === '.' || file === 'node_modules')
-    }).filter(file => {
-        const isExcluded = exclude && mm.any(file, exclude)
-        if (isExcluded) log(`excluding: ${file}`)
-        return !isExcluded
-    })
+    const allFiles = readDir(dir, file => !(file[0] === '.' || file === 'node_modules'))
+    const files = allFiles.filter(file => !(exclude && mm.any(file, exclude)))
 
-    log(`Uploading files: ${files.length}`)
+    log(`Uploading files: ${files.length} (files excluded: ${allFiles.length - files.length})`)
 
     return Promise.map(
         files,

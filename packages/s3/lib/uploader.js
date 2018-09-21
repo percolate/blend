@@ -36,10 +36,12 @@ module.exports = function(options = {}) {
         (checksum, { isUploaded, s3Checksum }) => {
             if (!force && isUploaded && s3Checksum) {
                 if (checksum === s3Checksum) {
-                    return `skipped: ${path}`
+                    return `skipped: ${path} -> ${s3.getPublicUrl({ Key: s3Key })}`
                 } else if (!skipChecksum) {
                     return Promise.reject(
-                        new Promise.OperationalError(`checksum error: ${path} (${checksum} vs ${s3Checksum})`)
+                        new Promise.OperationalError(
+                            `checksum error: ${path} -> ${s3.getPublicUrl({ Key: s3Key })}`
+                        )
                     )
                 }
             }
@@ -63,24 +65,27 @@ module.exports = function(options = {}) {
 }
 
 function doUpload({ s3, absPath, request, debug, path, s3Key, attempt }) {
-    const start = performance.now()
+    let start = performance.now()
+    let timing = 0
+
     if (attempt > 1) {
         log(`Uploading ${path} again, attempt: ${attempt}`)
     }
 
     return s3
         .upload({ Body: fs.createReadStream(absPath), ...request })
+        .tap(() => {
+            timing = (performance.now() - start).toFixed(2)
+        })
         .then(response => {
             const details = debug ? `\n${inspect({ request, response })}\n` : ''
-            return `success: ${path} -> ${s3.getPublicUrl({ Key: s3Key })}${details}`
+            return `success: ${path} -> ${s3.getPublicUrl({ Key: s3Key })} ${timing}ms ${details}`
         })
         .catch(e =>
-            Promise.reject(new Promise.OperationalError(`code: ${e.code}, error: ${path} (${e.message})`))
+            Promise.reject(
+                new Promise.OperationalError(`code: ${e.code}, ${timing}ms error: ${path} (${e.message})`)
+            )
         )
-        .finally(() => {
-            const end = performance.now()
-            log(`Upload took ${end - start}ms`)
-        })
 }
 
 function isFile(path) {
