@@ -93,6 +93,19 @@ class S3 {
             })
     }
 
+    fetchBody(opts) {
+        return this.client
+            .getObject({ Bucket: this.bucket, ...opts })
+            .promise()
+            .then(resp => resp.Body)
+            .catch(e => {
+                if (e.name === 'NoSuchKey') {
+                    return Promise.reject(new Promise.OperationalError('NotFound'))
+                }
+                throw e
+            })
+    }
+
     upload(opts) {
         return this.client.putObject({ Bucket: this.bucket, ...opts }).promise()
     }
