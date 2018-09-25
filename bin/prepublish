@@ -1,16 +1,4 @@
 #!/bin/bash -e
 
 # prompts user to update versions, creates git tags, and commits changes
-./node_modules/.bin/lerna publish --skip-npm
-
-# prompt to push tags
-read -r -p "Would you like to \"git push --tags\"? [y/N] " response
-case "$response" in
-    [yY][eE][sS]|[yY])
-        git push --tags
-        echo "IMPORTANT: remember to push lerna's publish commit to git"
-        ;;
-    *)
-        exit 1
-        ;;
-esac
+./node_modules/.bin/lerna version --push
