@@ -1,6 +1,6 @@
 {
   "name": "@percolate/publisher",
-  "version": "0.0.6",
+  "version": "0.0.7",
   "description": "NPM publish built for Continuous Deployment",
   "repository": "https://github.com/percolate/blend/tree/master/packages/publisher",
   "bin": {
