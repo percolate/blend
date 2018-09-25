@@ -8,6 +8,7 @@ const S3 = require('./s3')
 const uploader = require('./uploader')
 const { resolve } = require('path')
 const { log, forceExit } = require('./log')
+const parseS3Uri = require('./parse_s3_uri')
 
 const DOC = `S3 file manager
 
@@ -43,16 +44,10 @@ Options:
     --aws-access-key-id=STRING      The AWS access key ID or $AWS_ACCESS_KEY_ID
     --aws-secret-access-key=STRING  The AWS secret access key or $AWS_SECRET_ACCESS_KEY
 `
-const S3_URI_REGEXP = /^[sS]3:\/\/(.*?)\/(.*)/
 
 module.exports = function() {
     const args = docopt(DOC)
-    const match = args['<s3-uri>'].match(S3_URI_REGEXP)
-    if (!match) throw new Error(`Invalid <s3-uri>: ${args['<s3-uri>']} (ex. s3://my-bucket.com/path/to/dir/)`)
-
-    const bucket = match[1]
-    const s3Key = match[2]
-
+    const { bucket, s3Key } = parseS3Uri(args['<s3-uri>'])
     const s3 = new S3({
         accessKeyId: args['--aws-access-key-id'] || process.env.AWS_ACCESS_KEY_ID,
         bucket,
@@ -84,15 +79,10 @@ function uploadDir(opts) {
     if (!fs.existsSync(dir)) forceExit('<dir> does not exist')
     if (!fs.statSync(dir).isDirectory()) forceExit('<dir> must be a directory')
 
-    const files = readDir(dir, file => {
-        return !(file[0] === '.' || file === 'node_modules')
-    }).filter(file => {
-        const isExcluded = exclude && mm.any(file, exclude)
-        if (isExcluded) log(`excluding: ${file}`)
-        return !isExcluded
-    })
+    const allFiles = readDir(dir, file => !(file[0] === '.' || file === 'node_modules'))
+    const files = allFiles.filter(file => !(exclude && mm.any(file, exclude)))
 
-    log(`Uploading files: ${files.length}`)
+    log(`Uploading files: ${files.length} (files excluded: ${allFiles.length - files.length})`)
 
     return Promise.map(
         files,
