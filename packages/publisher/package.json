@@ -13,6 +13,6 @@
   "dependencies": {
     "docopt": "0.6.2",
     "semver": "5.5.1",
-    "shelljs": "0.8.2"
+    "shelljs": "0.8.3"
   }
 }
