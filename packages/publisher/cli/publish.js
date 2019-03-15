@@ -63,11 +63,11 @@ function main() {
     // publish
     log('publishing...')
     const publishExec = sh.exec('npm publish', { silent: true })
-    if (publishExec.code) {
-        log(`publishing error:\n${indent(publishExec.stderr)}`)
-    } else {
+    if (publishExec.code === 0) {
         // npm publish leverages stderr for debug info so we output both
         log(`published successfully:\n${indent(publishExec.stderr)}\n${indent(publishExec.stdout)}`)
+    } else {
+        log(`publishing error:\n${indent(publishExec.stderr)}`)
     }
     return sh.exit(publishExec.code)
 }
