@@ -1,7 +1,6 @@
 version: 2
 
 jobs:
-
   build:
     docker:
       - image: circleci/node:8-browsers
@@ -19,10 +18,10 @@ jobs:
           key: v1-yarn-deps-{{ arch }}-{{ checksum "yarn.lock" }}
           paths:
             - /tmp/.yarn_cache
-            - packages/atatus/node_modules
-            - packages/eslint-plugin-percolate/node_modules
-            - packages/publisher/node_modules
-            - packages/s3/node_modules
+            - pkgs/atatus/node_modules
+            - pkgs/eslint-plugin-percolate/node_modules
+            - pkgs/publisher/node_modules
+            - pkgs/s3/node_modules
 
       - run: yarn test
       - run: ./node_modules/.bin/lerna run test -- --colors

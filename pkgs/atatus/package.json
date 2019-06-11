@@ -3,7 +3,7 @@
   "version": "0.1.2",
   "license": "SEE LICENSE IN /LICENSE.md",
   "description": "Atatus sourcemap uploader",
-  "repository": "https://github.com/percolate/blend/tree/master/packages/atatus",
+  "repository": "https://github.com/percolate/blend/tree/master/pkgs/atatus",
   "bin": {
     "atatus": "./bin/atatus"
   },

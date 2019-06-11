@@ -7,7 +7,7 @@
     "eslintplugin",
     "eslint-plugin"
   ],
-  "repository": "https://github.com/percolate/blend/tree/master/packages/eslint-plugin-percolate",
+  "repository": "https://github.com/percolate/blend/tree/master/pkgs/eslint-plugin-percolate",
   "license": "SEE LICENSE IN /LICENSE.md",
   "main": "lib/index.js",
   "scripts": {

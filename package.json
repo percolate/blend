@@ -3,7 +3,7 @@
   "private": true,
   "repository": "https://github.com/percolate/blend",
   "scripts": {
-    "test": "eslint \"packages/**/*.js\""
+    "test": "eslint \"pkgs/**/*.js\""
   },
   "devDependencies": {
     "eslint": "^5.5.0",
@@ -12,6 +12,6 @@
     "prettier": "^1.14.2"
   },
   "workspaces": [
-    "packages/*"
+    "pkgs/*"
   ]
 }
