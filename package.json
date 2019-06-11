@@ -3,7 +3,8 @@
   "private": true,
   "repository": "https://github.com/percolate/blend",
   "scripts": {
-    "test": "eslint \"pkgs/**/*.js\""
+    "lint": "eslint \"pkgs/**/*.js\"",
+    "prettier": "prettier --list-different \"**/*.{js,json,md}\""
   },
   "devDependencies": {
     "eslint": "^5.5.0",
