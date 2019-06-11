@@ -17,6 +17,10 @@
         {
             "files": "package.json",
             "options": { "tabWidth": 2 }
+        },
+        {
+            "files": "lerna.json",
+            "options": { "tabWidth": 2 }
         }
     ]
 }
