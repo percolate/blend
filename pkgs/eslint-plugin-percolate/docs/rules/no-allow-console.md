@@ -5,7 +5,6 @@
 Examples of **incorrect** code for this rule:
 
 ```js
-
 // given filename /path/to/test.js
 beforeEach(function() {
     this.allowConsole()
@@ -14,5 +13,4 @@ beforeEach(function() {
 it('should ...', function() {
     allowConsole.call(this)
 })
-
 ```

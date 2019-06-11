@@ -1,7 +1,11 @@
 {
+  "command": {
+    "version": {
+      "message": "chore: release"
+    }
+  },
+  "ignoreChanges": ["**/__fixtures__/**", "**/__tests__/**", "**/*.md"],
   "npmClient": "yarn",
-  "lerna": "2.4.0",
-  "packages": ["pkgs/*"],
   "version": "independent",
   "useWorkspaces": true
 }

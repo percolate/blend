@@ -7,9 +7,9 @@ Parameters inside routes (aka dynamic routes) are identified by `/^:(.*$)/` (any
 
 Repeating static routes isn't DRY but there are good reasons for doing it:
 
-- Routes are unique by nature which makes them greppable
-- Routes are expressive which makes the code easier to reason about when displayed inline
-- String literals can be statically analyzed
+-   Routes are unique by nature which makes them greppable
+-   Routes are expressive which makes the code easier to reason about when displayed inline
+-   String literals can be statically analyzed
 
 ## Rule Details
 
@@ -58,11 +58,11 @@ import mylink from "/mylink.jsx"
 
 This rule supports an object with the following properties:
 
-- `modules`: An array of objects defining your link components
-    - `import`: The name or filepath of your component which replaces links (ex. `path/to/link.jsx`)
-    - `props`: When present, this array of objects will define which props to run static route analysis on
-        - `routePropName`: The route prop name (ex. `"to"`)
-        - `paramsPropName`: Prop name for route params defined as key/value pairs (ex. `"params"`)
-- `routeRegex`: When present, this enforces that all routes match a specific pattern
-- `paramRegex`: When present, this enforces that all route params match a specific pattern
-- `skipValidationPropName`: When present, this prop bypasses static route analysis
+-   `modules`: An array of objects defining your link components
+    -   `import`: The name or filepath of your component which replaces links (ex. `path/to/link.jsx`)
+    -   `props`: When present, this array of objects will define which props to run static route analysis on
+        -   `routePropName`: The route prop name (ex. `"to"`)
+        -   `paramsPropName`: Prop name for route params defined as key/value pairs (ex. `"params"`)
+-   `routeRegex`: When present, this enforces that all routes match a specific pattern
+-   `paramRegex`: When present, this enforces that all route params match a specific pattern
+-   `skipValidationPropName`: When present, this prop bypasses static route analysis

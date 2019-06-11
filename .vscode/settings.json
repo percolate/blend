@@ -1,4 +1,11 @@
 {
-  "prettier.eslintIntegration": true,
-  "eslint.autoFixOnSave": true
+    "editor.formatOnSave": true,
+    "eslint.autoFixOnSave": true,
+    "eslint.validate": [
+        "graphql",
+        "javascript",
+        "javascriptreact",
+        { "language": "typescript", "autoFix": true },
+        { "language": "typescriptreact", "autoFix": true }
+    ]
 }
