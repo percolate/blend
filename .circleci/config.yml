@@ -30,4 +30,4 @@ jobs:
             fi
 
             echo "//registry.npmjs.org/:_authToken=$NPMJS_TOKEN" >> ~/.npmrc
-            npx lerna exec -- ../publisher/bin/publish
+            bin/publish --yes

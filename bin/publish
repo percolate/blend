@@ -1,0 +1,2 @@
+#!/bin/bash -e
+npx lerna publish from-package $@
