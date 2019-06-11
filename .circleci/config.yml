@@ -18,7 +18,6 @@ jobs:
           key: v1-yarn-deps-{{ arch }}-{{ checksum "yarn.lock" }}
           paths:
             - /tmp/.yarn_cache
-            - pkgs/atatus/node_modules
             - pkgs/eslint-plugin-percolate/node_modules
             - pkgs/publisher/node_modules
             - pkgs/s3/node_modules
