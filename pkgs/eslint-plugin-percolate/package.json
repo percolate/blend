@@ -15,8 +15,7 @@
   },
   "dependencies": {
     "eslint-plugin-import": "^2.14.0",
-    "html-tags": "^2.0.0",
-    "requireindex": "^1.2.0"
+    "html-tags": "^2.0.0"
   },
   "peerDependencies": {
     "eslint-plugin-import": "^2.0.0"
