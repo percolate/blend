@@ -1,4 +1,4 @@
 #!/bin/bash -e
 
 # prompts user to update versions, creates git tags, and commits changes
-./node_modules/.bin/lerna version --push
+npx lerna version --conventional-commits --exact $@

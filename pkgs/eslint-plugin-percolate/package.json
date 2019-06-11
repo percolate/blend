@@ -1,13 +1,13 @@
 {
   "name": "eslint-plugin-percolate",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "Percolate's Eslint rules",
   "keywords": [
     "eslint",
     "eslintplugin",
     "eslint-plugin"
   ],
-  "repository": "https://github.com/percolate/blend/tree/master/packages/eslint-plugin-percolate",
+  "repository": "https://github.com/percolate/blend/tree/master/pkgs/eslint-plugin-percolate",
   "license": "SEE LICENSE IN /LICENSE.md",
   "main": "lib/index.js",
   "scripts": {
@@ -15,8 +15,7 @@
   },
   "dependencies": {
     "eslint-plugin-import": "^2.14.0",
-    "html-tags": "^2.0.0",
-    "requireindex": "^1.2.0"
+    "html-tags": "^2.0.0"
   },
   "peerDependencies": {
     "eslint-plugin-import": "^2.0.0"

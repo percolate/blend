@@ -3,15 +3,15 @@
   "private": true,
   "repository": "https://github.com/percolate/blend",
   "scripts": {
-    "test": "eslint \"packages/**/*.js\""
+    "test": "eslint \"pkgs/**/*.js\""
   },
   "devDependencies": {
     "eslint": "^5.5.0",
     "eslint-plugin-prettier": "^2.6.2",
-    "lerna": "^3.3.0",
+    "lerna": "3.15.0",
     "prettier": "^1.14.2"
   },
   "workspaces": [
-    "packages/*"
+    "pkgs/*"
   ]
 }
