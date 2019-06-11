@@ -14,6 +14,7 @@ make install
 ## Publishing
 
 Publishing is done in two parts:
+
 1. "pre-publish" handled by you, the user
 1. "publish" handled by CircleCI which deploys master automatically by checking which package versions haven't been published yet.
 

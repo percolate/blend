@@ -17,7 +17,6 @@ Examples of **incorrect** code for this rule:
 
 var bar = require('./bar').default // no default export found in ./bar
 var foo = require('./foo') // requiring ES module must reference default
-
 ```
 
 Examples of **correct** code for this rule:
@@ -31,7 +30,6 @@ Examples of **correct** code for this rule:
 
 var bar = require('./bar')
 var foo = require('./foo').default
-
 ```
 
 ## When Not To Use It

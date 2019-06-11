@@ -8,21 +8,17 @@ It can also be useful when other tools rely on the test suite name to generate s
 Examples of **incorrect** code for this rule:
 
 ```js
-
 // given filename /path/to/test.js
 describe('Test')
 describe('/other/path/to/test')
 describe('/path/to/test.js')
-
 ```
 
 Examples of **correct** code for this rule:
 
 ```js
-
 // given filename /path/to/test.js
 describe('/path/to/test.js')
-
 ```
 
 ## When Not To Use It

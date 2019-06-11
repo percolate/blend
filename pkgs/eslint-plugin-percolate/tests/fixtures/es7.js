@@ -3,15 +3,15 @@
 // Foo.jsx
 class Foo {
     // ES7 static members
-    static bar = true;
+    static bar = true
 }
 
 export default Foo
 
 export class Bar {
-    static baz = false;
+    static baz = false
 
-    render () {
+    render() {
         let { a, ...rest } = { a: 1, b: 2, c: 3 }
     }
 }

@@ -24,12 +24,9 @@ Add `percolate` to the plugins section of your `.eslintrc` configuration file. Y
 
 ```json
 {
-    "plugins": [
-        "percolate"
-    ]
+    "plugins": ["percolate"]
 }
 ```
-
 
 Then configure the rules you want to use under the rules section.
 
@@ -37,12 +34,12 @@ Then configure the rules you want to use under the rules section.
 {
     "rules": {
         "percolate/cjs-default": "error",
-        "percolate/no-jsx-id-attrs": "error",
+        "percolate/no-jsx-id-attrs": "error"
     }
 }
 ```
 
 ## Supported Rules
 
-* [cjs-default](docs/rules/cjs-default.md): Verifies that commonJS `require(...).default` and `export default ...` are in sync
-* [no-jsx-id-attrs](docs/rules/no-jsx-id-attrs.md): Prevents "id" attribute on DOM elements in JSX
+-   [cjs-default](docs/rules/cjs-default.md): Verifies that commonJS `require(...).default` and `export default ...` are in sync
+-   [no-jsx-id-attrs](docs/rules/no-jsx-id-attrs.md): Prevents "id" attribute on DOM elements in JSX
