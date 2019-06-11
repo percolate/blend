@@ -1,6 +1,6 @@
 {
   "name": "eslint-plugin-percolate",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "Percolate's Eslint rules",
   "keywords": [
     "eslint",
