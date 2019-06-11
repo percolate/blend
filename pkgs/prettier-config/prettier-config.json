@@ -1,0 +1,22 @@
+{
+    "$schema": "http://json.schemastore.org/prettierrc",
+    "printWidth": 110,
+    "tabWidth": 4,
+    "singleQuote": true,
+    "trailingComma": "es5",
+    "semi": false,
+    "overrides": [
+        {
+            "files": "*.less",
+            "options": { "singleQuote": false }
+        },
+        {
+            "files": "*.yml",
+            "options": { "tabWidth": 2 }
+        },
+        {
+            "files": "package.json",
+            "options": { "tabWidth": 2 }
+        }
+    ]
+}
