@@ -21,6 +21,10 @@
         {
             "files": "lerna.json",
             "options": { "tabWidth": 2 }
+        },
+        {
+            "files": ".babelrc",
+            "options": { "tabWidth": 2 }
         }
     ]
 }
