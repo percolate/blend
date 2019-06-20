@@ -27,9 +27,6 @@
     "html-tags": "3.0.0",
     "typescript": "3.5.1"
   },
-  "devDependencies": {
-    "@types/eslint": "4.16.6"
-  },
   "publishConfig": {
     "access": "restricted"
   }
