@@ -1,2 +1,3 @@
 node_modules
-pkgs/eslint-plugin-percolate/tests/fixtures/
+pkgs/*/dist/
+pkgs/eslint-plugin/src/rules/__tests__/fixtures/

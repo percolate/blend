@@ -20,6 +20,7 @@ jobs:
             - /tmp/.yarn_cache
             - node_modules
 
+      - run: npx lerna run build
       - run: yarn run lint
       - run: yarn run prettier
       - run: npx lerna run test -- --colors

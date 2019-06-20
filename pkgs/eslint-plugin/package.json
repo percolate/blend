@@ -8,6 +8,10 @@
     "./dist/"
   ],
   "main": "./dist/entry.js",
+  "scripts": {
+    "build": "babel src/ --out-dir dist/ --extensions .ts --root-mode upward --delete-dir-on-start",
+    "prepublishOnly": "yarn run build"
+  },
   "dependencies": {
     "@typescript-eslint/eslint-plugin": "1.10.2",
     "@typescript-eslint/parser": "1.10.2",

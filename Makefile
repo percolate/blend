@@ -2,7 +2,7 @@
 
 install:
 	yarn install --pure-lockfile
-	./node_modules/.bin/lerna bootstrap -- --pure-lockfile
+	npx lerna run build
 
 prepublish:
 	bin/prepublish

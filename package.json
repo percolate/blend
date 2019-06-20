@@ -3,11 +3,16 @@
   "private": true,
   "repository": "https://github.com/percolate/blend",
   "scripts": {
-    "lint": "eslint \"pkgs/**/*.js\"",
+    "lint": "eslint \"pkgs/**/*.{js,ts}\" --quiet",
     "prettier": "prettier --list-different \"**/*.{js,json,md}\""
   },
   "devDependencies": {
-    "eslint": "^5.5.0",
+    "@babel/cli": "7.4.4",
+    "@babel/core": "7.4.5",
+    "@babel/plugin-proposal-class-properties": "7.4.4",
+    "@babel/preset-env": "7.4.5",
+    "@babel/preset-typescript": "7.3.3",
+    "@percolate/eslint-plugin": "0.0.0",
     "lerna": "3.15.0",
     "prettier": "1.18.2"
   },
