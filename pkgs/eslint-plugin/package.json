@@ -9,7 +9,7 @@
   ],
   "main": "./dist/entry.js",
   "scripts": {
-    "build": "babel src/ --out-dir dist/ --extensions .ts --root-mode upward --delete-dir-on-start",
+    "build": "babel src/ --out-dir dist/ --extensions .ts --root-mode upward --delete-dir-on-start --ignore \"**/__tests__/**\"",
     "prepublishOnly": "yarn run build"
   },
   "dependencies": {
