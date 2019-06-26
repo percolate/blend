@@ -1,0 +1,17 @@
+{
+    // inline coverage after running tests
+    "coverage-gutters.lcovname": "${workspaceRoot}/tmp/reports/lcov.info",
+    // runs prettier
+    "editor.formatOnSave": true,
+    // eslint
+    "eslint.autoFixOnSave": true,
+    "eslint.validate": [
+        "graphql",
+        "javascript",
+        "javascriptreact",
+        { "language": "typescript", "autoFix": true },
+        { "language": "typescriptreact", "autoFix": true }
+    ],
+    // tslint
+    "tslint.enable": false
+}

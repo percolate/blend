@@ -1,0 +1,7 @@
+{
+    "extends": "@percolate/kona/configs/tsconfig.types.json",
+    "compilerOptions": {
+        "outDir": "./dist/"
+    },
+    "include": ["./src/index.ts"]
+}

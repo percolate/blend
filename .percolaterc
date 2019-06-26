@@ -1,0 +1,4 @@
+{
+    "commitLintPaths": ["**"],
+    "tsConfigs": ["pkgs/*/tsconfig.json"]
+}

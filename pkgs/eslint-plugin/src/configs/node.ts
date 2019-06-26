@@ -1,3 +1,10 @@
+const extensions = ['.ts', '.tsx', '.js', '.jsx']
+
 export const node = {
-    extends: ['plugin:import/typescript'],
+    settings: {
+        'import/extensions': extensions,
+        'import/resolver': {
+            node: { extensions },
+        },
+    },
 }
