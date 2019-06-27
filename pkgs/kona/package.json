@@ -38,6 +38,7 @@
     "@commitlint/lint": "8.0.0",
     "@commitlint/load": "8.0.0",
     "@connectis/diff-test-coverage": "1.5.3",
+    "@types/lodash": "4.14.135",
     "bluebird": "3.5.5",
     "chalk": "2.4.2",
     "commitizen": "3.1.1",
