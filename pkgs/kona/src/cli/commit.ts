@@ -31,7 +31,8 @@ export const commitCmd: CommandModule = {
                 },
             })
             .command({
-                command: 'pre-commit',
+                aliases: 'pre',
+                command: 'preCommit',
                 describe: 'Pre-commit hook validation',
                 builder: a => a,
                 handler: async () => {
@@ -51,7 +52,8 @@ export const commitCmd: CommandModule = {
                 },
             })
             .command({
-                command: 'skip-coverage',
+                aliases: ['skip', 'coverage'],
+                command: 'skipCoverage',
                 describe: `Shortcut to commit message ${SKIP_COVERAGE}`,
                 builder: a => a,
                 handler: () => {
