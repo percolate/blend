@@ -4,7 +4,7 @@
   "repository": "https://github.com/percolate/blend",
   "scripts": {
     "lint": "eslint \"pkgs/**/*.{js,ts}\" --quiet",
-    "postinstall": "cd node_modules/.bin && ln -s ../../pkgs/kona/bin/kona kona",
+    "postinstall": "cd node_modules/.bin && rm -f kona && ln -s ../../pkgs/kona/bin/kona kona",
     "prettier": "prettier --list-different \"**/*.{js,json,md}\""
   },
   "devDependencies": {
