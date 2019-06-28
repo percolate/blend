@@ -2,8 +2,9 @@ import { RuleTester, Linter } from 'eslint'
 import { reactLink } from '../reactLink'
 
 const parserOptions: Linter.ParserOptions = {
+    ecmaVersion: 2015,
     ecmaFeatures: { jsx: true },
-    parser: '@typescript-eslint/parser',
+    parser: require.resolve('@typescript-eslint/parser'),
     sourceType: 'module',
 }
 const routeRegex = /^\/.*$/

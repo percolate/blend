@@ -4,6 +4,7 @@ import { noReactPropTypes } from '../noReactPropTypes'
 
 const filename = resolve(__dirname, './fixtures/foo.js')
 const parserOptions: Linter.ParserOptions = {
+    ecmaVersion: 2015,
     sourceType: 'module',
 }
 const ruleTester = new RuleTester()

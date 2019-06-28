@@ -40,7 +40,7 @@ ruleTester.run('no-root-arrow-fn', noRootArrowFn, {
         },
         {
             code: 'module.exports = { myComp: function() {}, ...supportSpread }',
-            parser: '@typescript-eslint/parser',
+            parser: require.resolve('@typescript-eslint/parser'),
             parserOptions,
         },
     ],

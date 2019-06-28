@@ -3,7 +3,8 @@ import { importBlacklist } from '../importBlacklist'
 
 const parserOptions: Linter.ParserOptions = {
     ecmaFeatures: { jsx: true },
-    parser: '@typescript-eslint/parser',
+    ecmaVersion: 2015,
+    parser: require.resolve('@typescript-eslint/parser'),
     sourceType: 'module',
 }
 const ruleTester = new RuleTester()

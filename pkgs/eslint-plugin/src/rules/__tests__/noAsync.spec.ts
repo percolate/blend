@@ -1,7 +1,7 @@
 import { RuleTester } from 'eslint'
 import { noAsync } from '../noAsync'
 
-const parser = '@typescript-eslint/parser'
+const parser = require.resolve('@typescript-eslint/parser')
 const ruleTester = new RuleTester()
 ruleTester.run('no-async', noAsync, {
     valid: [
