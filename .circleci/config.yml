@@ -16,7 +16,6 @@ jobs:
           paths:
             - tmp/.yarn_cache
             - node_modules
-      - run: npx lerna run build
       - run: npx kona verify
       - run: npx kona ts
       - run: npx kona lint
