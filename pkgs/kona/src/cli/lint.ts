@@ -49,7 +49,7 @@ export const lintCmd: CommandModule<{}, ILintArgs> = {
                 type: 'boolean',
             })
             .option('fix', {
-                default: true,
+                default: !process.env['CI'],
                 desc: 'Disable fixing of errors',
                 type: 'boolean',
             })
