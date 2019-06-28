@@ -18,7 +18,6 @@
     "@types/bluebird": "3.5.27",
     "@types/eslint": "4.16.6",
     "@types/fs-readdir-recursive": "1.0.0",
-    "@types/lodash": "4.14.134",
     "@types/micromatch": "3.1.0",
     "@types/node": "12.0.8",
     "lerna": "3.15.0",
@@ -27,5 +26,10 @@
   "prettier": "@percolate/kona/configs/prettier.json",
   "workspaces": [
     "pkgs/*"
-  ]
+  ],
+  "husky": {
+    "hooks": {
+      "commit-msg": "node_modules/.bin/kona commit preCommit"
+    }
+  }
 }
