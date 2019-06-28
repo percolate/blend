@@ -1,1 +1,13 @@
-**/CHANGELOG.md
+# sync with .gitignore
+lerna-debug.log
+node_modules/
+pkgs/*/dist/
+pkgs/*/node_modules/
+pkgs/*/tmp/
+pkgs/*/yarn-error.log
+yarn-error.log
+tmp/
+
+# prettier
+CHANGELOG.md
+pkgs/*/CHANGELOG.md

@@ -1,0 +1,4 @@
+{
+    "extends": "@percolate/kona/configs/tsconfig.base.json",
+    "exclude": ["node_modules", "dist/**"]
+}

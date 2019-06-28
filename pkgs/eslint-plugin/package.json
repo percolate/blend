@@ -1,0 +1,32 @@
+{
+  "name": "@percolate/eslint-plugin",
+  "version": "0.0.0",
+  "description": "Percolate's ESlint rules and configs",
+  "repository": "https://github.com/percolate/blend/tree/master/pkgs/eslint-plugin",
+  "license": "CPAL-1.0",
+  "files": [
+    "./dist/"
+  ],
+  "main": "./dist/entry.js",
+  "scripts": {
+    "build": "babel src/ --out-dir dist/ --extensions .ts --root-mode upward --delete-dir-on-start --ignore \"**/__tests__/**\"",
+    "prepublishOnly": "yarn run build"
+  },
+  "dependencies": {
+    "@typescript-eslint/eslint-plugin": "1.11.0",
+    "@typescript-eslint/parser": "1.11.0",
+    "eslint": "6.0.1",
+    "eslint-import-resolver-node": "0.3.2",
+    "eslint-plugin-eslint-comments": "3.1.2",
+    "eslint-plugin-filenames": "1.3.2",
+    "eslint-plugin-import": "2.18.0",
+    "eslint-plugin-lodash": "5.1.0",
+    "eslint-plugin-react": "7.14.2",
+    "eslint-plugin-react-hooks": "1.6.1",
+    "html-tags": "3.0.0",
+    "typescript": "3.5.2"
+  },
+  "publishConfig": {
+    "access": "restricted"
+  }
+}

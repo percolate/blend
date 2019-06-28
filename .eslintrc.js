@@ -1,7 +1,6 @@
 module.exports = {
-    extends: ['eslint:recommended'],
-    env: { node: true, es6: true },
-    parserOptions: {
-        ecmaVersion: '2018',
+    extends: ['plugin:@percolate/base', 'plugin:@percolate/node'],
+    rules: {
+        '@percolate/test-suite-name': ['error', { basePaths: [__dirname] }],
     },
 }

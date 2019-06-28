@@ -1,0 +1,15 @@
+{
+    "compilerOptions": {
+        "esModuleInterop": true,
+        "moduleResolution": "node",
+        "noEmit": true, // prevents TS from inlining compiled source by default
+        "resolveJsonModule": true,
+        "skipLibCheck": true, // validates @types/* based on usage only
+        "target": "es5",
+
+        // stricter types
+        "noImplicitAny": true,
+        "noUnusedLocals": true,
+        "strictNullChecks": true
+    }
+}

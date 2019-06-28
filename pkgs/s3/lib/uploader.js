@@ -1,3 +1,4 @@
+/* eslint no-shadow: "warn" */
 const crypto = require('crypto')
 const fs = require('fs')
 const mime = require('mime-types')

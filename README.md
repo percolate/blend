@@ -9,18 +9,22 @@ Tooling for frontend repos
 
 ```
 make install
+
+# see tooling options
+npx kona -h
 ```
 
 ## Publishing
 
 Publishing is done in two parts:
 
-1. "pre-publish" handled by you, the user
+1. "version" handled by you, the user
 1. "publish" handled by CircleCI which deploys master automatically by checking which package versions haven't been published yet.
 
+Once you're ready to publish your changes (usually after a PR is approved), run the following and follow instructions:
+
 ```
-# follow instructions
-make prepublish
+yarn version
 ```
 
 ## License

@@ -1,18 +1,32 @@
 {
-  "license": "SEE LICENSE IN /LICENSE.md",
+  "license": "CPAL-1.0",
   "private": true,
   "repository": "https://github.com/percolate/blend",
   "scripts": {
-    "lint": "eslint \"pkgs/**/*.js\"",
-    "prettier": "prettier --list-different \"**/*.{js,json,md}\""
+    "build": "lerna run build",
+    "clean": "lerna clean -y && rm -rf node_modules",
+    "postinstall": "cd node_modules/.bin && rm -f kona && ln -s ../../pkgs/kona/bin/kona kona",
+    "publish": "lerna publish from-package",
+    "version": "lerna version --conventional-commits --exact"
   },
   "devDependencies": {
-    "eslint": "^5.5.0",
-    "eslint-plugin-prettier": "3.1.0",
-    "lerna": "3.15.0",
-    "prettier": "1.18.2"
+    "@percolate/eslint-plugin": "link:./pkgs/eslint-plugin",
+    "@percolate/kona": "link:./pkgs/kona",
+    "@types/bluebird": "3.5.27",
+    "@types/eslint": "4.16.6",
+    "@types/fs-readdir-recursive": "1.0.0",
+    "@types/jest": "24.0.15",
+    "@types/micromatch": "3.1.0",
+    "@types/node": "12.0.10",
+    "lerna": "3.15.0"
   },
+  "prettier": "@percolate/kona/configs/prettier.json",
   "workspaces": [
     "pkgs/*"
-  ]
+  ],
+  "husky": {
+    "hooks": {
+      "commit-msg": "node_modules/.bin/kona commit preCommit"
+    }
+  }
 }

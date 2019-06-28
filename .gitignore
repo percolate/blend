@@ -1,5 +1,8 @@
 lerna-debug.log
 node_modules/
-npm-debug.log
+pkgs/*/dist/
 pkgs/*/node_modules/
-pkgs/*/npm-debug.log
+pkgs/*/tmp/
+pkgs/*/yarn-error.log
+yarn-error.log
+tmp/

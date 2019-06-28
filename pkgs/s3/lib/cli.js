@@ -126,7 +126,6 @@ function listAll(opts) {
         .listAll({ Prefix: s3Key })
         .then(results => {
             if (results.length) {
-                // eslint-disable-next-line no-console
                 console.table(
                     ['Key', 'Size', 'Last modified'],
                     results.map(({ Key, Size, LastModified }) => [Key, Size, LastModified])
