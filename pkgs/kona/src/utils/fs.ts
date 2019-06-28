@@ -1,6 +1,6 @@
 import * as mm from 'micromatch'
 import * as fs from 'fs'
-import fsReadDirRecusrive from 'fs-readdir-recursive'
+import fsReadDirRecursive from 'fs-readdir-recursive'
 import { resolve, isAbsolute } from 'path'
 
 export function isFile(path: string): boolean {
@@ -51,7 +51,7 @@ export function getAbsFilePaths(dir: string, opts: { filterPaths?: string[]; cwd
 }
 
 export function readDir(root: string): string[] {
-    return fsReadDirRecusrive(
+    return fsReadDirRecursive(
         root,
         (file: string) =>
             file === '.github' ||
