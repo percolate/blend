@@ -24,8 +24,10 @@ Publishing is done in two parts:
 Once you're ready to publish your changes (usually after a PR is approved), run the following and follow instructions:
 
 ```
-yarn version
+yarn lerna:version
 ```
+
+Merged your branch into master and wait for CI to publish your changes.
 
 ## License
 

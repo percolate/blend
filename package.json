@@ -5,9 +5,9 @@
   "scripts": {
     "build": "lerna run build",
     "clean": "lerna clean -y && rm -rf node_modules",
-    "postinstall": "cd node_modules/.bin && rm -f kona && ln -s ../../pkgs/kona/bin/kona kona",
-    "publish": "lerna publish from-package",
-    "version": "lerna version --conventional-commits --exact"
+    "lerna:publish": "lerna publish from-package",
+    "lerna:version": "lerna version --conventional-commits --exact",
+    "postinstall": "cd node_modules/.bin && rm -f kona && ln -s ../../pkgs/kona/bin/kona kona"
   },
   "devDependencies": {
     "@percolate/eslint-plugin": "link:./pkgs/eslint-plugin",

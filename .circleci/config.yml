@@ -30,6 +30,6 @@ jobs:
             fi
 
             echo "//registry.npmjs.org/:_authToken=$NPMJS_TOKEN" >> ~/.npmrc
-            yarn publish --yes
+            yarn lerna:publish --yes
       - store_test_results:
           path: tmp/reports
