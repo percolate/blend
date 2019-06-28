@@ -8,22 +8,20 @@ jobs:
     steps:
       - checkout
       - add_ssh_keys
-
       - restore_cache:
           key: v2-yarn-deps-{{ arch }}-{{ checksum "yarn.lock" }}
-
-      - run: yarn install --frozen-lockfile --cache-folder /tmp/.yarn_cache
-
+      - run: make
       - save_cache:
           key: v2-yarn-deps-{{ arch }}-{{ checksum "yarn.lock" }}
           paths:
-            - /tmp/.yarn_cache
+            - tmp/.yarn_cache
             - node_modules
-
       - run: npx lerna run build
-      - run: yarn run lint
-      - run: yarn run prettier
-      - run: npx lerna run test -- --colors
+      - run: npx kona verify
+      - run: npx kona ts
+      - run: npx kona lint
+      - run: npx kona test --coverage
+      - run: npx kona coverage
       - deploy:
           command: |
             if [ "${CIRCLE_BRANCH}" != "master" ]; then
@@ -32,4 +30,4 @@ jobs:
             fi
 
             echo "//registry.npmjs.org/:_authToken=$NPMJS_TOKEN" >> ~/.npmrc
-            bin/publish --yes
+            yarn publish --yes

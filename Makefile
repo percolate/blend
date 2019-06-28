@@ -1,8 +1,5 @@
 .DEFAULT_GOAL := install
 
 install:
-	yarn install --pure-lockfile
+	yarn install --frozen-lockfile
 	npx lerna run build
-
-prepublish:
-	bin/prepublish

@@ -1,4 +1,0 @@
-#!/bin/bash -e
-
-# prompts user to update versions, creates git tags, and commits changes
-npx lerna version --conventional-commits --exact $@
