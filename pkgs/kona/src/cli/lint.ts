@@ -85,6 +85,7 @@ async function eslintHandler(argv: ILintArgs) {
     if (argv.fix) cmd.push('--fix')
 
     const eslintCode = await parallelize({
+        cwd: root(),
         cmd: cmd.join(' '),
         files: getFiles(argv).filter(file => mm.isMatch(file, ESLINT)),
         ...PARALLELIZATION,
@@ -96,6 +97,7 @@ async function prettierHandler(argv: ILintArgs) {
     console.log(color(`prettier: ${PRETTIER}`, 'cyan'))
     const outputs: string[] = []
     const prettierCode = await parallelize({
+        cwd: root(),
         cmd: ['npx prettier', argv.fix ? '--write' : '--list-different'].join(' '),
         files: getFiles(argv).filter(file => mm.isMatch(file, PRETTIER, { dot: true })),
         outputs,
