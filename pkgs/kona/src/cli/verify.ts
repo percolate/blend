@@ -4,142 +4,280 @@ import { isFile, getAbsFilePaths } from '../utils/fs'
 import { root } from '../root'
 import mm from 'micromatch'
 import { dirname, resolve, relative } from 'path'
-import { readFileSync } from 'fs'
+import { readFileSync, writeFileSync } from 'fs'
 import { color } from '../utils/color'
 import { forceExit } from '../utils/forceExit'
+import { execSync } from '../utils/execSync'
+import * as _ from 'lodash'
+import { config } from '../config'
+import { BIN_DIR } from '../constants'
+
+const PRETTIER_CONFIG = '@percolate/kona/configs/prettier.json'
+const PRECOMMIT_CMD = 'node_modules/.bin/kona commit preCommit'
 
 const { listDuplicates } = require('yarn-deduplicate') // no @types/yarn-deduplicate
 
-interface IPackageJSON {
-    devDependencies?: { [pkg: string]: string }
+interface IVerifyArgs {
+    fix?: boolean
+}
+interface IPkgJson {
     dependencies?: { [pkg: string]: string }
+    devDependencies?: { [pkg: string]: string }
+    husky?: { hooks?: { [hook: string]: string } }
+    prettier?: string
     resolutions?: { [path: string]: string }
 }
 
-interface IPackages {
+interface IPkg {
     isRoot: boolean
-    json: IPackageJSON
-    lockFile?: string
+    json: IPkgJson
     label: string
-    pkgDir: string
+    lockFile?: string
+    path: string
 }
 
-export const verifyCmd: CommandModule = {
-    command: 'verify',
-    describe: 'Verifies project is setup properly',
-    handler: () => {
-        const pkgs: IPackages[] = getAbsFilePaths(root())
-            .filter(path => mm.isMatch(path, '**/package.json'))
-            .map(path => buildPkg(path))
+type DepType = 'dependencies' | 'devDependencies'
 
-        const konaPkgJsonPath = resolve(__dirname, '../../package.json')
-        const eslintPkgPath = resolve(__dirname, '../../../eslint-plugin/package.json')
+interface IDep {
+    name: string
+    version: string
+    type: DepType
+}
 
-        pkgs.push(buildPkg(konaPkgJsonPath, require(konaPkgJsonPath).name))
-        pkgs.push(buildPkg(eslintPkgPath, require(eslintPkgPath).name))
+interface IPkgValidator {
+    title: string
+    description: string
+    validate(opts: {
+        pkg: Omit<IPkg, 'json'>
+        pkgJson: IPkgJson
+        reportError: (message: string) => void
+        isRoot: boolean
+    }): IPkgJson
+}
 
-        // console.log(`${args.dedupe ? 'Deduping' : 'Verifying'} packages:`)
-        console.log(color(`${pkgs.map(pkg => `  ${pkg.label}`).join('\n')}\n`, 'grey'))
-
-        const versionLookup: { [dep: string]: { paths: string[]; versions: string[] } } = {}
-        const pkgDuplicates: { [path: string]: string[] } = {}
-        const addToOutput = (
-            path: string,
-            packageJson: IPackageJSON,
-            type: 'dependencies' | 'devDependencies'
-        ) => {
-            const deps = packageJson[type]
-            if (!deps) return
-            Object.keys(deps).forEach(dep => {
-                const version = deps[dep]
-                if (!versionLookup[dep]) versionLookup[dep] = { paths: [], versions: [] }
-                versionLookup[dep].paths.push(path)
-                versionLookup[dep].versions.push(version)
+let hasBetaDupes = false
+const versionLookup: { [dep: string]: { paths: string[]; versions: string[] } } = {}
+const pkgValidators: IPkgValidator[] = [
+    {
+        title: 'Exact versions',
+        description: 'Dependencies must be exact (ex. 1.0.0 not ^1.0.0)',
+        validate: ({ pkgJson, reportError, pkg }) => {
+            const badDeps: IDep[] = []
+            forEachDep(pkgJson, dep => {
+                const firstChar = dep.version[0]
+                if (firstChar !== '~' && firstChar !== '^') return
+                badDeps.push(dep)
+                reportError(`${dep.name}@${dep.version}`)
             })
-        }
+            if (!badDeps.length) return pkgJson
+            const yarnDeps: { [dep: string]: string | undefined } = {}
+            JSON.parse(
+                execSync(`yarn list --json --depth 0 --pattern ${badDeps.map(dep => dep.name).join(' ')}`, {
+                    cwd: dirname(pkg.path),
+                })
+            ).data.trees.map((data: { name: string }) => {
+                const match = data.name.match(/^(.+)@(.+)$/)
+                if (!match) throw new Error('Unable to parse `yarn list --json` output')
+                yarnDeps[match![1]] = match![2]
+            })
+            badDeps.forEach(dep => {
+                const realVersion = yarnDeps[dep.name]
+                if (!realVersion) throw new Error(`${dep.name} missing from yarn list output`)
+                pkgJson[dep.type]![dep.name] = realVersion
+            })
+            return pkgJson
+        },
+    },
+    {
+        title: 'Resolutions',
+        description: 'Resolutions must match dependency',
+        validate: ({ pkgJson, reportError, pkg }) => {
+            const resolutions = pkgJson.resolutions
+            if (!resolutions) return pkgJson
+            if (!pkg.lockFile) {
+                reportError('Only works on root package.json')
+                return _.omit(pkgJson, 'resolutions')
+            }
+            _.each(resolutions, (version, glob) => {
+                const dependency = glob.replace('**/', '')
+                let depVersion: string = pkgJson.dependencies ? pkgJson.dependencies[dependency] : ''
+                if (!depVersion) {
+                    depVersion = pkgJson.devDependencies ? pkgJson.devDependencies[dependency] : ''
+                }
+                if (depVersion && depVersion !== version) {
+                    reportError(`${glob}@${version} must match ${dependency}@${depVersion}`)
+                    pkgJson.resolutions![glob] = depVersion
+                }
+            })
+            return pkgJson
+        },
+    },
+    {
+        title: 'Pre-commit hooks',
+        description: 'Ensures pre-commit hooks are setup when using commitLintPaths',
+        validate: ({ isRoot, pkgJson, reportError }) => {
+            if (!isRoot) {
+                if (pkgJson.husky) reportError('Only works on root package.json')
+                return _.omit(pkgJson, 'husky')
+            }
 
-        pkgs.forEach(({ label: path, json, lockFile }) => {
-            addToOutput(path, json, 'dependencies')
-            addToOutput(path, json, 'devDependencies')
-            pkgDuplicates[path] = lockFile ? listDuplicates(readFileSync(lockFile, 'utf8')) : []
-        })
-
-        console.log('Versions out of sync:')
-        console.log(color('  versions should be the same across all package.json', 'grey'))
-        let errors = 0
-        Object.keys(versionLookup).forEach(pkg => {
-            const { paths, versions } = versionLookup[pkg]
-            const versionSet = new Set<string>(versions)
-            if (versionSet.size === 1) return
-            console.log(
-                `  ${pkg}:\n${paths.map((path, index) => `    ${versions[index]} ${path}`).join('\n')}`
-            )
-            errors++
-        })
-        console.log('')
-
-        console.log('Duplicate packages:')
-        console.log(color('  run `dedupe` fo fix', 'grey'))
-        let hasBetaDupes = false
-        Object.keys(pkgDuplicates).forEach(path => {
-            const duplicates = pkgDuplicates[path]
-            if (duplicates.length === 0) return
+            if (_.isEmpty(config.commitLintPaths)) return pkgJson
+            if (_.get(pkgJson, ['husky', 'hooks', 'commit-msg']) === PRECOMMIT_CMD) return pkgJson
+            const husky = {
+                husky: {
+                    hooks: {
+                        'commit-msg': PRECOMMIT_CMD,
+                    },
+                },
+            }
+            reportError(`${JSON.stringify(husky)} missing from root package.json`)
+            return _.merge(pkgJson, husky)
+        },
+    },
+    {
+        title: 'Prettier',
+        description: `Ensures prettier points to ${PRETTIER_CONFIG}`,
+        validate: ({ isRoot, pkgJson, reportError }) => {
+            if (!isRoot) {
+                if (pkgJson.prettier) reportError('Only works on root package.json')
+                return _.omit(pkgJson, 'prettier')
+            }
+            if (pkgJson.prettier === PRETTIER_CONFIG) return pkgJson
+            reportError(`${JSON.stringify({ prettier: PRETTIER_CONFIG })} missing`)
+            pkgJson.prettier = PRETTIER_CONFIG
+            return pkgJson
+        },
+    },
+    {
+        title: 'Duplicate dependencies',
+        description: 'Rerun with --fix to cleanup lockfile',
+        validate: ({ pkgJson, reportError, pkg }) => {
+            const duplicates: string[] = pkg.lockFile
+                ? listDuplicates(readFileSync(pkg.lockFile, 'utf8'))
+                : []
             if (!hasBetaDupes && duplicates.find(dup => /-beta/.test(dup))) {
                 hasBetaDupes = true
             }
-            console.log(`  ${path}:\n${duplicates.map(dup => `    ${dup}`).join('\n')}`)
-            errors++
-        })
-        console.log('')
+            duplicates.forEach(reportError)
+            return pkgJson
+        },
+    },
+]
 
-        console.log('Resolutions:')
-        pkgs.forEach(({ isRoot, json, label: path }) => {
-            const resolutions = json.resolutions
-            if (!resolutions) return
-            if (!isRoot) {
-                console.log(`  resolution only works in the root (remove from ${path})`)
-                return errors++
-            }
-            Object.keys(resolutions).forEach(glob => {
-                const version = resolutions[glob]
-                const dependency = glob.replace('**/', '')
-                const depVersion: string = json.dependencies ? json.dependencies[dependency] : ''
-                if (depVersion && depVersion !== version) {
-                    console.log(`  ${glob}@${version} should match ${dependency}@${depVersion}`)
-                    errors++
+export const verifyCmd: CommandModule<{}, IVerifyArgs> = {
+    command: 'verify',
+    describe: 'Verifies project is setup properly',
+    builder: args => {
+        return args.option('fix', {
+            desc: 'automatically fix errors',
+            type: 'boolean',
+        })
+    },
+    handler: argv => {
+        const pkgs: IPkg[] = getAbsFilePaths(root())
+            .filter(path => mm.isMatch(path, '**/package.json'))
+            .map(path => buildPkg(path))
+
+        // add internal packages for version checks
+        const konaPkgJsonPath = resolve(__dirname, '../../package.json')
+        const eslintPkgPath = resolve(__dirname, '../../../eslint-plugin/package.json')
+        buildPkg(konaPkgJsonPath, require(konaPkgJsonPath).name)
+        buildPkg(eslintPkgPath, require(eslintPkgPath).name)
+
+        let totalErrors = 0
+        pkgs.forEach(pkg => {
+            let newPkgJson: IPkgJson = pkg.json
+            console.log(color(`${pkg.label}`, 'underline'))
+            pkgValidators.forEach(rule => {
+                let errors: string[] = []
+                console.log(`  ${rule.title}: ${color(rule.description, 'grey')}`)
+                newPkgJson = rule.validate({
+                    isRoot: pkg.isRoot,
+                    pkg,
+                    pkgJson: _.cloneDeep(newPkgJson),
+                    reportError: (message: string) => errors.push(message),
+                })
+
+                if (errors.length) {
+                    console.log(color(`${errors.map(message => `    ${message}`).join('\n')}\n`, 'red'))
                 }
             })
+            if (!_.isEqual(pkg.json, newPkgJson)) {
+                console.log('')
+                if (argv.fix) {
+                    console.log(`  Fixing ${pkg.path}...`)
+                    writeFileSync(pkg.path, JSON.stringify(newPkgJson, null, 2) + '\n', 'utf8')
+                } else {
+                    console.log(color(`  Rerun with --fix to fix ${pkg.label}`, 'green'))
+                }
+            }
+            console.log('')
         })
         console.log('')
 
-        // if (args.dedupe) {
-        //     if (hasBetaDupes) return forceExit('Unable to dedupe `*-beta` versions automatically')
-        //     _.each(pkgs, ({ lockFile, path }) => {
-        //         if (!lockFile) return
-        //         console.log(`${path}:`)
-        //         const cmd = `node_modules/.bin/yarn-deduplicate ${lockFile}`
-        //         console.log(cmd)
-        //         exec(cmd, { cwd: ROOT })
-        //         console.log('')
-        //     })
-        //     exec(`yarn --ignore-scripts --no-progress`, { cwd: ROOT })
-        //     return
-        // }
+        const versionErrors: string[] = []
+        _.each(versionLookup, ({ paths, versions }, dep) => {
+            if (_.uniq(versions).length === 1) return
+            versionErrors.push(
+                `${dep}:\n${paths
+                    .map((path, index) => `    ${color(versions[index], 'red')} ${color(path, 'grey')}`)
+                    .join('\n')}`
+            )
+        })
+        if (versionErrors.length) {
+            totalErrors += versionErrors.length
+            console.log(color(`Versions out of sync:`, 'underline'))
+            console.log(color('  Versions should be the same across all package.json\n', 'grey'))
+            console.log(`${versionErrors.join('\n')}\n`)
+            console.log(color('  Please update manually and run `yarn`\n', 'red'))
+        }
 
-        const message = `Total errors: ${errors}\n`
-        return errors > 0 ? forceExit(message) : console.log(message)
+        if (argv.fix) {
+            if (hasBetaDupes) return forceExit('Unable to dedupe `*-beta` versions automatically')
+            console.log('Fixing duplicates...')
+            _.each(pkgs, ({ lockFile }) => {
+                if (!lockFile) return
+                const cmd = `${resolve(BIN_DIR, 'yarn-deduplicate')} ${lockFile}`
+                execSync(cmd, { verbose: true })
+            })
+            console.log('')
+            execSync(`yarn --ignore-scripts --no-progress`, { cwd: root(), verbose: true })
+            console.log('')
+        }
+
+        const message = `Total errors: ${totalErrors}\n`
+        return totalErrors > 0 ? forceExit(message) : console.log(message)
     },
 }
 
-function buildPkg(absPkgJson: string, label?: string): IPackages {
-    const pkgDir = dirname(absPkgJson)
+function buildPkg(absPkgJsonPath: string, pkgName?: string) {
+    const pkgDir = dirname(absPkgJsonPath)
     const lockFile = resolve(pkgDir, 'yarn.lock')
-    const isRoot = pkgDir === root()
-    return {
-        isRoot,
-        json: require(absPkgJson),
+    const pkg: IPkg = {
+        isRoot: pkgDir === root(),
+        json: require(absPkgJsonPath),
+        label: pkgName ? pkgName : relative(root(), absPkgJsonPath),
         lockFile: isFile(lockFile) ? lockFile : undefined,
-        label: label ? label : relative(root(), absPkgJson),
-        pkgDir,
+        path: absPkgJsonPath,
     }
+
+    forEachDep(pkg.json, ({ name, version }) => {
+        if (version.includes('link:')) return
+        if (!versionLookup[name]) versionLookup[name] = { paths: [], versions: [] }
+        versionLookup[name].paths.push(pkg.label)
+        versionLookup[name].versions.push(version)
+    })
+
+    return pkg
+}
+
+function forEachDep(pkgJson: IPkgJson, cb: (dep: IDep) => void, type?: DepType) {
+    if (!type) {
+        forEachDep(pkgJson, cb, 'dependencies')
+        forEachDep(pkgJson, cb, 'devDependencies')
+        return
+    }
+    const deps = pkgJson[type]
+    if (!deps) return
+    _.each(deps, (version, name) => cb({ name, version, type }))
 }
