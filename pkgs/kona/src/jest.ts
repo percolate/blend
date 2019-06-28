@@ -3,6 +3,16 @@ import { Config } from '@jest/types'
 import { COVERAGE_PATH } from './constants'
 
 const JUNIT = 'junit.xml'
+/**
+ * Jest base config with sensible defaults and CI setup
+ *
+ * ```js
+ *  module.exports = {
+ *    ...require('@percolate/kona').jest,
+ *    // your project's config
+ *  }
+ * ```
+ * */
 export const jest: Partial<Config.InitialOptions> = {
     clearMocks: true,
     collectCoverageFrom: ['src/**/*.ts'],

@@ -19,11 +19,11 @@
     "dist"
   ],
   "scripts": {
-    "babel": "babel src/ --out-dir dist/ --root-mode upward --extensions .ts",
+    "babel": "babel src/ --out-dir dist/ --root-mode upward --extensions .ts --esModuleInterop",
     "build": "concurrently \"yarn:clean\" \"yarn:babel\" \"yarn:types\"",
     "clean": "rm -rf dist/",
-    "types": "tsc --project tsconfig.types.json",
-    "watch": "concurrently \"yarn:clean\" \"yarn:babel --watch\" \"yarn:types --watch\""
+    "dev": "concurrently \"yarn:clean\" \"yarn:babel --watch\" \"yarn:types --watch\"",
+    "types": "tsc --project tsconfig.types.json"
   },
   "dependencies": {
     "@babel/cli": "7.4.4",

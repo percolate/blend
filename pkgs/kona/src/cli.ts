@@ -7,6 +7,14 @@ import { tsCmd } from './cli/ts'
 import { verifyCmd } from './cli/verify'
 
 // command needs `<{}>` to prevent "TS4023"
+/**
+ * Kona's CLI can be extended by modifying this `yargs` object
+ *
+ * ```ts
+ * import { yargs } from '@percolate/kona'
+ * yargs.command(...).argv
+ * ```
+ * */
 export const yargs = _yargs
     .alias('h', 'help')
     .command<{}>(commitCmd)
