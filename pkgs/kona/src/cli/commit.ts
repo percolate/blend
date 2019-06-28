@@ -9,6 +9,7 @@ import Bluebird from 'bluebird'
 import { cleanExit } from '../utils/cleanExit'
 import { config } from '../config'
 import { root } from '../root'
+import { resolve } from 'path'
 
 // no @types
 /* eslint-disable import/no-commonjs */
@@ -16,8 +17,13 @@ const lint = require('@commitlint/lint')
 const load = require('@commitlint/load')
 const { bootstrap } = require('commitizen/dist/cli/git-cz')
 
-export const commitCmd: CommandModule = {
-    command: 'commit',
+interface ICommitArgs {
+    files?: string[]
+}
+
+const COMMIT_CMD = 'commit'
+export const commitCmd: CommandModule<{}, ICommitArgs> = {
+    command: `${COMMIT_CMD} [files..]`,
     describe: 'Commit message',
     builder: args => {
         return args
@@ -37,7 +43,6 @@ export const commitCmd: CommandModule = {
                 builder: a => a,
                 handler: async () => {
                     const commitLintPaths = config.commitLintPaths
-                    console.log(commitLintPaths)
                     if (commitLintPaths.length === 0) return
 
                     const stagedFiles = getStagedFiles()
@@ -63,8 +68,10 @@ export const commitCmd: CommandModule = {
             .epilog('https://www.conventionalcommits.org')
     },
     handler: () => {
+        // remove the command name so it's not confused for a file
+        process.argv = process.argv.filter(arg => arg !== COMMIT_CMD)
         bootstrap({
-            cliPath: root(),
+            cliPath: resolve(require.resolve('commitizen'), '../..'),
             config: { path: 'cz-conventional-changelog' },
         })
     },
