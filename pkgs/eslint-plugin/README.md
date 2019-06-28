@@ -46,9 +46,11 @@ module.exports = {
 ### `eslint-plugin-import`
 
 The rule `import/no-unresolved` is on by default which means [eslint-plugin-import](https://www.yarnpkg.com/en/package/eslint-plugin-import) has to be configured.
-`plugin:@percolate/node` enables [plugin:import/typescript](https://github.com/benmosher/eslint-plugin-import#typescript) with node resolution for you.
+`plugin:@percolate/node` configures [eslint-import-resolver-node](https://www.yarnpkg.com/en/package/eslint-import-resolver-node) for you automatically.
 
-If you're using Webpack, you'll need to configure it:
+#### Webpack
+
+If you're using Webpack, you'll need to `yarn eslint-import-resolver-webpack --dev` and configure it:
 
 ```js
 // .eslintrc.js
@@ -63,8 +65,6 @@ module.exports = {
     },
 }
 ```
-
-_Note:_ both [eslint-import-resolver-node](https://www.yarnpkg.com/en/package/eslint-import-resolver-node) and [eslint-import-resolver-webpack](https://www.yarnpkg.com/en/package/eslint-import-resolver-webpack) come pre-installed with this package.
 
 ## Supported Configs
 
