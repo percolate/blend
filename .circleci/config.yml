@@ -19,6 +19,7 @@ jobs:
       - run: npx kona verify
       - run: npx kona ts
       - run: npx kona lint
+      - run: npx kona commit validate
       - run: npx kona test --coverage
       - run: npx kona coverage
       - deploy:
