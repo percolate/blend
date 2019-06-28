@@ -24,7 +24,7 @@ export const react = {
     settings: {
         'import/extensions': ['.js', '.jsx', '.ts', '.tsx'],
         react: {
-            version: '16.8.6',
+            version: 'detect',
         },
     },
     rules: {
