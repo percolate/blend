@@ -3,6 +3,23 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.0.0](https://github.com/percolate/blend/tree/master/pkgs/kona/compare/@percolate/kona@0.1.0...@percolate/kona@1.0.0) (2019-07-01)
+
+
+### Bug Fixes
+
+* “kona commit validate” checks commitLintPaths setup ([b1ec350](https://github.com/percolate/blend/tree/master/pkgs/kona/commit/b1ec350))
+* renamed .percolaterc to .konarc ([2efaaa7](https://github.com/percolate/blend/tree/master/pkgs/kona/commit/2efaaa7))
+
+
+### BREAKING CHANGES
+
+* Renamed .percolaterc to .konarc
+
+
+
+
+
 # 0.1.0 (2019-06-28)
 
 
