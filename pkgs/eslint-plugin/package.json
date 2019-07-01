@@ -5,7 +5,7 @@
   "repository": "https://github.com/percolate/blend/tree/master/pkgs/eslint-plugin",
   "license": "CPAL-1.0",
   "files": [
-    "./dist/"
+    "dist"
   ],
   "main": "./dist/entry.js",
   "scripts": {
