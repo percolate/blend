@@ -1,5 +1,5 @@
 import { CommandModule } from 'yargs'
-import { SKIP_COVERAGE } from '../constants'
+import { SKIP_COVERAGE, PROJECT_CONFIG } from '../constants'
 import { forceExit } from '../utils/forceExit'
 import { getStagedFiles, getCurrBranch, getCommitMessages, commit } from '../utils/git'
 import * as mm from 'micromatch'
@@ -32,6 +32,12 @@ export const commitCmd: CommandModule<{}, ICommitArgs> = {
                 describe: 'Validate commit messages of current branch',
                 builder: a => a,
                 handler: async () => {
+                    const commitLintPaths = config.commitLintPaths
+                    if (commitLintPaths.length === 0)
+                        return console.log(
+                            `Add "commitLintPaths" to ${PROJECT_CONFIG} to enable (ex. commitLintPaths: ['**'])`
+                        )
+
                     const commitMessages = getCommitMessages(getCurrBranch(), config.commitLintPaths)
                     await validate(commitMessages)
                 },
