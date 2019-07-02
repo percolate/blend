@@ -1,4 +1,4 @@
-import htmlTags from 'html-tags'
+import * as htmlTags from 'html-tags'
 import { Rule } from 'eslint'
 
 export const noJsxIdAttrs: Rule.RuleModule = {
