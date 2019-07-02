@@ -3,6 +3,27 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.0.0](https://github.com/percolate/blend/tree/master/pkgs/eslint-plugin/compare/@percolate/eslint-plugin@0.1.1...@percolate/eslint-plugin@1.0.0) (2019-07-02)
+
+
+### Bug Fixes
+
+* build scripts ([b6ead64](https://github.com/percolate/blend/tree/master/pkgs/eslint-plugin/commit/b6ead64))
+
+
+### Build System
+
+* replace babel-cli with tsc —build ([e58fafc](https://github.com/percolate/blend/tree/master/pkgs/eslint-plugin/commit/e58fafc))
+
+
+### BREAKING CHANGES
+
+* Removed tsconfig.types.json and rename tsconfig.base.json to tsconfig.json
+
+
+
+
+
 ## [0.1.1](https://github.com/percolate/blend/tree/master/pkgs/eslint-plugin/compare/@percolate/eslint-plugin@0.1.0...@percolate/eslint-plugin@0.1.1) (2019-07-01)
 
 **Note:** Version bump only for package @percolate/eslint-plugin

@@ -3,6 +3,29 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.0.0](https://github.com/percolate/blend/tree/master/pkgs/kona/compare/@percolate/kona@1.0.0...@percolate/kona@2.0.0) (2019-07-02)
+
+
+### Bug Fixes
+
+* add more extensions to code coverage ([832c39d](https://github.com/percolate/blend/tree/master/pkgs/kona/commit/832c39d))
+* build scripts ([b6ead64](https://github.com/percolate/blend/tree/master/pkgs/kona/commit/b6ead64))
+* removed npx usage for prettier ([6432b47](https://github.com/percolate/blend/tree/master/pkgs/kona/commit/6432b47))
+
+
+### Build System
+
+* replace babel-cli with tsc —build ([e58fafc](https://github.com/percolate/blend/tree/master/pkgs/kona/commit/e58fafc))
+
+
+### BREAKING CHANGES
+
+* Removed tsconfig.types.json and rename tsconfig.base.json to tsconfig.json
+
+
+
+
+
 # [1.0.0](https://github.com/percolate/blend/tree/master/pkgs/kona/compare/@percolate/kona@0.1.0...@percolate/kona@1.0.0) (2019-07-01)
 
 
