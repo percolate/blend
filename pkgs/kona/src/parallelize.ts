@@ -1,4 +1,4 @@
-import Bluebird from 'bluebird'
+import * as Bluebird from 'bluebird'
 import { spawn } from 'child_process'
 import { getMaxCpus } from './utils/getMaxCpus'
 

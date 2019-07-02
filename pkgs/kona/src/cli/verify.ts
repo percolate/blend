@@ -2,7 +2,7 @@
 import { CommandModule } from 'yargs'
 import { isFile, getAbsFilePaths } from '../utils/fs'
 import { root } from '../root'
-import mm from 'micromatch'
+import * as mm from 'micromatch'
 import { dirname, resolve, relative } from 'path'
 import { readFileSync, writeFileSync } from 'fs'
 import { color } from '../utils/color'

@@ -20,7 +20,7 @@ In most cases, you'll use node's module resolution to include them or a symlink.
 ```ts
 // tsconfig.js
 {
-    "extends": "@percolate/kona/configs/tsconfig.base.json",
+    "extends": "@percolate/kona/configs/tsconfig.json",
 }
 ```
 

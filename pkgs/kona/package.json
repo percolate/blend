@@ -19,26 +19,15 @@
     "dist"
   ],
   "scripts": {
-    "babel": "babel src/ --out-dir dist/ --root-mode upward --extensions .ts --esModuleInterop",
-    "build": "concurrently \"yarn:clean\" \"yarn:babel\" \"yarn:types\"",
-    "clean": "rm -rf dist/",
-    "dev": "concurrently \"yarn:clean\" \"yarn:babel --watch\" \"yarn:types --watch\"",
-    "types": "tsc --project tsconfig.types.json"
+    "build": "tsc --build tsconfig.build.json",
+    "dev": "tsc --build tsconfig.json --watch"
   },
   "dependencies": {
-    "@babel/cli": "7.4.4",
-    "@babel/core": "7.4.5",
-    "@babel/plugin-proposal-class-properties": "7.4.4",
-    "@babel/plugin-proposal-object-rest-spread": "7.4.4",
-    "@babel/plugin-syntax-dynamic-import": "7.2.0",
-    "@babel/preset-env": "7.4.5",
-    "@babel/preset-typescript": "7.3.3",
     "@commitlint/config-conventional": "8.0.0",
     "@commitlint/format": "8.0.0",
     "@commitlint/lint": "8.0.0",
     "@commitlint/load": "8.0.0",
     "@connectis/diff-test-coverage": "1.5.3",
-    "@types/lodash": "4.14.135",
     "bluebird": "3.5.5",
     "chalk": "2.4.2",
     "commitizen": "3.1.1",
@@ -53,7 +42,6 @@
     "lodash": "4.17.11",
     "micromatch": "4.0.2",
     "prettier": "1.18.2",
-    "ts-jest": "24.0.2",
     "ts-node": "8.3.0",
     "typescript": "3.5.2",
     "yargs": "13.2.4",

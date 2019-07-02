@@ -15,11 +15,15 @@ const JUNIT = 'junit.xml'
  * */
 export const jest: Partial<Config.InitialOptions> = {
     clearMocks: true,
-    collectCoverageFrom: ['src/**/*.ts'],
+    collectCoverageFrom: ['src/**/*.{js,jsx,ts,tsx}'],
     coverageDirectory: COVERAGE_PATH,
     coverageReporters: ['text-summary', 'lcov', 'html'],
     globals: {
         TEST: true,
+        'ts-jest': {
+            // disable type checking by default so we can test code that isn't perfectly typed
+            isolatedModules: true,
+        },
     },
     reporters: process.env['CI']
         ? [

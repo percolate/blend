@@ -1,6 +1,6 @@
 import * as mm from 'micromatch'
 import * as fs from 'fs'
-import fsReadDirRecursive from 'fs-readdir-recursive'
+import fsReadDirRecursive = require('fs-readdir-recursive')
 import { resolve, isAbsolute } from 'path'
 
 export function isFile(path: string): boolean {

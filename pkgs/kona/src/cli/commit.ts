@@ -5,7 +5,7 @@ import { getStagedFiles, getCurrBranch, getCommitMessages, commit } from '../uti
 import * as mm from 'micromatch'
 import { readFileSync } from 'fs'
 import format from '@commitlint/format'
-import Bluebird from 'bluebird'
+import * as Bluebird from 'bluebird'
 import { cleanExit } from '../utils/cleanExit'
 import { config } from '../config'
 import { root } from '../root'

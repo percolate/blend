@@ -1,4 +1,4 @@
-import _yargs from 'yargs'
+import * as _yargs from 'yargs'
 import { commitCmd } from './cli/commit'
 import { coverageCmd } from './cli/coverage'
 import { lintCmd } from './cli/lint'
