@@ -16,9 +16,11 @@
     "@types/eslint": "4.16.6",
     "@types/fs-readdir-recursive": "1.0.0",
     "@types/jest": "24.0.15",
+    "@types/lodash": "4.14.135",
     "@types/micromatch": "3.1.0",
     "@types/node": "12.0.10",
-    "lerna": "3.15.0"
+    "lerna": "3.15.0",
+    "ts-jest": "24.0.2"
   },
   "prettier": "@percolate/kona/configs/prettier.json",
   "workspaces": [
