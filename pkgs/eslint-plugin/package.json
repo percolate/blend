@@ -9,8 +9,8 @@
   ],
   "main": "./dist/entry.js",
   "scripts": {
-    "build": "babel src/ --out-dir dist/ --extensions .ts --root-mode upward --delete-dir-on-start --ignore \"**/__tests__/**\"",
-    "prepublishOnly": "yarn run build"
+    "build": "tsc --build tsconfig.build.json --clean",
+    "dev": "tsc --build tsconfig.json --watch"
   },
   "dependencies": {
     "@typescript-eslint/eslint-plugin": "1.11.0",

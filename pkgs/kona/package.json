@@ -19,20 +19,10 @@
     "dist"
   ],
   "scripts": {
-    "babel": "babel src/ --out-dir dist/ --root-mode upward --extensions .ts --esModuleInterop",
-    "build": "concurrently \"yarn:clean\" \"yarn:babel\" \"yarn:types\"",
-    "clean": "rm -rf dist/",
-    "dev": "concurrently \"yarn:clean\" \"yarn:babel --watch\" \"yarn:types --watch\"",
-    "types": "tsc --project tsconfig.types.json"
+    "build": "tsc --build tsconfig.build.json --clean",
+    "dev": "tsc --build tsconfig.json --watch"
   },
   "dependencies": {
-    "@babel/cli": "7.4.4",
-    "@babel/core": "7.4.5",
-    "@babel/plugin-proposal-class-properties": "7.4.4",
-    "@babel/plugin-proposal-object-rest-spread": "7.4.4",
-    "@babel/plugin-syntax-dynamic-import": "7.2.0",
-    "@babel/preset-env": "7.4.5",
-    "@babel/preset-typescript": "7.3.3",
     "@commitlint/config-conventional": "8.0.0",
     "@commitlint/format": "8.0.0",
     "@commitlint/lint": "8.0.0",

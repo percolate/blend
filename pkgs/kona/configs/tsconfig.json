@@ -1,0 +1,19 @@
+{
+    "compilerOptions": {
+        // prevents TS from inlining compiled source by default
+        "noEmit": true,
+        // automatically type json configs or fixture data
+        "resolveJsonModule": true,
+        // validates @types/* based on usage only
+        "skipLibCheck": true,
+
+        // still targeting node LTS
+        "moduleResolution": "node",
+        "target": "es5",
+
+        // stricter types
+        "noImplicitAny": true,
+        "noUnusedLocals": true,
+        "strictNullChecks": true
+    }
+}

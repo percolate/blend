@@ -1,4 +1,11 @@
 {
-    "extends": "@percolate/kona/configs/tsconfig.base.json",
-    "exclude": ["node_modules", "dist/**"]
+    "extends": "@percolate/kona/configs/tsconfig.json",
+    "compilerOptions": {
+        "declaration": true,
+        "incremental": true,
+        "noEmit": false,
+        "outDir": "dist/",
+        "tsBuildInfoFile": "tmp/.tsbuildinfo"
+    },
+    "include": ["src/**/*"]
 }
