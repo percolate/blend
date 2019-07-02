@@ -98,7 +98,7 @@ async function prettierHandler(argv: ILintArgs) {
     const outputs: string[] = []
     const prettierCode = await parallelize({
         cwd: root(),
-        cmd: ['npx prettier', argv.fix ? '--write' : '--list-different'].join(' '),
+        cmd: [resolve(BIN_DIR, 'prettier'), argv.fix ? '--write' : '--list-different'].join(' '),
         files: getFiles(argv).filter(file => mm.isMatch(file, PRETTIER, { dot: true })),
         outputs,
         ...PARALLELIZATION,
