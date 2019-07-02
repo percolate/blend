@@ -20,6 +20,10 @@ export const jest: Partial<Config.InitialOptions> = {
     coverageReporters: ['text-summary', 'lcov', 'html'],
     globals: {
         TEST: true,
+        'ts-jest': {
+            // disable type checking by default so we can test code that isn't perfectly typed
+            isolatedModules: true,
+        },
     },
     reporters: process.env['CI']
         ? [
