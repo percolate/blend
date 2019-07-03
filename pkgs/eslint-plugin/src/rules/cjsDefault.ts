@@ -19,15 +19,15 @@ export const cjsDefault: Rule.RuleModule = {
 
                 // verify require path must be a string with a value
                 if (node.arguments[0].type !== 'Literal' || !node.arguments[0].value) return null
-                var srcPath = node.arguments[0].value
+                const srcPath = node.arguments[0].value
 
                 // get import source from path
-                var imports = Exports.get(srcPath, context)
+                const imports = Exports.get(srcPath, context)
                 if (!imports) return null
 
                 // report parse errors for imported file
                 if (imports.errors.length) {
-                    var message =
+                    const message =
                         `Parse errors in imported module '${srcPath}':` +
                         `${imports.errors
                             .map((e: Linter.LintMessage) => `${e.message} (${e.line}:${e.column})`)
@@ -38,8 +38,8 @@ export const cjsDefault: Rule.RuleModule = {
                     })
                 }
 
-                var exportHasDefault = imports.get('default')
-                var requireHasDefault =
+                const exportHasDefault = imports.get('default')
+                const requireHasDefault =
                     node.parent.type === 'MemberExpression' && node.parent.property.name === 'default'
 
                 if (exportHasDefault && !requireHasDefault) {
