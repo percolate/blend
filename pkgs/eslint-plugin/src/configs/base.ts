@@ -125,7 +125,7 @@ export const base = {
         // - start with a letter
         // - not "index"
         // - alphanumeric, `_`, `.<word>`
-        'filenames/match-regex': ['error', '^(?!index)[a-zA-Z][a-zA-Z0-9_]+(.[a-z]+)?$'],
+        'filenames/match-regex': ['error', '^(?!index)[a-zA-Z][a-zA-Z0-9_]+(.[a-z]+)?(.d)?$'],
 
         'import/no-absolute-path': 'error',
         'import/no-amd': 'error',
