@@ -189,7 +189,7 @@ export const verifyCmd: CommandModule<{}, IVerifyArgs> = {
             let newPkgJson: IPkgJson = pkg.json
             console.log(color(`${pkg.label}`, 'underline'))
             pkgValidators.forEach(rule => {
-                let errors: string[] = []
+                const errors: string[] = []
                 console.log(`  ${rule.title}: ${color(rule.description, 'grey')}`)
                 newPkgJson = rule.validate({
                     isRoot: pkg.isRoot,

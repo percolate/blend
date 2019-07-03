@@ -20,7 +20,7 @@
   ],
   "scripts": {
     "build": "tsc --build tsconfig.build.json",
-    "dev": "tsc --build tsconfig.json --watch"
+    "watch": "tsc --build tsconfig.json --watch --preserveWatchOutput"
   },
   "dependencies": {
     "@commitlint/config-conventional": "8.0.0",

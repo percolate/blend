@@ -29,7 +29,7 @@ export const testCmd: CommandModule = {
     command: 'test [TestPathPattern]',
     describe: 'Jest (simplified)',
     builder: args => {
-        let options: { [key: string]: Options } = {}
+        const options: { [key: string]: Options } = {}
         _.each(jest.options, (opt, key: JestKey) => {
             options[key] = {
                 ...opt,
