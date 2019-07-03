@@ -8,7 +8,12 @@ export const base = {
         es6: true,
         node: true,
     },
-    extends: ['eslint:recommended', 'plugin:@typescript-eslint/recommended', 'plugin:import/errors'],
+    extends: [
+        'eslint:recommended',
+        'plugin:@typescript-eslint/eslint-recommended',
+        'plugin:@typescript-eslint/recommended',
+        'plugin:import/errors',
+    ],
     parser: '@typescript-eslint/parser',
     parserOptions: {
         ecmaVersion: '2018',
@@ -20,7 +25,6 @@ export const base = {
     },
     rules: {
         'block-scoped-var': 'error',
-        camelcase: ['error', { properties: 'never' }],
         complexity: ['error', { max: 30 }],
         eqeqeq: 'error',
         'guard-for-in': 'error',
@@ -60,7 +64,6 @@ export const base = {
         'no-new-object': 'error',
         'no-new-wrappers': 'error',
         'no-octal-escape': 'error',
-        // 'no-process-env': 'error', TODO: move to web
         'no-proto': 'error',
         'no-restricted-imports': 'error',
         'no-return-assign': 'error',
@@ -72,7 +75,6 @@ export const base = {
         'no-tabs': 'error',
         'no-throw-literal': 'error',
         'no-unused-expressions': 'error',
-        'no-use-before-define': ['error', 'nofunc'],
         'no-useless-call': 'error',
         'no-useless-computed-key': 'error',
         'no-useless-constructor': 'error',
@@ -89,9 +91,6 @@ export const base = {
         strict: ['error', 'never'],
         'symbol-description': 'error',
         yoda: 'error',
-
-        '@percolate/cjs-default': 'error',
-        '@percolate/no-root-arrow-fn': 'error',
 
         '@typescript-eslint/camelcase': ['error', { properties: 'never' }],
         '@typescript-eslint/explicit-member-accessibility': 'off',
@@ -153,23 +152,21 @@ export const base = {
             },
         },
         {
-            files: ['**/*.ts', '**/*.tsx'],
+            files: ['*.js', '*.jsx'],
             rules: {
-                '@percolate/no-root-arrow-fn': 'off',
+                '@percolate/cjs-default': 'error',
+                '@percolate/no-root-arrow-fn': 'error',
+            },
+        },
+        {
+            files: ['*.ts', '*.tsx'],
+            rules: {
                 'import/named': 'off', // currently broken
-                'no-undef': 'off',
-                'no-use-before-define': 'off',
-                camelcase: 'off',
-
-                // handled by TS and types
-                '@percolate/react-link': 'off',
-                'react/prop-types': 'off',
-                'react/react-in-jsx-scope': 'off',
             },
         },
         {
             // all spec files and initial test setup
-            files: ['**/*.spec.*', '**/tests/setup.*'],
+            files: ['*.spec.*', '**/tests/setup.*'],
             env: {
                 jest: true,
                 mocha: true,
@@ -180,7 +177,6 @@ export const base = {
             rules: {
                 '@percolate/fake-server': 'error',
                 '@percolate/no-allow-console': 'error',
-                '@percolate/no-async': 'off',
                 '@typescript-eslint/no-object-literal-type-assertion': 'warn',
             },
         },

@@ -28,6 +28,9 @@ export const react = {
         },
     },
     rules: {
+        '@percolate/no-async': 'error',
+        '@percolate/no-jsx-id-attrs': 'error',
+
         'no-restricted-properties': [
             'error',
             {
@@ -66,4 +69,20 @@ export const react = {
         'react-hooks/rules-of-hooks': 'error',
         'react-hooks/exhaustive-deps': 'error', // https://github.com/facebook/react/issues/14920#issuecomment-471070149
     },
+    overrides: [
+        {
+            files: ['*.tsx'],
+            rules: {
+                'react/prop-types': 'off',
+                'react/react-in-jsx-scope': 'off',
+            },
+        },
+        {
+            files: ['*.spec.*'],
+            rules: {
+                '@percolate/no-async': 'off',
+                'react/display-name': 'off',
+            },
+        },
+    ],
 }
