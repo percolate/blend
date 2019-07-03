@@ -3,6 +3,22 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.1.0](https://github.com/percolate/blend/tree/master/pkgs/eslint-plugin/compare/@percolate/eslint-plugin@1.0.0...@percolate/eslint-plugin@1.1.0) (2019-07-03)
+
+
+### Bug Fixes
+
+* filenames/match-regex now supports filename.word.d.ts ([b920e60](https://github.com/percolate/blend/tree/master/pkgs/eslint-plugin/commit/b920e60))
+
+
+### Features
+
+* enhance eslint config ([411a373](https://github.com/percolate/blend/tree/master/pkgs/eslint-plugin/commit/411a373))
+
+
+
+
+
 # [1.0.0](https://github.com/percolate/blend/tree/master/pkgs/eslint-plugin/compare/@percolate/eslint-plugin@0.1.1...@percolate/eslint-plugin@1.0.0) (2019-07-02)
 
 
