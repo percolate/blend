@@ -1,8 +1,7 @@
-import { resolve } from 'path'
 import { Config } from '@jest/types'
-import { COVERAGE_PATH } from './constants'
+import { config } from './config'
+import { root } from './root'
 
-const JUNIT = 'junit.xml'
 /**
  * Jest base config with sensible defaults and CI setup
  *
@@ -16,7 +15,7 @@ const JUNIT = 'junit.xml'
 export const jest: Partial<Config.InitialOptions> = {
     clearMocks: true,
     collectCoverageFrom: ['src/**/*.{js,jsx,ts,tsx}'],
-    coverageDirectory: COVERAGE_PATH,
+    coverageDirectory: root(config.coverageDir),
     coverageReporters: ['text-summary', 'lcov', 'html'],
     globals: {
         TEST: true,
@@ -28,7 +27,10 @@ export const jest: Partial<Config.InitialOptions> = {
     reporters: process.env['CI']
         ? [
               'default',
-              ['jest-junit', { output: resolve(COVERAGE_PATH, JUNIT), suiteNameTemplate: '{filepath}' }],
+              [
+                  'jest-junit',
+                  { output: root(config.coverageDir, 'junit.xml'), suiteNameTemplate: '{filepath}' },
+              ],
           ]
         : undefined,
     testMatch: ['**/*.spec.ts'],

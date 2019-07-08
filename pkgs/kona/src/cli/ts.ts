@@ -1,7 +1,7 @@
 import { CommandModule } from 'yargs'
 import { getAbsFilePaths } from '../utils/fs'
 import { root } from '../root'
-import { config, logDefault } from '../config'
+import { config } from '../config'
 import * as mm from 'micromatch'
 import { resolve, relative } from 'path'
 import * as Bluebird from 'bluebird'
@@ -15,22 +15,14 @@ export const tsCmd: CommandModule = {
     describe: 'Run type checking only',
     handler: async () => {
         const cwd = process.cwd()
-        let { tsConfigs } = config
-        let absConfigBlobs: string[]
-        if (tsConfigs.length) {
-            absConfigBlobs = tsConfigs.map(path => root(path))
-        } else {
-            tsConfigs = [resolve(cwd, 'tsconfig.json')]
-            absConfigBlobs = tsConfigs
-            logDefault('tsConfigs', tsConfigs)
-        }
+        const absConfigBlobs = config.tsConfigs.map(path => root(path))
         const configPaths = getAbsFilePaths(root(), {
             filterPaths: [cwd],
         }).filter(path => mm.any(path, absConfigBlobs))
 
         if (!configPaths.length) {
             return console.log(
-                `No tsconfig files found matching "${tsConfigs}" in "${relative(root(), cwd)}"`
+                `No tsconfig files found matching "${config.tsConfigs}" in "${relative(root(), cwd) || '.'}"`
             )
         }
 
