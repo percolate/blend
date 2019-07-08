@@ -8,12 +8,16 @@ import * as _ from 'lodash'
 interface IConfig {
     commitLintPaths: string[]
     coverageDir: string
+    eslintPattern: string
+    prettierPattern: string
     tsConfigs: string[]
 }
 
 const defaultConfig: IConfig = {
     commitLintPaths: [],
     coverageDir: 'tmp/reports',
+    eslintPattern: '**/*.{js,jsx,gql,ts,tsx}',
+    prettierPattern: '**/*.{ts,tsx,js,jsx,md,mdx,json,gql,less,yml}',
     get tsConfigs() {
         return [relative(root(), resolve(process.cwd(), 'tsconfig.json'))]
     },
