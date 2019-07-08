@@ -1,5 +1,6 @@
 import * as _yargs from 'yargs'
 import { commitCmd } from './cli/commit'
+import { configCmd } from './cli/config'
 import { coverageCmd } from './cli/coverage'
 import { lintCmd } from './cli/lint'
 import { testCmd } from './cli/test'
@@ -17,6 +18,7 @@ import { verifyCmd } from './cli/verify'
  * */
 export const yargs = _yargs
     .alias('h', 'help')
+    .command<{}>(configCmd)
     .command<{}>(commitCmd)
     .command<{}>(coverageCmd)
     .command<{}>(lintCmd)
