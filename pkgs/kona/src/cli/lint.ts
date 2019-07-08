@@ -1,6 +1,6 @@
 import { CommandModule } from 'yargs'
 import * as mm from 'micromatch'
-import parallelize, { IParallelizeOpts } from '../parallelize'
+import { parallelize, IParallelizeOpts } from '../utils/parallelize'
 import { BIN_DIR } from '../constants'
 import { getAbsFilePaths } from '../utils/fs'
 import { forceExit } from '../utils/forceExit'
