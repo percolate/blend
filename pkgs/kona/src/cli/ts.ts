@@ -3,26 +3,30 @@ import { getAbsFilePaths } from '../utils/fs'
 import { root } from '../root'
 import { config } from '../config'
 import * as mm from 'micromatch'
-import { resolve, relative } from 'path'
+import { resolve } from 'path'
 import * as Bluebird from 'bluebird'
 import { getMaxCpus } from '../utils/getMaxCpus'
 import { forceExit } from '../utils/forceExit'
 import { spawn } from 'child_process'
 import { BIN_DIR } from '../constants'
 
-export const tsCmd: CommandModule = {
-    command: 'ts',
+interface ITsCmdOpts {
+    path?: string[]
+}
+
+export const tsCmd: CommandModule<{}, ITsCmdOpts> = {
+    command: 'ts [path..]',
     describe: 'Run type checking only',
-    handler: async () => {
-        const cwd = process.cwd()
+    handler: async argv => {
+        const filterPaths = argv.path && argv.path.length ? argv.path : [process.cwd()]
         const absConfigBlobs = config.tsConfigs.map(path => root(path))
         const configPaths = getAbsFilePaths(root(), {
-            filterPaths: [cwd],
+            filterPaths,
         }).filter(path => mm.any(path, absConfigBlobs))
 
         if (!configPaths.length) {
             return console.log(
-                `No tsconfig files found matching "${config.tsConfigs}" in "${relative(root(), cwd) || '.'}"`
+                `No tsconfig files found matching "${config.tsConfigs}" in "${filterPaths.join(',')}"`
             )
         }
 

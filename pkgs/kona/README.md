@@ -50,7 +50,7 @@ Commands:
   kona coverage                Report test coverage on git diff
   kona lint [files..]          Lints source for proper coding styles
   kona test [TestPathPattern]  Jest (simplified)
-  kona ts                      Run type checking only
+  kona ts [path..]             Run type checking only
   kona verify                  Verifies project is setup properly
 
 Options:
