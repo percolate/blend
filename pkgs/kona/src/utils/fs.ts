@@ -1,7 +1,36 @@
 import * as mm from 'micromatch'
 import * as fs from 'fs'
 import fsReadDirRecursive = require('fs-readdir-recursive')
-import { resolve, isAbsolute } from 'path'
+import { dirname, resolve, isAbsolute } from 'path'
+
+// https://github.com/substack/node-mkdirp/blob/f2003bbcffa80f8c9744579fabab1212fc84545a/index.js#L55
+export function ensureDir(p: string, made?: boolean): boolean {
+    if (!made) made = false
+    p = resolve(p)
+
+    try {
+        fs.mkdirSync(p)
+        made = made || !!p
+    } catch (err0) {
+        switch (err0.code) {
+            case 'ENOENT':
+                made = ensureDir(dirname(p), made)
+                ensureDir(p, made)
+                break
+            default:
+                let stat
+                try {
+                    stat = fs.statSync(p)
+                } catch (err1) {
+                    throw err0
+                }
+                if (!stat.isDirectory()) throw err0
+                break
+        }
+    }
+
+    return made
+}
 
 export function isFile(path: string): boolean {
     try {

@@ -45,6 +45,7 @@ $ npx kona -h
 kona <command>
 
 Commands:
+  kona config                  Prints .konarc values with defaults
   kona commit [files..]        Commit message
   kona coverage                Report test coverage on git diff
   kona lint [files..]          Lints source for proper coding styles

@@ -1,6 +1,6 @@
 import * as Bluebird from 'bluebird'
 import { spawn } from 'child_process'
-import { getMaxCpus } from './utils/getMaxCpus'
+import { getMaxCpus } from './getMaxCpus'
 
 const EXIT_CODES = { error: 1, success: 0 }
 
@@ -15,7 +15,7 @@ export interface IParallelizeOpts {
 }
 
 let _quiet: boolean | undefined
-export default function run(options: IParallelizeOpts) {
+export function parallelize(options: IParallelizeOpts) {
     const startTime = process.hrtime()
     const {
         cmd,

@@ -1,12 +1,13 @@
 import { CommandModule } from 'yargs'
 import * as mm from 'micromatch'
-import parallelize, { IParallelizeOpts } from '../parallelize'
-import { ESLINT, PRETTIER, BIN_DIR } from '../constants'
+import { parallelize, IParallelizeOpts } from '../utils/parallelize'
+import { BIN_DIR } from '../constants'
 import { getAbsFilePaths } from '../utils/fs'
 import { forceExit } from '../utils/forceExit'
 import { resolve } from 'path'
 import { root } from '../root'
 import { color } from '../utils/color'
+import { config } from '../config'
 
 interface ILintArgs {
     cache?: boolean
@@ -78,7 +79,7 @@ function getFiles(argv: ILintArgs) {
 }
 
 async function eslintHandler(argv: ILintArgs) {
-    console.log(color(`eslint: ${ESLINT}`, 'cyan'))
+    console.log(color(`eslint: ${config.eslintPattern}`, 'cyan'))
     const cmd = [resolve(BIN_DIR, 'eslint'), '--cache-location', root('tmp/.eslintcache')]
     if (!argv.warn) cmd.push('--quiet')
     if (argv.cache) cmd.push('--cache')
@@ -87,19 +88,19 @@ async function eslintHandler(argv: ILintArgs) {
     const eslintCode = await parallelize({
         cwd: root(),
         cmd: cmd.join(' '),
-        files: getFiles(argv).filter(file => mm.isMatch(file, ESLINT)),
+        files: getFiles(argv).filter(file => mm.isMatch(file, config.eslintPattern)),
         ...PARALLELIZATION,
     }).catch(forceExit)
     return eslintCode
 }
 
 async function prettierHandler(argv: ILintArgs) {
-    console.log(color(`prettier: ${PRETTIER}`, 'cyan'))
+    console.log(color(`prettier: ${config.prettierPattern}`, 'cyan'))
     const outputs: string[] = []
     const prettierCode = await parallelize({
         cwd: root(),
         cmd: [resolve(BIN_DIR, 'prettier'), argv.fix ? '--write' : '--list-different'].join(' '),
-        files: getFiles(argv).filter(file => mm.isMatch(file, PRETTIER, { dot: true })),
+        files: getFiles(argv).filter(file => mm.isMatch(file, config.prettierPattern, { dot: true })),
         outputs,
         ...PARALLELIZATION,
     }).catch(forceExit)
