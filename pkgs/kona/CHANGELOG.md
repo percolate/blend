@@ -3,6 +3,27 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.1.0](https://github.com/percolate/blend/tree/master/pkgs/kona/compare/@percolate/kona@2.0.1...@percolate/kona@2.1.0) (2019-07-09)
+
+
+### Bug Fixes
+
+* add resetMocks: true to jest ([80a4833](https://github.com/percolate/blend/tree/master/pkgs/kona/commit/80a4833))
+* remove duplicate config[key] assignment ([a7b84d8](https://github.com/percolate/blend/tree/master/pkgs/kona/commit/a7b84d8))
+
+
+### Features
+
+* add fs/ensureDir ([179bd8b](https://github.com/percolate/blend/tree/master/pkgs/kona/commit/179bd8b))
+* add git/isLatestHash ([5e3b3ec](https://github.com/percolate/blend/tree/master/pkgs/kona/commit/5e3b3ec))
+* add kona config ([93e4652](https://github.com/percolate/blend/tree/master/pkgs/kona/commit/93e4652))
+* add kona coverage —dir options ([fba0b39](https://github.com/percolate/blend/tree/master/pkgs/kona/commit/fba0b39))
+* export utils ([db77125](https://github.com/percolate/blend/tree/master/pkgs/kona/commit/db77125))
+
+
+
+
+
 ## [2.0.1](https://github.com/percolate/blend/tree/master/pkgs/kona/compare/@percolate/kona@2.0.0...@percolate/kona@2.0.1) (2019-07-03)
 
 **Note:** Version bump only for package @percolate/kona
