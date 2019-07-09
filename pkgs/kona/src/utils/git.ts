@@ -39,6 +39,11 @@ export function isMaster(branch = getCurrBranch()) {
     return branch === 'master'
 }
 
+export function isLatestHash(hash: string, branch: string) {
+    const latestHash = execSync(`git fetch --quiet -n > /dev/null && git show-ref origin/${branch} --hash`)
+    return hash === latestHash
+}
+
 export function commit(message: string, flags: string[] = []) {
     return execSync(`git commit ${[`--message ${JSON.stringify(message)}`, ...flags].join(' ')}`)
 }
