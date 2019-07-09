@@ -11,7 +11,7 @@ import { root } from '../root'
 
 const COVERAGE_THRESHOLD = 90
 const BRANCH_COVERAGE = 80
-const LCOV = 'lcov.info'
+const LCOV = 'lcov*.info'
 
 interface ICoverageOpts {
     dir?: string
