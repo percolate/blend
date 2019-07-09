@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [2.1.1](https://github.com/percolate/blend/tree/master/pkgs/kona/compare/@percolate/kona@2.1.0...@percolate/kona@2.1.1) (2019-07-09)
+
+
+### Bug Fixes
+
+* bin/coverage now looks for lcov*.info ([6cc83ba](https://github.com/percolate/blend/tree/master/pkgs/kona/commit/6cc83ba))
+
+
+
+
+
 # [2.1.0](https://github.com/percolate/blend/tree/master/pkgs/kona/compare/@percolate/kona@2.0.1...@percolate/kona@2.1.0) (2019-07-09)
 
 
