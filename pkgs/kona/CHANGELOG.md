@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.2.0](https://github.com/percolate/blend/tree/master/pkgs/kona/compare/@percolate/kona@2.1.1...@percolate/kona@2.2.0) (2019-07-09)
+
+
+### Features
+
+* add ability to filter paths to kona ts [path..] ([a8e0283](https://github.com/percolate/blend/tree/master/pkgs/kona/commit/a8e0283))
+
+
+
+
+
 ## [2.1.1](https://github.com/percolate/blend/tree/master/pkgs/kona/compare/@percolate/kona@2.1.0...@percolate/kona@2.1.1) (2019-07-09)
 
 
