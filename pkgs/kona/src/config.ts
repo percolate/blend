@@ -31,6 +31,5 @@ export const config = {} as IConfig
 Object.keys(defaultConfig).forEach(<K extends keyof IConfig>(key: K) => {
     const defaultValue = defaultConfig[key]
     const customValue = _.get(customConfig, key)
-    config[key] =
-        typeof customValue === typeof defaultValue ? (config[key] = customValue as IConfig[K]) : defaultValue
+    config[key] = typeof customValue === typeof defaultValue ? (customValue as IConfig[K]) : defaultValue
 })
