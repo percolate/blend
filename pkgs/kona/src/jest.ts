@@ -33,8 +33,8 @@ export const jest: Partial<Config.InitialOptions> = {
               ],
           ]
         : undefined,
-    resetMocks: true,
     testMatch: ['**/*.spec.ts'],
+    restoreMocks: true,
     testPathIgnorePatterns: ['/node_modules/', '/dist/', '/tmp/'],
     watchPlugins: ['jest-watch-typeahead/filename', 'jest-watch-typeahead/testname'],
 }
