@@ -3,6 +3,20 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [2.2.1](https://github.com/percolate/blend/tree/master/pkgs/kona/compare/@percolate/kona@2.2.0...@percolate/kona@2.2.1) (2019-07-12)
+
+
+### Bug Fixes
+
+* add more js/jsx extensions to default testMatch ([8af95cf](https://github.com/percolate/blend/tree/master/pkgs/kona/commit/8af95cf))
+* add TEST_DEBUG based on --debug argv ([8d5183b](https://github.com/percolate/blend/tree/master/pkgs/kona/commit/8d5183b))
+* kona verify error count ([ac0fd63](https://github.com/percolate/blend/tree/master/pkgs/kona/commit/ac0fd63))
+* rename resetMocks to restoreMocks ([fdc8d0b](https://github.com/percolate/blend/tree/master/pkgs/kona/commit/fdc8d0b))
+
+
+
+
+
 # [2.2.0](https://github.com/percolate/blend/tree/master/pkgs/kona/compare/@percolate/kona@2.1.1...@percolate/kona@2.2.0) (2019-07-09)
 
 
