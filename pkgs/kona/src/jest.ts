@@ -19,6 +19,7 @@ export const jest: Partial<Config.InitialOptions> = {
     coverageReporters: ['text-summary', 'lcov', 'html'],
     globals: {
         TEST: true,
+        TEST_DEBUG: process.argv.includes('--debug'),
         'ts-jest': {
             // disable type checking by default so we can test code that isn't perfectly typed
             isolatedModules: true,
@@ -33,8 +34,8 @@ export const jest: Partial<Config.InitialOptions> = {
               ],
           ]
         : undefined,
-    resetMocks: true,
-    testMatch: ['**/*.spec.ts'],
+    restoreMocks: true,
+    testMatch: ['**/*.spec.{ts,tsx,js,jsx}'],
     testPathIgnorePatterns: ['/node_modules/', '/dist/', '/tmp/'],
     watchPlugins: ['jest-watch-typeahead/filename', 'jest-watch-typeahead/testname'],
 }

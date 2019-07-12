@@ -199,6 +199,7 @@ export const verifyCmd: CommandModule<{}, IVerifyArgs> = {
                 })
 
                 if (errors.length) {
+                    totalErrors++
                     console.log(color(`${errors.map(message => `    ${message}`).join('\n')}\n`, 'red'))
                 }
             })
