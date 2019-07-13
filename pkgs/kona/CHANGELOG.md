@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [2.2.2](https://github.com/percolate/blend/tree/master/pkgs/kona/compare/@percolate/kona@2.2.1...@percolate/kona@2.2.2) (2019-07-13)
+
+
+### Bug Fixes
+
+* remove restoreMocks ([734596a](https://github.com/percolate/blend/tree/master/pkgs/kona/commit/734596a))
+
+
+
+
+
 ## [2.2.1](https://github.com/percolate/blend/tree/master/pkgs/kona/compare/@percolate/kona@2.2.0...@percolate/kona@2.2.1) (2019-07-12)
 
 
