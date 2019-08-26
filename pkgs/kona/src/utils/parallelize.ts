@@ -1,4 +1,3 @@
-import * as Bluebird from 'bluebird'
 import { spawn } from 'child_process'
 import { getMaxCpus } from './getMaxCpus'
 
@@ -33,7 +32,7 @@ export function parallelize(options: IParallelizeOpts) {
 
     const cpus = getMaxCpus(maxCpus)
 
-    return Bluebird.resolve()
+    return Promise.resolve()
         .then(() => processFiles({ cmd, cwd, files, maxChunkSize, cpus, outputs }))
         .then(exitCodes => summarize({ exitCodes, startTime }))
 }
@@ -70,7 +69,7 @@ function processFiles({ cmd, cwd, files, maxChunkSize = Infinity, cpus, outputs 
         processes.push(spawnProcess({ cmd, cwd, next, outputs }))
     }
 
-    return Bluebird.map(processes, process => process)
+    return Promise.all(processes)
 }
 
 interface ISpawnProcessOpts {
@@ -79,13 +78,13 @@ interface ISpawnProcessOpts {
     next: () => string[]
     outputs?: string[]
 }
-function spawnProcess(options: ISpawnProcessOpts, code = EXIT_CODES.success): Bluebird<number> {
+function spawnProcess(options: ISpawnProcessOpts, code = EXIT_CODES.success): Promise<number> {
     const { cmd, cwd, next, outputs } = options
     const files = next()
 
-    if (!files.length) return Bluebird.resolve(code)
+    if (!files.length) return Promise.resolve(code)
 
-    return new Bluebird(resolve => {
+    return new Promise(resolve => {
         const [executable, ...args] = cmd.split(/\s+/g)
         const child = spawn(executable, args.concat(files), {
             cwd,
