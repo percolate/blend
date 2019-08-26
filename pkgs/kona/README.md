@@ -61,7 +61,7 @@ Options:
 ## Development
 
 ```sh
-yarn dev
+yarn watch
 ```
 
 `yarn run` for all options.
