@@ -7,6 +7,6 @@ export { color, Color } from './color'
 export { execSync } from './execSync'
 export { forceExit } from './forceExit'
 export { getMaxCpus } from './getMaxCpus'
-export { parallelize } from './parallelize'
+export { parallelize, IParallelizeOpts } from './parallelize'
 export const git = gitUtils
 export const fs = fsUtils
