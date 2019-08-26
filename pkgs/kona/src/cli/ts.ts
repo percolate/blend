@@ -1,12 +1,10 @@
 import { CommandModule } from 'yargs'
-import { getAbsFilePaths } from '../utils/fs'
+import { forceExit, fs, getMaxCpus } from '@percolate/cli-utils'
 import { root } from '../root'
 import { config } from '../config'
 import * as mm from 'micromatch'
 import { resolve } from 'path'
 import * as Bluebird from 'bluebird'
-import { getMaxCpus } from '../utils/getMaxCpus'
-import { forceExit } from '../utils/forceExit'
 import { spawn } from 'child_process'
 import { BIN_DIR } from '../constants'
 
@@ -20,9 +18,11 @@ export const tsCmd: CommandModule<{}, ITsCmdOpts> = {
     handler: async argv => {
         const filterPaths = argv.path && argv.path.length ? argv.path : [process.cwd()]
         const absConfigBlobs = config.tsConfigs.map(path => root(path))
-        const configPaths = getAbsFilePaths(root(), {
-            filterPaths,
-        }).filter(path => mm.any(path, absConfigBlobs))
+        const configPaths = fs
+            .getAbsFilePaths(root(), {
+                filterPaths,
+            })
+            .filter(path => mm.any(path, absConfigBlobs))
 
         if (!configPaths.length) {
             return console.log(

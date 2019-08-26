@@ -1,12 +1,10 @@
 import { CommandModule } from 'yargs'
 import { SKIP_COVERAGE, PROJECT_CONFIG } from '../constants'
-import { forceExit } from '../utils/forceExit'
-import { getStagedFiles, getCurrBranch, getCommitMessages, commit } from '../utils/git'
+import { cleanExit, forceExit, git } from '@percolate/cli-utils'
 import * as mm from 'micromatch'
 import { readFileSync } from 'fs'
 import format from '@commitlint/format'
 import * as Bluebird from 'bluebird'
-import { cleanExit } from '../utils/cleanExit'
 import { config } from '../config'
 import { root } from '../root'
 import { resolve } from 'path'
@@ -38,7 +36,7 @@ export const commitCmd: CommandModule<{}, ICommitArgs> = {
                             `Add "commitLintPaths" to ${PROJECT_CONFIG} to enable (ex. commitLintPaths: ['**'])`
                         )
 
-                    const commitMessages = getCommitMessages(getCurrBranch(), config.commitLintPaths)
+                    const commitMessages = git.getCommitMessages(git.getCurrBranch(), config.commitLintPaths)
                     await validate(commitMessages)
                 },
             })
@@ -51,7 +49,7 @@ export const commitCmd: CommandModule<{}, ICommitArgs> = {
                     const commitLintPaths = config.commitLintPaths
                     if (commitLintPaths.length === 0) return
 
-                    const stagedFiles = getStagedFiles()
+                    const stagedFiles = git.getStagedFiles()
                     const matchLintPaths = stagedFiles.some(stagedFile => {
                         return mm.any(stagedFile, commitLintPaths, { dot: true })
                     })
@@ -68,7 +66,7 @@ export const commitCmd: CommandModule<{}, ICommitArgs> = {
                 describe: `Shortcut to commit message ${SKIP_COVERAGE}`,
                 builder: a => a,
                 handler: () => {
-                    commit(`chore: ${SKIP_COVERAGE}`, ['--allow-empty'])
+                    git.commit(`chore: ${SKIP_COVERAGE}`, ['--allow-empty'])
                 },
             })
             .epilog('https://www.conventionalcommits.org')

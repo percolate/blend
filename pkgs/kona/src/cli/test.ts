@@ -1,12 +1,10 @@
 import { CommandModule, Options } from 'yargs'
 import * as jest from 'jest-cli/build/cli/args'
 import * as _ from 'lodash'
-import { execSync } from '../utils/execSync'
+import { execSync, fs, getMaxCpus } from '@percolate/cli-utils'
 import { resolve } from 'path'
 import { BIN_DIR } from '../constants'
-import { isFile } from '../utils/fs'
 import { root } from '../root'
-import { getMaxCpus } from '../utils/getMaxCpus'
 
 type JestKey = keyof typeof jest.options
 
@@ -61,7 +59,7 @@ export const testCmd: CommandModule = {
         // Jest must be run alongside jest.config.js (and .babelrc)
         // This breaks monorepos with a single jest.config.js in the root when run inside pkgs/*
         const cwdConfig = resolve(process.cwd(), JEST_CONFIG)
-        const cwd = isFile(cwdConfig) ? undefined : root()
+        const cwd = fs.isFile(cwdConfig) ? undefined : root()
 
         execSync(`${resolve(BIN_DIR, 'jest')} ${jestArgv.join(' ')}`, {
             cwd,
