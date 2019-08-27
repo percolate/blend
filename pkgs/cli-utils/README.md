@@ -1,6 +1,6 @@
 # @percolate/cli-utils
 
-This repos aims to provide very lightweight utils commonly used in CLI.
+This repo aims to provide very lightweight utils commonly used in CLI.
 
 ## Setting up a new repo
 
