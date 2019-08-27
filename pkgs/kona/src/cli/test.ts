@@ -63,7 +63,6 @@ export const testCmd: CommandModule = {
 
         execSync(`${resolve(BIN_DIR, 'jest')} ${jestArgv.join(' ')}`, {
             cwd,
-            noStack: true,
             verbose: true,
         })
     },
