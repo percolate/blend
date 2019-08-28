@@ -1,12 +1,9 @@
 import { CommandModule } from 'yargs'
 import * as mm from 'micromatch'
-import { parallelize, IParallelizeOpts } from '../utils/parallelize'
+import { color, fs, forceExit, parallelize, IParallelizeOpts } from '@percolate/cli-utils'
 import { BIN_DIR } from '../constants'
-import { getAbsFilePaths } from '../utils/fs'
-import { forceExit } from '../utils/forceExit'
 import { resolve } from 'path'
 import { root } from '../root'
-import { color } from '../utils/color'
 import { config } from '../config'
 
 interface ILintArgs {
@@ -72,7 +69,7 @@ export const lintCmd: CommandModule<{}, ILintArgs> = {
 }
 
 function getFiles(argv: ILintArgs) {
-    return getAbsFilePaths(process.cwd(), {
+    return fs.getAbsFilePaths(process.cwd(), {
         cwds: [process.cwd(), root()],
         filterPaths: argv.files,
     })

@@ -1,4 +1,4 @@
-import * as _yargs from 'yargs'
+import _yargs = require('yargs/yargs')
 import { commitCmd } from './cli/commit'
 import { configCmd } from './cli/config'
 import { coverageCmd } from './cli/coverage'
@@ -16,7 +16,7 @@ import { verifyCmd } from './cli/verify'
  * yargs.command(...).argv
  * ```
  * */
-export const yargs = _yargs
+export const yargs = _yargs(process.argv.slice(2))
     .alias('h', 'help')
     .command<{}>(configCmd)
     .command<{}>(commitCmd)

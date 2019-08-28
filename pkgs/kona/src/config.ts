@@ -1,5 +1,5 @@
 import { PROJECT_CONFIG } from './constants'
-import { isFile } from './utils/fs'
+import { fs } from '@percolate/cli-utils'
 import { root } from './root'
 import { readFileSync } from 'fs'
 import { resolve, relative } from 'path'
@@ -24,7 +24,9 @@ const defaultConfig: IConfig = {
 }
 
 const configPath = root(PROJECT_CONFIG)
-const customConfig: Partial<IConfig> = isFile(configPath) ? JSON.parse(readFileSync(configPath, 'utf8')) : {}
+const customConfig: Partial<IConfig> = fs.isFile(configPath)
+    ? JSON.parse(readFileSync(configPath, 'utf8'))
+    : {}
 
 // eslint-disable-next-line @typescript-eslint/no-object-literal-type-assertion
 export const config = {} as IConfig

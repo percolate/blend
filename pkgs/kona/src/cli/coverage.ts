@@ -1,11 +1,7 @@
 import { CommandModule } from 'yargs'
 import { SKIP_COVERAGE, BIN_DIR } from '../constants'
-import { forceExit } from '../utils/forceExit'
-import { getCurrBranch, isMaster, getLastCommitMsg, fetchLatestMaster } from '../utils/git'
-import { cleanExit } from '../utils/cleanExit'
-import { execSync } from '../utils/execSync'
+import { cleanExit, color, execSync, forceExit, git } from '@percolate/cli-utils'
 import { resolve } from 'path'
-import { color } from '../utils/color'
 import { config } from '../config'
 import { root } from '../root'
 
@@ -29,14 +25,14 @@ export const coverageCmd: CommandModule<{}, ICoverageOpts> = {
             .epilog(`Include "${SKIP_COVERAGE}" in the latest commit message to bypass`)
     },
     handler: argv => {
-        if (isMaster()) return cleanExit("Skipped: 'master' branch")
+        if (git.isMaster()) return cleanExit("Skipped: 'master' branch")
 
         console.log('Fetching latest master...')
-        fetchLatestMaster()
+        git.fetchLatestMaster()
 
         console.log('Computing coverage on diff...')
         const cmd = [
-            `git diff master...${getCurrBranch()}`,
+            `git diff master...${git.getCurrBranch()}`,
             '|',
             resolve(BIN_DIR, 'diff-test-coverage'),
             `--coverage='${root(config.coverageDir, LCOV)}'`,
@@ -51,7 +47,7 @@ export const coverageCmd: CommandModule<{}, ICoverageOpts> = {
         ].join(' ')
         execSync(cmd, {
             onError: e => {
-                if (getLastCommitMsg().includes(SKIP_COVERAGE)) {
+                if (git.getLastCommitMsg().includes(SKIP_COVERAGE)) {
                     return console.log(color(`${SKIP_COVERAGE} found: reporting without failure\n`, 'yellow'))
                 }
                 return forceExit(e)

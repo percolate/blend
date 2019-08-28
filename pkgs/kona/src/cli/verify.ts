@@ -1,13 +1,10 @@
 /* eslint import/no-commonjs: "off" */
 import { CommandModule } from 'yargs'
-import { isFile, getAbsFilePaths } from '../utils/fs'
+import { color, execSync, forceExit, fs } from '@percolate/cli-utils'
 import { root } from '../root'
 import * as mm from 'micromatch'
 import { dirname, resolve, relative } from 'path'
 import { readFileSync, writeFileSync } from 'fs'
-import { color } from '../utils/color'
-import { forceExit } from '../utils/forceExit'
-import { execSync } from '../utils/execSync'
 import * as _ from 'lodash'
 import { config } from '../config'
 import { BIN_DIR } from '../constants'
@@ -174,7 +171,8 @@ export const verifyCmd: CommandModule<{}, IVerifyArgs> = {
         })
     },
     handler: argv => {
-        const pkgs: IPkg[] = getAbsFilePaths(root())
+        const pkgs: IPkg[] = fs
+            .getAbsFilePaths(root())
             .filter(path => mm.isMatch(path, '**/package.json'))
             .map(path => buildPkg(path))
 
@@ -258,7 +256,7 @@ function buildPkg(absPkgJsonPath: string, pkgName?: string) {
         isRoot: pkgDir === root(),
         json: require(absPkgJsonPath),
         label: pkgName ? pkgName : relative(root(), absPkgJsonPath),
-        lockFile: isFile(lockFile) ? lockFile : undefined,
+        lockFile: fs.isFile(lockFile) ? lockFile : undefined,
         path: absPkgJsonPath,
     }
 

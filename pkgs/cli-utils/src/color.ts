@@ -47,6 +47,6 @@ export type Color =
     | 'bgCyanBright'
     | 'bgWhiteBright'
 
-export function color(string: string, style?: Color) {
-    return style ? chalk[style](string) : string
+export function color(string: string, style: Color) {
+    return chalk[style](string)
 }
