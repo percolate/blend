@@ -3,6 +3,31 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [3.0.0](https://github.com/percolate/blend/tree/master/pkgs/kona/compare/@percolate/kona@2.2.2...@percolate/kona@3.0.0) (2019-08-28)
+
+
+### Bug Fixes
+
+* color util now requires style ([622fbb5](https://github.com/percolate/blend/tree/master/pkgs/kona/commit/622fbb5))
+* remove bluebird dependency from parallelize ([cf20901](https://github.com/percolate/blend/tree/master/pkgs/kona/commit/cf20901))
+* remove unused noStack ([f3de407](https://github.com/percolate/blend/tree/master/pkgs/kona/commit/f3de407))
+* use yargs’ non-singleton interface ([672ae8b](https://github.com/percolate/blend/tree/master/pkgs/kona/commit/672ae8b))
+
+
+### Code Refactoring
+
+* remove @percolate/cli-utils exports ([9d25216](https://github.com/percolate/blend/tree/master/pkgs/kona/commit/9d25216))
+
+
+### BREAKING CHANGES
+
+* consumers should import @percolate/cli-utils directly
+* It doesn't make sense to call color without passing in a style
+
+
+
+
+
 ## [2.2.2](https://github.com/percolate/blend/tree/master/pkgs/kona/compare/@percolate/kona@2.2.1...@percolate/kona@2.2.2) (2019-07-13)
 
 
