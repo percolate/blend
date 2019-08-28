@@ -7,18 +7,14 @@ interface IExecSyncBaseOpts {
     onError?(err: Error): void
 }
 
-interface IExecSyncStringOpts extends IExecSyncBaseOpts {
-    noStack?: boolean
-}
-
 interface IExecSyncVerboseOpts extends IExecSyncBaseOpts {
     verbose: true
 }
 
 /* eslint-disable import/export */
-export function execSync(cmd: string, opts?: IExecSyncStringOpts): string
+export function execSync(cmd: string, opts?: IExecSyncBaseOpts): string
 export function execSync(cmd: string, opts?: IExecSyncVerboseOpts): void
-export function execSync(cmd: string, opts: IExecSyncStringOpts | IExecSyncVerboseOpts = {}) {
+export function execSync(cmd: string, opts: IExecSyncBaseOpts | IExecSyncVerboseOpts = {}) {
     const { cwd, onError = forceExit } = opts
 
     if ('verbose' in opts) {
@@ -38,7 +34,7 @@ export function execSync(cmd: string, opts: IExecSyncStringOpts | IExecSyncVerbo
             .toString()
             .trim()
     } catch (e) {
-        onError(opts.noStack ? e.message : e)
+        onError(e)
         return ''
     }
 }
