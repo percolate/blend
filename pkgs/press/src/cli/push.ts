@@ -1,24 +1,22 @@
 import { CommandModule } from 'yargs'
 import { execSync, git, forceExit, cleanExit } from '@percolate/cli-utils'
 import * as AWS from 'aws-sdk'
-import { PUSH_COMMIT, TAG_COMMIT_PREFIX, REGION } from '../constants'
+import { PUSH_COMMIT, TAG_COMMIT_PREFIX, REGION, TAG_BRANCH_PREFIX, TAG_VERSION_PREFIX } from '../constants'
 import { BRANCH_OPT, HASH_OPT, REPO_OPT } from './options'
+import * as semverUtils from 'semver'
 
 interface IPushOpts {
     branch: string
+    forcePush?: boolean
     fromArchive?: string
     hash: string
     image: string
     profile?: string
     region: string
     repo: string
+    semver?: string
     service?: string
 }
-
-const EPILOG = `
-An image is automatically pushed from CI when:
-- branch is "master"
-- latest commit message includes "${PUSH_COMMIT}"`
 
 export const pushCmd: CommandModule<{ image: string }, IPushOpts> = {
     command: 'push <image>',
@@ -27,8 +25,13 @@ export const pushCmd: CommandModule<{ image: string }, IPushOpts> = {
         return argv
             .option('branch', BRANCH_OPT)
             .option('fromArchive', {
-                desc: 'Load image from archive',
+                desc: 'Tar file to load image from',
                 type: 'string',
+            })
+            .option('forcePush', {
+                default: git.getLastCommitMsg().includes(PUSH_COMMIT),
+                defaultDescription: `true if latest commit message includes ${PUSH_COMMIT}`,
+                desc: 'Force push non-master branches',
             })
             .option('hash', HASH_OPT)
             .option('profile', {
@@ -44,11 +47,19 @@ export const pushCmd: CommandModule<{ image: string }, IPushOpts> = {
                 type: 'string',
             })
             .option('repo', REPO_OPT)
-            .epilog(EPILOG)
+            .option('semver', {
+                desc: 'Semantic version to tag image with',
+                type: 'string',
+            })
     },
     handler: async (argv: IPushOpts) => {
-        const { branch, hash, image, profile, region, repo } = argv
+        const { branch, forcePush, hash, image, profile, region, repo, semver } = argv
         const tag = getTag(argv)
+
+        // validate semver
+        if (semver && !semverUtils.valid(semver)) {
+            return forceExit(`Invalid semver: ${semver}`)
+        }
 
         // load optional image archive
         if (argv['fromArchive']) execSync(`docker load --input ${argv['fromArchive']}`, { verbose: true })
@@ -88,7 +99,7 @@ export const pushCmd: CommandModule<{ image: string }, IPushOpts> = {
             .then(() => true)
             .catch((e: AWS.AWSError) => {
                 if (e.code === 'ImageNotFoundException') return false
-                forceExit(e)
+                return forceExit(e)
             })
         if (imagePushed) {
             return cleanExit(`Image already pushed: ${repoUri}:${tag}`)
@@ -109,26 +120,46 @@ export const pushCmd: CommandModule<{ image: string }, IPushOpts> = {
             onError: e => forceExit(e.message.replace(password, '<REDACTED>')),
         })
 
-        // CI gating for master or commit message
+        // prevent unecessary push on CI
         const isMaster = git.isMaster(branch)
-        if (!isMaster && !git.getLastCommitMsg().includes(PUSH_COMMIT)) {
+        if (!isMaster && !forcePush) {
             return cleanExit(`To push image, include "${PUSH_COMMIT}" in your commit message`)
         }
 
-        // push image to commit tag
+        // push image to specific tag
         execSync(`docker tag ${image} ${repoUri}:${tag}`, { verbose: true })
         execSync(`docker push ${repoUri}:${tag}`, { verbose: true })
 
         if (!isMaster) return
 
-        // check if current commit hash is an ancestor of the latest image commit hash
-        const latestHash = await getLatestCommitHash(ecr, argv)
-        if (latestHash) {
-            execSync(`git merge-base --is-ancestor ${latestHash} ${hash}`, {
-                onError: () => {
-                    cleanExit(`Newer hash has already been push to ":latest" (${latestHash})`)
-                },
+        const latestImageTags = await ecr
+            .describeImages({ repositoryName: repo, imageIds: [{ imageTag: 'latest' }] })
+            .promise()
+            .then(result => {
+                if (!result.imageDetails) return
+                return result.imageDetails[0].imageTags
             })
+            .catch((e: AWS.AWSError) => {
+                if (e.code === 'ImageNotFoundException') return
+                return forceExit(e)
+            })
+
+        if (semver) {
+            // check if semver is newer than latest
+            const latestVersion = getPrefixedValue(TAG_VERSION_PREFIX, latestImageTags)
+            if (latestVersion && semverUtils.gt(latestVersion, semver)) {
+                return cleanExit(`Newer version has already been push to ":latest" (${latestVersion})`)
+            }
+        } else {
+            // check if current commit hash is an ancestor of the latest image commit hash
+            const latestHash = getPrefixedValue(TAG_COMMIT_PREFIX, latestImageTags)
+            if (latestHash) {
+                execSync(`git merge-base --is-ancestor ${latestHash} ${hash}`, {
+                    onError: () => {
+                        cleanExit(`Newer hash has already been push to ":latest" (${latestHash})`)
+                    },
+                })
+            }
         }
 
         // push image to latest
@@ -137,25 +168,15 @@ export const pushCmd: CommandModule<{ image: string }, IPushOpts> = {
     },
 }
 
-function getTag({ branch, hash }: { branch: string; hash: string }) {
+function getTag({ branch, hash, semver }: IPushOpts) {
+    if (semver) return TAG_VERSION_PREFIX + semver
     if (git.isMaster(branch)) return TAG_COMMIT_PREFIX + hash
     const cleanBranch = branch.replace(/[^a-zA-Z0-9_-]/g, '').replace('-', '_')
-    return `branch-${cleanBranch}-${hash}`
+    return `${TAG_BRANCH_PREFIX}-${cleanBranch}-${hash}`
 }
 
-function getLatestCommitHash(ecr: AWS.ECR, { repo }: IPushOpts) {
-    return ecr
-        .describeImages({ repositoryName: repo, imageIds: [{ imageTag: 'latest' }] })
-        .promise()
-        .then(result => {
-            if (!result.imageDetails) return
-            const tags = result.imageDetails[0].imageTags
-            if (!tags) return
-            const latestCommitTag = tags.find(tag => tag.startsWith(TAG_COMMIT_PREFIX))
-            return latestCommitTag ? latestCommitTag.replace(TAG_COMMIT_PREFIX, '') : undefined
-        })
-        .catch((e: AWS.AWSError) => {
-            if (e.code === 'ImageNotFoundException') return undefined
-            forceExit(e)
-        })
+function getPrefixedValue(prefix: string, tags?: string[]) {
+    if (!tags) return ''
+    const imageTag = tags.find(tag => tag.startsWith(prefix))
+    return imageTag ? imageTag.replace(prefix, '') : ''
 }

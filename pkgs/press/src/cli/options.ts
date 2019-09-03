@@ -13,6 +13,6 @@ export const HASH_OPT = {
 }
 export const REPO_OPT = {
     default: execSync('git rev-parse --show-toplevel').replace(/^\//, ''),
-    desc: 'Git repository',
+    desc: 'Repository name',
     require: true,
 }
