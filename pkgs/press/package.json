@@ -1,7 +1,7 @@
 {
   "name": "@percolate/press",
   "version": "0.0.0",
-  "description": "CI Release tooling",
+  "description": "CI release tooling",
   "bin": {
     "press": "bin/press"
   },

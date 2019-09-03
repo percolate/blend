@@ -1,6 +1,6 @@
 # @percolate/press
 
-CI Release tooling
+CI release tooling
 
 ```
 press <command>
@@ -10,10 +10,10 @@ Commands:
   press release       Creates a Sentry release
 
 Options:
-  -h, --help  Show help                                                                              [boolean]
+  -h, --help  Show help                                               [boolean]
 ```
 
-## Setting up a new repo
+## Install
 
 ```sh
 yarn add @percolate/press
@@ -51,4 +51,4 @@ aws_secret_access_key = ...
 npx press push --profile=my_profile --region=us-east-1
 ```
 
-Important: `aws-sdk` supports profiles for `~/.aws/credentials` but not `~/.aws/config` which is why the `--regrion` needs to be specified.
+Important: `aws-sdk` supports profiles for `~/.aws/credentials` but not `~/.aws/config` which is why the `--region` needs to be specified.
