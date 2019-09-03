@@ -2,6 +2,26 @@
 
 Containerized version of `pkgs/press`
 
+## Usage example
+
+Here's an example of a CircleCI config which leverages `percolate/blend/press` to push an image.
+Please note that the docker build process is completely independent which means it can moved to a separate job (ideally one that runs in parallel with tests).
+
+```yaml
+version: 2
+
+jobs:
+    my_job:
+        docker:
+            - image: 667005031541.dkr.ecr.us-west-1.amazonaws.com/percolate/blend/press:version-0.0.1
+        steps:
+            - checkout
+            - setup_remote_docker
+            - run: docker build --tag my_image .
+            - run: npx press push my_image # --fromArchive=/path/my_image.tar if image comes from `attach_workspace`
+            - run: npx press release
+```
+
 ## building and publishing
 
 `@percolate/press` relies on other packages in this monorepo (ex. `@percolate/cli-utils`).
