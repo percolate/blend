@@ -10,9 +10,9 @@ commands:
 
   install:
     steps:
+      - alpine_checkout
       - restore_cache:
           key: v1-{{ arch }}-{{ checksum "yarn.lock" }}
-      - alpine_checkout
       - run: yarn --pure-lockfile --cache-folder /tmp/.yarn_cache
       - save_cache:
           key: v1-{{ arch }}-{{ checksum "yarn.lock" }}
