@@ -11,4 +11,4 @@ ARG NPMJS_TOKEN
 RUN echo "//registry.npmjs.org/:_authToken=${NPMJS_TOKEN}" >> ~/.npmrc
 
 ARG VERSION
-RUN yarn global add @percolate/cli-utils@${VERSION}
+RUN yarn global add @percolate/press@${VERSION}
