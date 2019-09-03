@@ -68,7 +68,7 @@ jobs:
               --build-arg VERSION=$(press --version) \
               --tag blend/press .
           working_directory: containers/press
-      - run: press push blend/press --version=$(press --version)
+      - run: press push blend/press --repo="percolate/blend/press" --semver=$(press --version)
 
 workflows:
   version: 2
