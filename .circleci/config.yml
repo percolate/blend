@@ -66,8 +66,8 @@ jobs:
             docker build \
               --build-arg NPMJS_TOKEN \
               --build-arg VERSION=$(press --version) \
-              --tag blend/press .
-          working_directory: containers/press
+              --tag blend/press \
+              pkgs/press
       - run: press push blend/press --repo="percolate/blend/press" --semver=$(press --version)
 
 workflows:

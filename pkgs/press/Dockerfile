@@ -3,8 +3,7 @@ FROM node:lts-alpine
 WORKDIR /percolate/press
 
 RUN apk add --no-cache ca-certificates docker git openssh-client \
-    && rm -rf /var/lib/apt/lists/* \
-    && update-ca-certificates
+    && rm -rf /var/lib/apt/lists/*
 
 # auth for private @percolate npm repo
 ARG NPMJS_TOKEN
