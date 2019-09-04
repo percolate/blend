@@ -11,7 +11,6 @@
   ],
   "repository": "https://github.com/percolate/blend/tree/master/pkgs/press",
   "license": "CPAL-1.0",
-  "private": true,
   "scripts": {
     "build": "tsc --project .",
     "watch": "tsc --project . --watch"
