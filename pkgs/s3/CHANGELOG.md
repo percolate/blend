@@ -3,6 +3,14 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.1.4](https://github.com/percolate/blend/tree/master/pkgs/s3/compare/@percolate/s3@1.1.3...@percolate/s3@1.1.4) (2019-09-04)
+
+**Note:** Version bump only for package @percolate/s3
+
+
+
+
+
 ## [1.1.3](https://github.com/percolate/blend/tree/master/pkgs/s3/compare/@percolate/s3@1.1.2...@percolate/s3@1.1.3) (2019-06-28)
 
 
