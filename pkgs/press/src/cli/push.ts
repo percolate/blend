@@ -134,7 +134,7 @@ function getTag({ branch, hash, semver }: IPushOpts) {
     if (semver) return TAG_VERSION_PREFIX + semver
     if (git.isMaster(branch)) return TAG_COMMIT_PREFIX + hash
     const cleanBranch = branch.replace(/[^a-zA-Z0-9_-]/g, '').replace('-', '_')
-    return `${TAG_BRANCH_PREFIX}-${cleanBranch}-${hash}`
+    return TAG_BRANCH_PREFIX + `${cleanBranch}-${hash}`
 }
 
 function getPrefixedValue(prefix: string, tags?: string[]) {
