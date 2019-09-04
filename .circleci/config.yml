@@ -5,7 +5,6 @@ commands:
     description: install dependencies for CCI's `checkout`
     steps:
       - run: apk add --no-cache ca-certificates git openssh-client
-      - run: update-ca-certificates
       - checkout
 
   install:
