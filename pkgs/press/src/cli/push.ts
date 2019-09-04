@@ -7,7 +7,6 @@ import * as semverUtils from 'semver'
 
 interface IPushOpts {
     branch: string
-    forcePush?: boolean
     fromArchive?: string
     hash: string
     image: string
@@ -27,11 +26,6 @@ export const pushCmd: CommandModule<{ image: string }, IPushOpts> = {
             .option('fromArchive', {
                 desc: 'Tar file to load image from',
                 type: 'string',
-            })
-            .option('forcePush', {
-                default: git.getLastCommitMsg().includes(PUSH_COMMIT),
-                defaultDescription: `true if latest commit message includes ${PUSH_COMMIT}`,
-                desc: 'Force push non-master branches',
             })
             .option('hash', HASH_OPT)
             .option('profile', {
@@ -53,7 +47,7 @@ export const pushCmd: CommandModule<{ image: string }, IPushOpts> = {
             })
     },
     handler: async (argv: IPushOpts) => {
-        const { branch, forcePush, hash, image, profile, region, repo, semver } = argv
+        const { branch, hash, image, profile, region, repo, semver } = argv
         const tag = getTag(argv)
 
         // validate semver
@@ -122,7 +116,7 @@ export const pushCmd: CommandModule<{ image: string }, IPushOpts> = {
 
         // prevent unecessary push on CI
         const isMaster = git.isMaster(branch)
-        if (!isMaster && !forcePush) {
+        if (!isMaster && !git.getLastCommitMsg().includes(PUSH_COMMIT)) {
             return cleanExit(`To push image, include "${PUSH_COMMIT}" in your commit message`)
         }
 
