@@ -24,7 +24,7 @@ export const pushCmd: CommandModule<{ image: string }, IPushOpts> = {
         return argv
             .option('branch', BRANCH_OPT)
             .option('fromArchive', {
-                desc: 'Tar file to load image from',
+                desc: 'Tar file path to load image from',
                 type: 'string',
             })
             .option('hash', HASH_OPT)
@@ -47,7 +47,7 @@ export const pushCmd: CommandModule<{ image: string }, IPushOpts> = {
             })
     },
     handler: async (argv: IPushOpts) => {
-        const { branch, hash, image, profile, region, repo, semver } = argv
+        const { branch, image, profile, region, repo, semver } = argv
         const tag = getTag(argv)
 
         // validate semver
@@ -85,6 +85,7 @@ export const pushCmd: CommandModule<{ image: string }, IPushOpts> = {
                 )
             })
         const repoUri = repositories![0].repositoryUri
+        if (!repoUri) return forceExit(`repositoryUri not found for ${repo}`)
 
         // verify that image hasn't been pushed
         const imagePushed = await ecr
@@ -124,41 +125,8 @@ export const pushCmd: CommandModule<{ image: string }, IPushOpts> = {
         execSync(`docker tag ${image} ${repoUri}:${tag}`, { verbose: true })
         execSync(`docker push ${repoUri}:${tag}`, { verbose: true })
 
-        if (!isMaster) return
-
-        const latestImageTags = await ecr
-            .describeImages({ repositoryName: repo, imageIds: [{ imageTag: 'latest' }] })
-            .promise()
-            .then(result => {
-                if (!result.imageDetails) return
-                return result.imageDetails[0].imageTags
-            })
-            .catch((e: AWS.AWSError) => {
-                if (e.code === 'ImageNotFoundException') return
-                return forceExit(e)
-            })
-
-        if (semver) {
-            // check if semver is newer than latest
-            const latestVersion = getPrefixedValue(TAG_VERSION_PREFIX, latestImageTags)
-            if (latestVersion && semverUtils.gt(latestVersion, semver)) {
-                return cleanExit(`Newer version has already been push to ":latest" (${latestVersion})`)
-            }
-        } else {
-            // check if current commit hash is an ancestor of the latest image commit hash
-            const latestHash = getPrefixedValue(TAG_COMMIT_PREFIX, latestImageTags)
-            if (latestHash) {
-                execSync(`git merge-base --is-ancestor ${latestHash} ${hash}`, {
-                    onError: () => {
-                        cleanExit(`Newer hash has already been push to ":latest" (${latestHash})`)
-                    },
-                })
-            }
-        }
-
-        // push image to latest
-        execSync(`docker tag ${image} ${repoUri}:latest`, { verbose: true })
-        execSync(`docker push ${repoUri}:latest`, { verbose: true })
+        // push image to latest tag
+        if (isMaster) await pushLatest(ecr, repoUri, argv)
     },
 }
 
@@ -173,4 +141,41 @@ function getPrefixedValue(prefix: string, tags?: string[]) {
     if (!tags) return ''
     const imageTag = tags.find(tag => tag.startsWith(prefix))
     return imageTag ? imageTag.replace(prefix, '') : ''
+}
+
+async function pushLatest(ecr: AWS.ECR, repoUri: string, opts: IPushOpts) {
+    const { hash, image, repo, semver } = opts
+    const latestImageTags = await ecr
+        .describeImages({ repositoryName: repo, imageIds: [{ imageTag: 'latest' }] })
+        .promise()
+        .then(result => {
+            if (!result.imageDetails) return
+            return result.imageDetails[0].imageTags
+        })
+        .catch((e: AWS.AWSError) => {
+            if (e.code === 'ImageNotFoundException') return
+            return forceExit(e)
+        })
+
+    if (semver) {
+        // check if semver is newer than latest
+        const latestVersion = getPrefixedValue(TAG_VERSION_PREFIX, latestImageTags)
+        if (latestVersion && semverUtils.gt(latestVersion, semver)) {
+            return cleanExit(`Newer version has already been push to ":latest" (${latestVersion})`)
+        }
+    } else {
+        // check if current commit hash is an ancestor of the latest image commit hash
+        const latestHash = getPrefixedValue(TAG_COMMIT_PREFIX, latestImageTags)
+        if (latestHash) {
+            execSync(`git merge-base --is-ancestor ${latestHash} ${hash}`, {
+                onError: () => {
+                    cleanExit(`Newer hash has already been push to ":latest" (${latestHash})`)
+                },
+            })
+        }
+    }
+
+    // push image to latest
+    execSync(`docker tag ${image} ${repoUri}:latest`, { verbose: true })
+    execSync(`docker push ${repoUri}:latest`, { verbose: true })
 }
