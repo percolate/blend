@@ -43,6 +43,7 @@ jobs:
       - run: npx kona commit validate
       - run: npx kona test --coverage
       - run: npx kona coverage
+      - npm_login
       - deploy:
           command: |
             if [ "${CIRCLE_BRANCH}" != "master" ]; then
