@@ -68,7 +68,8 @@ version: 2.1
 executors:
     press:
         docker:
-            - image: 667005031541.dkr.ecr.us-west-1.amazonaws.com/percolate/blend/press:version-0.0.1
+            # please replace `latest` with specific version
+            - image: 667005031541.dkr.ecr.us-west-1.amazonaws.com/percolate/blend/press:latest
 
 jobs:
     test: # custom tests go here
@@ -87,6 +88,7 @@ jobs:
     release:
         executor: press
         steps:
+            - checkout
             - attach_workspace:
                   at: /tmp
             - setup_remote_docker
