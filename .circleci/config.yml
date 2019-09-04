@@ -1,21 +1,41 @@
-version: 2
+version: 2.1
+
+commands:
+  alpine_checkout:
+    description: install dependencies for CCI's `checkout`
+    steps:
+      - run: apk add --no-cache ca-certificates git openssh-client
+      - run: update-ca-certificates
+      - checkout
+
+  install:
+    steps:
+      - alpine_checkout
+      - restore_cache:
+          key: v1-{{ arch }}-{{ checksum "yarn.lock" }}
+      - run: yarn --pure-lockfile --cache-folder /tmp/.yarn_cache
+      - save_cache:
+          key: v1-{{ arch }}-{{ checksum "yarn.lock" }}
+          paths:
+            - node_modules
+            - /tmp/.yarn_cache
+      - npm_login
+
+  npm_login:
+    steps:
+      - run: echo "//registry.npmjs.org/:_authToken=${NPMJS_TOKEN}" >> ~/.npmrc
+
+executors:
+  node:
+    docker:
+      - image: node:lts-alpine
+    working_directory: /percolate/blend
 
 jobs:
-  build:
-    docker:
-      - image: node:lts
-    working_directory: /percolate/blend
+  core:
+    executor: node
     steps:
-      - checkout
-      - add_ssh_keys
-      - restore_cache:
-          key: v2-yarn-deps-{{ arch }}-{{ checksum "yarn.lock" }}
-      - run: yarn install --frozen-lockfile
-      - save_cache:
-          key: v2-yarn-deps-{{ arch }}-{{ checksum "yarn.lock" }}
-          paths:
-            - tmp/.yarn_cache
-            - node_modules
+      - install
       - run: npx lerna run build
       - run: npx kona verify
       - run: npx kona ts
@@ -26,11 +46,35 @@ jobs:
       - deploy:
           command: |
             if [ "${CIRCLE_BRANCH}" != "master" ]; then
-                echo "Skipping: only runs on master"
-                exit 0
+              echo "Skipping - only runs on master"
+              exit 0
             fi
-
-            echo "//registry.npmjs.org/:_authToken=$NPMJS_TOKEN" >> ~/.npmrc
             yarn lerna:publish --yes
       - store_test_results:
           path: tmp/reports
+
+  press:
+    executor: node
+    steps:
+      - alpine_checkout
+      - run: apk add --no-cache docker
+      - npm_login
+      - run: yarn global add @percolate/press
+      - setup_remote_docker
+      - run:
+          command: |
+            docker build \
+              --build-arg NPMJS_TOKEN \
+              --build-arg VERSION=$(press --version) \
+              --tag blend/press \
+              pkgs/press
+      - run: press push blend/press --repo="percolate/blend/press" --semver=$(press --version)
+
+workflows:
+  version: 2
+  blend:
+    jobs:
+      - core
+      - press:
+          requires:
+            - core

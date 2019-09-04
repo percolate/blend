@@ -1,0 +1,5 @@
+export const PUSH_COMMIT = '[push image]'
+export const REGION = 'us-west-1'
+export const TAG_BRANCH_PREFIX = 'branch-'
+export const TAG_COMMIT_PREFIX = 'commit-'
+export const TAG_VERSION_PREFIX = 'version-'

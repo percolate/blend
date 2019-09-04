@@ -1,0 +1,26 @@
+{
+  "name": "@percolate/press",
+  "version": "0.0.0",
+  "description": "CI release tooling",
+  "bin": {
+    "press": "bin/press"
+  },
+  "files": [
+    "bin",
+    "dist"
+  ],
+  "repository": "https://github.com/percolate/blend/tree/master/pkgs/press",
+  "license": "CPAL-1.0",
+  "private": true,
+  "scripts": {
+    "build": "tsc --project .",
+    "watch": "tsc --project . --watch"
+  },
+  "dependencies": {
+    "@percolate/cli-utils": "0.0.1",
+    "@sentry/cli": "1.47.1",
+    "aws-sdk": "2.516.0",
+    "semver": "6.3.0",
+    "yargs": "13.2.4"
+  }
+}
