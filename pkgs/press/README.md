@@ -59,22 +59,50 @@ A containerized version of `@percolate/press` can be found at 667005031541.dkr.e
 
 ### Usage example
 
-Here's an example of a CircleCI config which leverages `percolate/blend/press` to push an image.
-Please note that the docker build process is completely independent which means it can moved to a separate job (ideally one that runs in parallel with tests).
+Here's an example of a CircleCI config which leverages `percolate/blend/press` to push `my_image`.
+`test` and `build` can be parallelized to speed up the whole workflow.
 
 ```yaml
-version: 2
+version: 2.1
 
-jobs:
-    my_job:
+executors:
+    press:
         docker:
             - image: 667005031541.dkr.ecr.us-west-1.amazonaws.com/percolate/blend/press:version-0.0.1
+
+jobs:
+    test: # custom tests go here
+
+    build:
+        executor: press
         steps:
             - checkout
             - setup_remote_docker
             - run: docker build --tag my_image .
-            - run: npx press push my_image # --fromArchive=/path/my_image.tar if image comes from `attach_workspace`
-            - run: npx press release
+            - run: docker save my_image > /tmp/my_image.tar
+            - persist_to_workspace:
+                  root: /tmp
+                  paths:
+                      - my_image.tar
+    release:
+        executor: press
+        steps:
+            - attach_workspace:
+                  at: /tmp
+            - setup_remote_docker
+            - run: press push my_image --fromArchive=/tmp/my_image.tar
+            - run: press release
+
+workflows:
+    version: 2
+    my_repo:
+        jobs:
+            - test
+            - build
+            - release:
+                  requires:
+                      - test
+                      - build
 ```
 
 ### building and publishing
