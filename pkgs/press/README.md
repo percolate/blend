@@ -7,10 +7,12 @@ press <command>
 
 Commands:
   press push <image>  Push docker image to ECR
-  press release       Creates a Sentry release
+  press release       Create and finalize a Sentry release
+  press sentry-cli    sentry-cli proxy with master gating and project injection
 
 Options:
-  -h, --help  Show help                                               [boolean]
+  --version   Show version number                                                                              [boolean]
+  -h, --help  Show help                                                                                        [boolean]
 ```
 
 ## Install
