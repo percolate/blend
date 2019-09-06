@@ -16,6 +16,7 @@ export const releaseCmd: CommandModule<{}, IReleaseOpts> = {
     describe: 'Creates a Sentry release',
     builder: argv => {
         return argv
+            .version(false)
             .option('branch', BRANCH_OPT)
             .option('version', { ...HASH_OPT, desc: 'Release version' })
             .option('repo', REPO_OPT)
