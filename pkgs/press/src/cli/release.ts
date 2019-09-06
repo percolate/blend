@@ -13,7 +13,7 @@ const SENTRY_CLI = resolve(__dirname, '../../node_modules/.bin/sentry-cli')
 
 export const releaseCmd: CommandModule<{}, IReleaseOpts> = {
     command: 'release',
-    describe: 'Creates a Sentry release',
+    describe: 'Create and finalize a Sentry release',
     builder: argv => {
         return argv
             .version(false)
@@ -28,6 +28,9 @@ export const releaseCmd: CommandModule<{}, IReleaseOpts> = {
 
         const project = basename(repo)
         execSync(`${SENTRY_CLI} releases --project ${project} set-commits "${version}" --auto`, {
+            verbose: true,
+        })
+        execSync(`${SENTRY_CLI} releases --project ${project} finalize "${version}"`, {
             verbose: true,
         })
     },
