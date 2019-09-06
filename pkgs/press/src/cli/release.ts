@@ -1,7 +1,7 @@
 import { CommandModule } from 'yargs'
-import { BRANCH_OPT, REPO_OPT, HASH_OPT } from './options'
 import { execSync, git, cleanExit } from '@percolate/cli-utils'
 import { basename, resolve } from 'path'
+import { getHash, getBranch, getRepoName } from '../defaults'
 
 interface IReleaseOpts {
     branch: string
@@ -17,9 +17,21 @@ export const releaseCmd: CommandModule<{}, IReleaseOpts> = {
     builder: argv => {
         return argv
             .version(false)
-            .option('branch', BRANCH_OPT)
-            .option('version', { ...HASH_OPT, desc: 'Release version' })
-            .option('repo', REPO_OPT)
+            .option('branch', {
+                default: getBranch(),
+                desc: 'Git branch',
+                require: true,
+            })
+            .option('version', {
+                default: getHash(),
+                desc: 'Release version',
+                require: true,
+            })
+            .option('repo', {
+                default: getRepoName(),
+                desc: 'Repository name',
+                require: true,
+            })
     },
     handler: argv => {
         const { branch, repo, version } = argv
