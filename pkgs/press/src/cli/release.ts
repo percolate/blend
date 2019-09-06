@@ -1,15 +1,14 @@
 import { CommandModule } from 'yargs'
 import { execSync, git, cleanExit } from '@percolate/cli-utils'
-import { basename, resolve } from 'path'
+import { basename } from 'path'
 import { getHash, getBranch, getRepoName } from '../defaults'
+import { SENTRY_CLI } from '../constants'
 
 interface IReleaseOpts {
     branch: string
     repo: string
     version: string
 }
-
-const SENTRY_CLI = resolve(__dirname, '../../node_modules/.bin/sentry-cli')
 
 export const releaseCmd: CommandModule<{}, IReleaseOpts> = {
     command: 'release',
