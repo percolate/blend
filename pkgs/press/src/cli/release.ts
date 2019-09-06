@@ -1,7 +1,8 @@
 import { CommandModule } from 'yargs'
-import { BRANCH_OPT, REPO_OPT, HASH_OPT } from './options'
 import { execSync, git, cleanExit } from '@percolate/cli-utils'
-import { basename, resolve } from 'path'
+import { basename } from 'path'
+import { getHash, getBranch, getRepoName } from '../defaults'
+import { SENTRY_CLI } from '../constants'
 
 interface IReleaseOpts {
     branch: string
@@ -9,16 +10,27 @@ interface IReleaseOpts {
     version: string
 }
 
-const SENTRY_CLI = resolve(__dirname, '../../node_modules/.bin/sentry-cli')
-
 export const releaseCmd: CommandModule<{}, IReleaseOpts> = {
     command: 'release',
-    describe: 'Creates a Sentry release',
+    describe: 'Create and finalize a Sentry release',
     builder: argv => {
         return argv
-            .option('branch', BRANCH_OPT)
-            .option('version', { ...HASH_OPT, desc: 'Release version' })
-            .option('repo', REPO_OPT)
+            .version(false)
+            .option('branch', {
+                default: getBranch(),
+                desc: 'Git branch',
+                require: true,
+            })
+            .option('version', {
+                default: getHash(),
+                desc: 'Release version',
+                require: true,
+            })
+            .option('repo', {
+                default: getRepoName(),
+                desc: 'Repository name',
+                require: true,
+            })
     },
     handler: argv => {
         const { branch, repo, version } = argv
@@ -27,6 +39,9 @@ export const releaseCmd: CommandModule<{}, IReleaseOpts> = {
 
         const project = basename(repo)
         execSync(`${SENTRY_CLI} releases --project ${project} set-commits "${version}" --auto`, {
+            verbose: true,
+        })
+        execSync(`${SENTRY_CLI} releases --project ${project} finalize "${version}"`, {
             verbose: true,
         })
     },

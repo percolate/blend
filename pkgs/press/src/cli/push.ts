@@ -2,8 +2,8 @@ import { CommandModule } from 'yargs'
 import { execSync, git, forceExit, cleanExit } from '@percolate/cli-utils'
 import * as AWS from 'aws-sdk'
 import { PUSH_COMMIT, TAG_COMMIT_PREFIX, REGION, TAG_BRANCH_PREFIX, TAG_VERSION_PREFIX } from '../constants'
-import { BRANCH_OPT, HASH_OPT, REPO_OPT } from './options'
 import * as semverUtils from 'semver'
+import { getBranch, getHash, getRepoName } from '../defaults'
 
 interface IPushOpts {
     branch: string
@@ -22,12 +22,20 @@ export const pushCmd: CommandModule<{ image: string }, IPushOpts> = {
     describe: 'Push docker image to ECR',
     builder: argv => {
         return argv
-            .option('branch', BRANCH_OPT)
+            .option('branch', {
+                default: getBranch(),
+                desc: 'Git branch',
+                require: true,
+            })
             .option('fromArchive', {
                 desc: 'Tar file path to load image from',
                 type: 'string',
             })
-            .option('hash', HASH_OPT)
+            .option('hash', {
+                default: getHash(),
+                desc: 'Git hash',
+                require: true,
+            })
             .option('profile', {
                 desc: 'AWS profile',
                 group: 'aws',
@@ -40,7 +48,11 @@ export const pushCmd: CommandModule<{ image: string }, IPushOpts> = {
                 required: true,
                 type: 'string',
             })
-            .option('repo', REPO_OPT)
+            .option('repo', {
+                default: getRepoName(),
+                desc: 'Repository name',
+                require: true,
+            })
             .option('semver', {
                 desc: 'Semantic version to tag image with',
                 type: 'string',
