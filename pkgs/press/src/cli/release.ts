@@ -6,7 +6,7 @@ import { SENTRY_CLI } from '../constants'
 
 interface IReleaseOpts {
     branch: string
-    repo: string
+    project: string
     version: string
 }
 
@@ -26,18 +26,17 @@ export const releaseCmd: CommandModule<{}, IReleaseOpts> = {
                 desc: 'Release version',
                 require: true,
             })
-            .option('repo', {
-                default: getRepoName(),
+            .option('project', {
+                default: basename(getRepoName()),
                 desc: 'Repository name',
                 require: true,
             })
     },
     handler: argv => {
-        const { branch, repo, version } = argv
+        const { branch, project, version } = argv
 
         if (!git.isMaster(branch)) return cleanExit('releases only run on master')
 
-        const project = basename(repo)
         execSync(`${SENTRY_CLI} releases --project ${project} set-commits "${version}" --auto`, {
             verbose: true,
         })
