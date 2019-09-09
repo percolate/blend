@@ -81,7 +81,8 @@ jobs:
         steps:
             - checkout
             - setup_remote_docker
-            - run: docker build --tag my_image .
+            # VERSION should match `press release --version=${VERSION}` (defaults to `${CIRCLE_SHA1}`)
+            - run: docker build --tag my_image . --build-arg VERSION=${CIRCLE_SHA1}
             - run: docker save my_image > /tmp/my_image.tar
             - persist_to_workspace:
                   root: /tmp
@@ -104,6 +105,8 @@ workflows:
             - test
             - build
             - release:
+                  # context contains sentry org, token, and uri as env vars
+                  context: sentry
                   requires:
                       - test
                       - build
