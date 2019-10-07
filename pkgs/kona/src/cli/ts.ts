@@ -4,7 +4,7 @@ import { root } from '../root'
 import { config } from '../config'
 import * as mm from 'micromatch'
 import { resolve } from 'path'
-import * as Bluebird from 'bluebird'
+import pMap = require('p-map')
 import { spawn } from 'child_process'
 import { BIN_DIR } from '../constants'
 
@@ -30,7 +30,7 @@ export const tsCmd: CommandModule<{}, ITsCmdOpts> = {
             )
         }
 
-        const exitCodes = await Bluebird.map(configPaths, typeCheck, {
+        const exitCodes = await pMap(configPaths, typeCheck, {
             concurrency: getMaxCpus(),
         })
         const errorCodes = exitCodes.filter(code => code > 0)
