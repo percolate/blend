@@ -15,7 +15,6 @@
   "dependencies": {
     "@typescript-eslint/eslint-plugin": "1.11.0",
     "@typescript-eslint/parser": "1.11.0",
-    "eslint": "6.0.1",
     "eslint-import-resolver-node": "0.3.2",
     "eslint-plugin-eslint-comments": "3.1.2",
     "eslint-plugin-filenames": "1.3.2",
@@ -23,8 +22,11 @@
     "eslint-plugin-lodash": "5.1.0",
     "eslint-plugin-react": "7.14.2",
     "eslint-plugin-react-hooks": "1.6.1",
-    "html-tags": "3.0.0",
-    "typescript": "3.5.2"
+    "html-tags": "3.0.0"
+  },
+  "peerDependencies": {
+    "eslint": ">=6.0.1",
+    "typescript": ">=3.5.2"
   },
   "publishConfig": {
     "access": "restricted"
