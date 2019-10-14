@@ -66,7 +66,7 @@ module.exports = function(options = {}) {
 }
 
 function doUpload({ s3, absPath, request, debug, path, s3Key, attempt }) {
-    let start = performance.now()
+    const start = performance.now()
     let timing = 0
 
     if (attempt > 1) {

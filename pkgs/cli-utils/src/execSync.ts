@@ -11,7 +11,6 @@ interface IExecSyncVerboseOpts extends IExecSyncBaseOpts {
     verbose: true
 }
 
-/* eslint-disable import/export */
 export function execSync(cmd: string, opts?: IExecSyncBaseOpts): string
 export function execSync(cmd: string, opts?: IExecSyncVerboseOpts): void
 export function execSync(cmd: string, opts: IExecSyncBaseOpts | IExecSyncVerboseOpts = {}) {

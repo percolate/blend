@@ -28,7 +28,7 @@ const customConfig: Partial<IConfig> = fs.isFile(configPath)
     ? JSON.parse(readFileSync(configPath, 'utf8'))
     : {}
 
-// eslint-disable-next-line @typescript-eslint/no-object-literal-type-assertion
+// eslint-disable-next-line @typescript-eslint/consistent-type-assertions
 export const config = {} as IConfig
 Object.keys(defaultConfig).forEach(<K extends keyof IConfig>(key: K) => {
     const defaultValue = defaultConfig[key]
