@@ -10,8 +10,8 @@
   "main": "lib/index.js",
   "dependencies": {
     "async-retry": "1.2.3",
-    "aws-sdk": "2.516.0",
-    "bluebird": "3.5.5",
+    "aws-sdk": "2.549.0",
+    "bluebird": "3.7.0",
     "console.table": "0.10.0",
     "docopt": "0.6.2",
     "fs-readdir-recursive": "1.1.0",
