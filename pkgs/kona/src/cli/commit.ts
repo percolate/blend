@@ -4,7 +4,7 @@ import { cleanExit, forceExit, git } from '@percolate/cli-utils'
 import * as mm from 'micromatch'
 import { readFileSync } from 'fs'
 import format from '@commitlint/format'
-import * as Bluebird from 'bluebird'
+import pMap = require('p-map')
 import { config } from '../config'
 import { root } from '../root'
 import { resolve } from 'path'
@@ -85,7 +85,7 @@ async function validate(messages: string[]) {
     if (!messages.length) return
 
     const { rules } = await load({ extends: ['@commitlint/config-conventional'] }).catch(forceExit)
-    const results = await Bluebird.map(messages, m => lint(m, rules)).catch(forceExit)
+    const results = await pMap(messages, m => lint(m, rules)).catch(forceExit)
     const report = results.reduce(
         (info, result) => {
             info.errorCount += result.errors.length

@@ -1,8 +1,6 @@
 import { CommandModule } from 'yargs'
 import * as mm from 'micromatch'
 import { color, fs, forceExit, parallelize, IParallelizeOpts } from '@percolate/cli-utils'
-import { BIN_DIR } from '../constants'
-import { resolve } from 'path'
 import { root } from '../root'
 import { config } from '../config'
 
@@ -77,7 +75,7 @@ function getFiles(argv: ILintArgs) {
 
 async function eslintHandler(argv: ILintArgs) {
     console.log(color(`eslint: ${config.eslintPattern}`, 'cyan'))
-    const cmd = [resolve(BIN_DIR, 'eslint'), '--cache-location', root('tmp/.eslintcache')]
+    const cmd = ['npx', 'eslint', '--cache-location', root('tmp/.eslintcache')]
     if (!argv.warn) cmd.push('--quiet')
     if (argv.cache) cmd.push('--cache')
     if (argv.fix) cmd.push('--fix')
@@ -96,7 +94,7 @@ async function prettierHandler(argv: ILintArgs) {
     const outputs: string[] = []
     const prettierCode = await parallelize({
         cwd: root(),
-        cmd: [resolve(BIN_DIR, 'prettier'), argv.fix ? '--write' : '--list-different'].join(' '),
+        cmd: ['npx', 'prettier', argv.fix ? '--write' : '--list-different'].join(' '),
         files: getFiles(argv).filter(file => mm.isMatch(file, config.prettierPattern, { dot: true })),
         outputs,
         ...PARALLELIZATION,

@@ -30,7 +30,11 @@ export const jest: Partial<Config.InitialOptions> = {
               'default',
               [
                   'jest-junit',
-                  { output: root(config.coverageDir, 'junit.xml'), suiteNameTemplate: '{filepath}' },
+                  {
+                      outputDirectory: root(config.coverageDir),
+                      outputName: 'junit.xml',
+                      suiteNameTemplate: '{filepath}',
+                  },
               ],
           ]
         : undefined,

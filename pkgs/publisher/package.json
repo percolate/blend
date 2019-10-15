@@ -1,18 +1,26 @@
 {
   "name": "@percolate/publisher",
   "version": "0.0.12",
-  "description": "NPM publish built for Continuous Deployment",
+  "description": "Publish package if version is newer than NPM's",
   "repository": "https://github.com/percolate/blend/tree/master/pkgs/publisher",
   "bin": {
-    "publish": "./bin/publish"
+    "publish": "bin/publish"
   },
-  "license": "SEE LICENSE IN /LICENSE.md",
+  "files": [
+    "bin",
+    "dist"
+  ],
+  "scripts": {
+    "build": "tsc --build tsconfig.json",
+    "watch": "tsc --build tsconfig.json --watch --preserveWatchOutput"
+  },
+  "license": "CPAL-1.0",
   "publishConfig": {
     "access": "public"
   },
   "dependencies": {
+    "@percolate/cli-utils": "0.1.0",
     "docopt": "0.6.2",
-    "semver": "6.3.0",
-    "shelljs": "0.8.3"
+    "semver": "6.3.0"
   }
 }

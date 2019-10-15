@@ -1,6 +1,6 @@
 const S3_URI_REGEXP = /^[sS]3:\/\/(.*?)\/(.*)/
 
-module.exports = function parseS3Uri(uri) {
+export function parseS3Uri(uri: string) {
     const match = uri.match(S3_URI_REGEXP)
     if (!match) throw new Error(`Invalid <s3-uri>: ${uri} (ex. s3://my-bucket.com/path/to/dir/)`)
 

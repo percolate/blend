@@ -1,14 +1,12 @@
 require('console.table')
-const docopt = require('docopt').docopt
-const fs = require('fs')
-const mm = require('micromatch')
-const Promise = require('bluebird')
-const readDir = require('fs-readdir-recursive')
-const S3 = require('./s3')
-const uploader = require('./uploader')
-const { resolve } = require('path')
-const { log, forceExit } = require('./log')
-const parseS3Uri = require('./parse_s3_uri')
+import { docopt } from 'docopt'
+import { fs, forceExit } from '@percolate/cli-utils'
+import * as mm from 'micromatch'
+import { S3 } from './s3'
+import { upload, IUploaderOpts } from './upload'
+import { resolve } from 'path'
+import { parseS3Uri } from './parse_s3_uri'
+import pMap = require('p-map')
 
 const DOC = `S3 file manager
 
@@ -45,8 +43,21 @@ Options:
     --aws-secret-access-key=STRING  The AWS secret access key or $AWS_SECRET_ACCESS_KEY
 `
 
-module.exports = function() {
-    const args = docopt(DOC)
+type IOpts = {
+    acl: string
+    cacheControl: string
+    concurrency: number
+    contentTypeFallback: string
+    debug: boolean
+    exclude: string
+    force: boolean
+    s3: S3
+    s3Key: string
+    skipChecksum: boolean
+}
+
+export function s3Cli() {
+    const args = docopt(DOC, {})
     const { bucket, s3Key } = parseS3Uri(args['<s3-uri>'])
     const s3 = new S3({
         accessKeyId: args['--aws-access-key-id'] || process.env.AWS_ACCESS_KEY_ID,
@@ -54,7 +65,7 @@ module.exports = function() {
         secretAccessKey: args['--aws-secret-access-key'] || process.env.AWS_SECRET_ACCESS_KEY,
     })
 
-    const opts = {
+    const opts: IOpts = {
         acl: args['--acl'],
         cacheControl: args['--cache-control'],
         concurrency: parseInt(args['--concurrency'], 10),
@@ -73,54 +84,64 @@ module.exports = function() {
     if (args.del) return deleteAll(opts)
 }
 
-function uploadDir(opts) {
+async function uploadDir(
+    opts: Omit<IUploaderOpts, 'path'> & {
+        concurrency: number
+        dir: string
+        exclude?: string
+    }
+) {
     const { concurrency, dir, exclude, s3Key } = opts
 
-    if (!fs.existsSync(dir)) forceExit('<dir> does not exist')
-    if (!fs.statSync(dir).isDirectory()) forceExit('<dir> must be a directory')
+    if (!fs.isDir(dir)) forceExit('<dir> must be a directory')
 
-    const allFiles = readDir(dir, file => !(file[0] === '.' || file === 'node_modules'))
+    const allFiles = fs.readDir(dir)
     const files = allFiles.filter(file => !(exclude && mm.any(file, exclude)))
+    let successCount = 0
+    const errors: string[] = []
 
-    log(`Uploading files: ${files.length} (files excluded: ${allFiles.length - files.length})`)
-
-    return Promise.map(
+    console.log(`Uploading files: ${files.length} (files excluded: ${allFiles.length - files.length})`)
+    await pMap(
         files,
         path => {
-            return uploader({
+            return upload({
                 ...opts,
                 cwd: dir,
                 path,
                 s3Key: [s3Key, path].join(s3Key.endsWith('/') ? '' : '/'),
             })
-                .tap(message => log(message))
-                .tapCatch(e => log(e.message))
-                .reflect()
+                .then(message => {
+                    successCount++
+                    console.log(message)
+                })
+                .catch(e => {
+                    console.error(e)
+                    errors.push(e.message)
+                })
         },
         { concurrency }
-    ).then(inspections => {
-        const successCount = inspections.filter(inspection => inspection.isFulfilled()).length
-        const total = inspections.length
-        const message = `${successCount}/${total} uploaded`
+    )
+    const total = successCount + errors.length
+    const message = `${successCount}/${total} uploaded`
 
-        if (successCount < total) {
-            forceExit(message)
-        } else {
-            log(message)
-        }
-    })
+    if (errors.length) {
+        console.error(errors.join('\n'))
+        forceExit(message)
+    } else {
+        console.log(message)
+    }
 }
 
-function uploadFile(opts) {
-    return uploader(opts)
-        .then(message => log(message))
+function uploadFile(opts: IUploaderOpts) {
+    return upload(opts)
+        .then(message => console.log(message))
         .catch(e => forceExit(e.message))
 }
 
-function listAll(opts) {
+function listAll(opts: { s3: S3; s3Key: string }) {
     const { s3, s3Key } = opts
 
-    log('Listing...')
+    console.log('Listing...')
 
     return s3
         .listAll({ Prefix: s3Key })
@@ -131,17 +152,22 @@ function listAll(opts) {
                     results.map(({ Key, Size, LastModified }) => [Key, Size, LastModified])
                 )
             }
-            log(`Total: ${results.length}`)
+            console.log(`Total: ${results.length}`)
         })
         .catch(e => forceExit(e.message))
 }
 
-function deleteAll(opts) {
+function deleteAll(opts: { s3: S3; s3Key: string }) {
     const { s3, s3Key } = opts
-    log('Deleting...')
+    console.log('Deleting...')
 
     return s3
         .deleteAll({ Prefix: s3Key })
-        .then(total => log(`Deleted ${total}`))
+        .then(({ deletedCount, errorMessages }) => {
+            console.log(`Deleted ${deletedCount}`)
+            if (errorMessages.length) {
+                forceExit(`Delete errors: ${errorMessages.join('\n')}`)
+            }
+        })
         .catch(e => forceExit(e.message))
 }

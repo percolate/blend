@@ -3,10 +3,8 @@ import { forceExit, fs, getMaxCpus } from '@percolate/cli-utils'
 import { root } from '../root'
 import { config } from '../config'
 import * as mm from 'micromatch'
-import { resolve } from 'path'
-import * as Bluebird from 'bluebird'
+import pMap = require('p-map')
 import { spawn } from 'child_process'
-import { BIN_DIR } from '../constants'
 
 interface ITsCmdOpts {
     path?: string[]
@@ -30,7 +28,7 @@ export const tsCmd: CommandModule<{}, ITsCmdOpts> = {
             )
         }
 
-        const exitCodes = await Bluebird.map(configPaths, typeCheck, {
+        const exitCodes = await pMap(configPaths, typeCheck, {
             concurrency: getMaxCpus(),
         })
         const errorCodes = exitCodes.filter(code => code > 0)
@@ -41,7 +39,7 @@ export const tsCmd: CommandModule<{}, ITsCmdOpts> = {
 function typeCheck(tsConfig: string) {
     return new Promise<number>(success => {
         console.log(`Type checking ${tsConfig}...`)
-        const child = spawn(resolve(BIN_DIR, 'tsc'), ['--project', tsConfig, '--noEmit'], {
+        const child = spawn('npx', ['tsc', '--project', tsConfig, '--noEmit'], {
             shell: true,
             stdio: 'inherit',
         })

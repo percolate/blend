@@ -1,0 +1,8 @@
+{
+    "extends": "@percolate/kona/configs/tsconfig.json",
+    "compilerOptions": {
+        "noEmit": false,
+        "outDir": "dist/"
+    },
+    "include": ["src/cli.ts"]
+}

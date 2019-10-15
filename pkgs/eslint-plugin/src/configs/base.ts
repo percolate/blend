@@ -93,6 +93,10 @@ export const base = {
         yoda: 'error',
 
         '@typescript-eslint/camelcase': ['error', { properties: 'never' }],
+        '@typescript-eslint/consistent-type-assertions': [
+            'error',
+            { assertionStyle: 'as', objectLiteralTypeAssertions: 'never' },
+        ],
         '@typescript-eslint/explicit-member-accessibility': 'off',
         '@typescript-eslint/explicit-function-return-type': 'off',
         '@typescript-eslint/indent': 'off',
@@ -177,7 +181,11 @@ export const base = {
             rules: {
                 '@percolate/fake-server': 'error',
                 '@percolate/no-allow-console': 'error',
-                '@typescript-eslint/no-object-literal-type-assertion': 'warn',
+                '@typescript-eslint/consistent-type-assertions': [
+                    'error',
+                    { assertionStyle: 'as', objectLiteralTypeAssertions: 'allow' },
+                ],
+                '@typescript-eslint/no-empty-function': 'off',
             },
         },
     ],

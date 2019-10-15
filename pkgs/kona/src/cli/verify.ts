@@ -1,4 +1,3 @@
-/* eslint import/no-commonjs: "off" */
 import { CommandModule } from 'yargs'
 import { color, execSync, forceExit, fs } from '@percolate/cli-utils'
 import { root } from '../root'
@@ -12,6 +11,7 @@ import { BIN_DIR } from '../constants'
 const PRETTIER_CONFIG = '@percolate/kona/configs/prettier.json'
 const PRECOMMIT_CMD = 'node_modules/.bin/kona commit preCommit'
 
+// eslint-disable-next-line import/no-commonjs
 const { listDuplicates } = require('yarn-deduplicate') // no @types/yarn-deduplicate
 
 interface IVerifyArgs {
@@ -175,12 +175,6 @@ export const verifyCmd: CommandModule<{}, IVerifyArgs> = {
             .getAbsFilePaths(root())
             .filter(path => mm.isMatch(path, '**/package.json'))
             .map(path => buildPkg(path))
-
-        // add internal packages for version checks
-        const konaPkgJsonPath = resolve(__dirname, '../../package.json')
-        const eslintPkgPath = resolve(__dirname, '../../../eslint-plugin/package.json')
-        buildPkg(konaPkgJsonPath, require(konaPkgJsonPath).name)
-        buildPkg(eslintPkgPath, require(eslintPkgPath).name)
 
         let totalErrors = 0
         pkgs.forEach(pkg => {
