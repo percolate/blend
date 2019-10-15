@@ -1,0 +1,12 @@
+{
+    "extends": "@percolate/kona/configs/tsconfig.json",
+    "compilerOptions": {
+        "declaration": true,
+        "declarationMap": true,
+        "incremental": true,
+        "noEmit": false,
+        "outDir": "dist/",
+        "tsBuildInfoFile": "tmp/.tsbuildinfo"
+    },
+    "include": ["src/**/*"]
+}
