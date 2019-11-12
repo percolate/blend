@@ -48,6 +48,6 @@
     "typescript": ">=3.5.2"
   },
   "publishConfig": {
-    "access": "restricted"
+    "access": "public"
   }
 }

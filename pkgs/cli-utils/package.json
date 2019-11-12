@@ -20,6 +20,6 @@
     "micromatch": "4.0.2"
   },
   "publishConfig": {
-    "access": "restricted"
+    "access": "public"
   }
 }
