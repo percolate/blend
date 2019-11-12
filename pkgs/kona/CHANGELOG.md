@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [3.1.0](https://github.com/percolate/blend/tree/master/pkgs/kona/compare/@percolate/kona@3.0.4...@percolate/kona@3.1.0) (2019-11-12)
+
+
+### Features
+
+* remove lodash ([c574153](https://github.com/percolate/blend/tree/master/pkgs/kona/commit/c574153fe29283dc071fb611c7ebe53f123b0730))
+
+
+
+
+
 ## [3.0.4](https://github.com/percolate/blend/tree/master/pkgs/kona/compare/@percolate/kona@3.0.3...@percolate/kona@3.0.4) (2019-10-28)
 
 **Note:** Version bump only for package @percolate/kona
