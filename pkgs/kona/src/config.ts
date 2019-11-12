@@ -3,7 +3,6 @@ import { fs } from '@percolate/cli-utils'
 import { root } from './root'
 import { readFileSync } from 'fs'
 import { resolve, relative } from 'path'
-import * as _ from 'lodash'
 
 interface IConfig {
     commitLintPaths: string[]
@@ -32,6 +31,6 @@ const customConfig: Partial<IConfig> = fs.isFile(configPath)
 export const config = {} as IConfig
 Object.keys(defaultConfig).forEach(<K extends keyof IConfig>(key: K) => {
     const defaultValue = defaultConfig[key]
-    const customValue = _.get(customConfig, key)
+    const customValue = customConfig[key]
     config[key] = typeof customValue === typeof defaultValue ? (customValue as IConfig[K]) : defaultValue
 })

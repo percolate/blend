@@ -1,6 +1,5 @@
 import { CommandModule, Options } from 'yargs'
 import * as jest from 'jest-cli/build/cli/args'
-import * as _ from 'lodash'
 import { execSync, fs, getMaxCpus } from '@percolate/cli-utils'
 import { resolve } from 'path'
 import { BIN_DIR } from '../constants'
@@ -28,9 +27,9 @@ export const testCmd: CommandModule = {
     describe: 'Jest (simplified)',
     builder: args => {
         const options: { [key: string]: Options } = {}
-        _.each(jest.options, (opt, key: JestKey) => {
+        Object.keys(jest.options).forEach((key: keyof typeof jest.options) => {
             options[key] = {
-                ...opt,
+                ...jest.options[key],
                 hidden: !PROXIED_JEST_ARGS.includes(key),
             }
         })

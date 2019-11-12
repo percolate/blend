@@ -4,9 +4,10 @@ import { root } from '../root'
 import * as mm from 'micromatch'
 import { dirname, resolve, relative } from 'path'
 import { readFileSync, writeFileSync } from 'fs'
-import * as _ from 'lodash'
 import { config } from '../config'
 import { BIN_DIR } from '../constants'
+import isEqual = require('lodash.isequal')
+import uniq = require('lodash.uniq')
 
 const PRETTIER_CONFIG = '@percolate/kona/configs/prettier.json'
 const PRECOMMIT_CMD = 'node_modules/.bin/kona commit preCommit'
@@ -89,13 +90,14 @@ const pkgValidators: IPkgValidator[] = [
         title: 'Resolutions',
         description: 'Resolutions must match dependency',
         validate: ({ pkgJson, reportError, pkg }) => {
-            const resolutions = pkgJson.resolutions
-            if (!resolutions) return pkgJson
+            if (!pkgJson.resolutions) return pkgJson
             if (!pkg.lockFile) {
                 reportError('Only works on root package.json')
-                return _.omit(pkgJson, 'resolutions')
+                const { resolutions, ...rest } = pkgJson
+                return rest
             }
-            _.each(resolutions, (version, glob) => {
+            Object.keys(pkgJson.resolutions).forEach(glob => {
+                const version = pkgJson.resolutions![glob]
                 const dependency = glob.replace('**/', '')
                 let depVersion: string = pkgJson.dependencies ? pkgJson.dependencies[dependency] : ''
                 if (!depVersion) {
@@ -115,11 +117,12 @@ const pkgValidators: IPkgValidator[] = [
         validate: ({ isRoot, pkgJson, reportError }) => {
             if (!isRoot) {
                 if (pkgJson.husky) reportError('Only works on root package.json')
-                return _.omit(pkgJson, 'husky')
+                const { husky, ...rest } = pkgJson
+                return rest
             }
 
-            if (_.isEmpty(config.commitLintPaths)) return pkgJson
-            if (_.get(pkgJson, ['husky', 'hooks', 'commit-msg']) === PRECOMMIT_CMD) return pkgJson
+            if (!config.commitLintPaths.length) return pkgJson
+            if (pkgJson.husky?.hooks?.['commit-msg'] === PRECOMMIT_CMD) return pkgJson
             const husky = {
                 husky: {
                     hooks: {
@@ -128,7 +131,10 @@ const pkgValidators: IPkgValidator[] = [
                 },
             }
             reportError(`${JSON.stringify(husky)} missing from root package.json`)
-            return _.merge(pkgJson, husky)
+            return {
+                ...pkgJson,
+                ...husky,
+            }
         },
     },
     {
@@ -137,7 +143,8 @@ const pkgValidators: IPkgValidator[] = [
         validate: ({ isRoot, pkgJson, reportError }) => {
             if (!isRoot) {
                 if (pkgJson.prettier) reportError('Only works on root package.json')
-                return _.omit(pkgJson, 'prettier')
+                const { prettier, ...rest } = pkgJson
+                return rest
             }
             if (pkgJson.prettier === PRETTIER_CONFIG) return pkgJson
             reportError(`${JSON.stringify({ prettier: PRETTIER_CONFIG })} missing`)
@@ -178,7 +185,7 @@ export const verifyCmd: CommandModule<{}, IVerifyArgs> = {
 
         let totalErrors = 0
         pkgs.forEach(pkg => {
-            let newPkgJson: IPkgJson = pkg.json
+            let newPkgJson: IPkgJson = JSON.parse(JSON.stringify(pkg.json))
             console.log(color(`${pkg.label}`, 'underline'))
             pkgValidators.forEach(rule => {
                 const errors: string[] = []
@@ -186,7 +193,7 @@ export const verifyCmd: CommandModule<{}, IVerifyArgs> = {
                 newPkgJson = rule.validate({
                     isRoot: pkg.isRoot,
                     pkg,
-                    pkgJson: _.cloneDeep(newPkgJson),
+                    pkgJson: newPkgJson,
                     reportError: (message: string) => errors.push(message),
                 })
 
@@ -195,7 +202,7 @@ export const verifyCmd: CommandModule<{}, IVerifyArgs> = {
                     console.log(color(`${errors.map(message => `    ${message}`).join('\n')}\n`, 'red'))
                 }
             })
-            if (!_.isEqual(pkg.json, newPkgJson)) {
+            if (!isEqual(pkg.json, newPkgJson)) {
                 console.log('')
                 if (argv.fix) {
                     console.log(`  Fixing ${pkg.path}...`)
@@ -209,8 +216,9 @@ export const verifyCmd: CommandModule<{}, IVerifyArgs> = {
         console.log('')
 
         const versionErrors: string[] = []
-        _.each(versionLookup, ({ paths, versions }, dep) => {
-            if (_.uniq(versions).length === 1) return
+        Object.keys(versionLookup).forEach(dep => {
+            const { paths, versions } = versionLookup[dep]
+            if (uniq(versions).length === 1) return
             versionErrors.push(
                 `${dep}:\n${paths
                     .map((path, index) => `    ${color(versions[index], 'red')} ${color(path, 'grey')}`)
@@ -228,7 +236,7 @@ export const verifyCmd: CommandModule<{}, IVerifyArgs> = {
         if (argv.fix) {
             if (hasBetaDupes) return forceExit('Unable to dedupe `*-beta` versions automatically')
             console.log('Fixing duplicates...')
-            _.each(pkgs, ({ lockFile }) => {
+            pkgs.forEach(({ lockFile }) => {
                 if (!lockFile) return
                 const cmd = `${resolve(BIN_DIR, 'yarn-deduplicate')} ${lockFile}`
                 execSync(cmd, { verbose: true })
@@ -272,5 +280,5 @@ function forEachDep(pkgJson: IPkgJson, cb: (dep: IDep) => void, type?: DepType) 
     }
     const deps = pkgJson[type]
     if (!deps) return
-    _.each(deps, (version, name) => cb({ name, version, type }))
+    Object.keys(deps).forEach(name => cb({ name, version: deps[name], type }))
 }
