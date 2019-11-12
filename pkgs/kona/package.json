@@ -34,9 +34,10 @@
     "find-up": "4.1.0",
     "husky": "3.0.9",
     "jest": "24.9.0",
-    "jest-junit": "8.0.0",
-    "jest-watch-typeahead": "0.4.0",
-    "lodash": "4.17.15",
+    "jest-junit": "9.0.0",
+    "jest-watch-typeahead": "0.4.2",
+    "lodash.isequal": "4.5.0",
+    "lodash.uniq": "4.5.0",
     "p-map": "3.0.0",
     "yargs": "14.2.0",
     "yarn-deduplicate": "1.1.1"
