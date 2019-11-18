@@ -1,6 +1,6 @@
 {
   "name": "@percolate/press",
-  "version": "1.0.4",
+  "version": "1.0.5",
   "description": "CI release tooling",
   "bin": {
     "press": "bin/press"
@@ -16,7 +16,7 @@
     "watch": "tsc --project . --watch"
   },
   "dependencies": {
-    "@percolate/cli-utils": "0.1.2",
+    "@percolate/cli-utils": "0.1.3",
     "@sentry/cli": "1.49.0",
     "aws-sdk": "2.569.0",
     "semver": "6.3.0",
