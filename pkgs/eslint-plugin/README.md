@@ -1,7 +1,6 @@
 # @percolate/eslint-plugin
 
 Percolate ESlint configs/rules optimized for TypeScript.
-We specifically defined `peerDependencies` as `dependencies` to help maintaince of package versions across repos.
 
 ## Installation
 
@@ -46,11 +45,11 @@ module.exports = {
 ### `eslint-plugin-import`
 
 The rule `import/no-unresolved` is on by default which means [eslint-plugin-import](https://www.yarnpkg.com/en/package/eslint-plugin-import) has to be configured.
-`plugin:@percolate/node` configures [eslint-import-resolver-node](https://www.yarnpkg.com/en/package/eslint-import-resolver-node) for you automatically.
+`plugin:@percolate/node` configures [eslint-import-resolver-node](https://www.yarnpkg.com/en/package/eslint-import-resolver-node) automatically.
 
 #### Webpack
 
-If you're using Webpack, you'll need to `yarn eslint-import-resolver-webpack --dev` and configure it:
+If you're using Webpack, you'll need to `yarn add eslint-import-resolver-webpack --dev` and configure it:
 
 ```js
 // .eslintrc.js
@@ -73,3 +72,7 @@ module.exports = {
 ## Supported Rules
 
 -   [See rules](docs/rules)
+
+---
+
+[See root README.md](https://github.com/percolate/blend/blob/master/README.md)

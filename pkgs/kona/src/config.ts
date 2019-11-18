@@ -5,10 +5,19 @@ import { readFileSync } from 'fs'
 import { resolve, relative } from 'path'
 
 interface IConfig {
+    /** globs to enforce commit messages `kona commit validate` */
     commitLintPaths: string[]
+
+    /** test coverage directory `kona test --coverage && kona coverage` */
     coverageDir: string
+
+    /** glob to run ESLint against `kona lint eslint` */
     eslintPattern: string
+
+    /** glob to run Prettier against `kona lint prettier`*/
     prettierPattern: string
+
+    /** tsconfig(s) to run type checking against `kona ts` */
     tsConfigs: string[]
 }
 

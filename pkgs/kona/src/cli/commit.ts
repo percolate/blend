@@ -22,7 +22,7 @@ interface ICommitArgs {
 const COMMIT_CMD = 'commit'
 export const commitCmd: CommandModule<{}, ICommitArgs> = {
     command: `${COMMIT_CMD} [files..]`,
-    describe: 'Commit message',
+    describe: 'Commit message prompter (commitizen)',
     builder: args => {
         return args
             .command({

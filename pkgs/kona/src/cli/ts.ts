@@ -12,7 +12,7 @@ interface ITsCmdOpts {
 
 export const tsCmd: CommandModule<{}, ITsCmdOpts> = {
     command: 'ts [path..]',
-    describe: 'Run type checking only',
+    describe: 'Type check with TypeScript',
     handler: async argv => {
         const filterPaths = argv.path && argv.path.length ? argv.path : [process.cwd()]
         const absConfigBlobs = config.tsConfigs.map(path => root(path))

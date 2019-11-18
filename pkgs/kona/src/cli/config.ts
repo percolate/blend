@@ -5,7 +5,7 @@ import { inspect } from 'util'
 
 export const configCmd: CommandModule = {
     command: 'config',
-    describe: `Prints ${PROJECT_CONFIG} values with defaults`,
+    describe: `Print \`${PROJECT_CONFIG}\` including defaults`,
     handler: () => {
         console.log(
             inspect(config, {
