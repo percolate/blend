@@ -1,16 +1,16 @@
-# `@percolate/prettier-config`
+# @percolate/prettier-config
 
 Percolate's [Prettier](https://prettier.io) config.
 
-## Usage
-
-### Install
+## Install
 
 ```bash
-$ yarn add --dev @percolate/prettier-config
+$ yarn add @percolate/prettier-config --dev
 ```
 
-### Edit `package.json`
+## Usage
+
+Edit `package.json`
 
 ```jsonc
 {
@@ -18,3 +18,7 @@ $ yarn add --dev @percolate/prettier-config
     "prettier": "@percolate/prettier-config"
 }
 ```
+
+---
+
+[See root README.md](https://github.com/percolate/blend/blob/master/README.md)

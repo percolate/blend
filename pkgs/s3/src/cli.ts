@@ -10,18 +10,18 @@ import pMap = require('p-map')
 
 const DOC = `S3 file manager
 
-This uploader errors on the side of safety and will not override existing files whos content is different.
-
 Examples:
-
-    # Upload a direct except a single file
+    # Upload a directory except a single file
     s3 upload-dir ../build/ s3://my-bucket.com/path/to/s3/ --exclude=VERSION
 
-    # Verify content was uploaded
-    s3 list ../build/ s3://my-bucket.com/path/to/s3/
+    # Re-upload an existing file
+    s3 upload-file ../build/VERSION s3://my-bucket.com/path/to/s3/VERSION --force
 
-    # Override a single file
-    s3 upload-file ../build/VERSION s3://my-bucket.com/path/to/s3/VERSION --force --cache-control="no-store"
+    # Ignore checksum
+    s3 upload-file ../build/latest.html s3://my-bucket.com/path/to/s3/latest.html --skip-checksum --cache-control="no-store"
+
+    # List uploaded content
+    s3 list ../build/ s3://my-bucket.com/path/to/s3/
 
 Usage:
     s3 del <s3-uri> [options]

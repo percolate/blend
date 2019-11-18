@@ -170,7 +170,7 @@ const pkgValidators: IPkgValidator[] = [
 
 export const verifyCmd: CommandModule<{}, IVerifyArgs> = {
     command: 'verify',
-    describe: 'Verifies project is setup properly',
+    describe: 'Verify repo setup and dependencies',
     builder: args => {
         return args.option('fix', {
             desc: 'automatically fix errors',

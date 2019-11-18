@@ -12,4 +12,3 @@ export default yargs
     .help()
     .recommendCommands()
     .strict()
-    .wrap(120)

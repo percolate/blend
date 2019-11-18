@@ -18,7 +18,7 @@ const PARALLELIZATION: Partial<IParallelizeOpts> = {
 
 export const lintCmd: CommandModule<{}, ILintArgs> = {
     command: 'lint [files..]',
-    describe: 'Lints source for proper coding styles',
+    describe: 'Apply ESLint and Prettier',
     builder: args => {
         return args
             .command<ILintArgs>({

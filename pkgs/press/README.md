@@ -11,14 +11,14 @@ Commands:
   press sentry-cli    sentry-cli proxy with master gating and project injection
 
 Options:
-  --version   Show version number                                                                              [boolean]
-  -h, --help  Show help                                                                                        [boolean]
+  --version   Show version number                                      [boolean]
+  -h, --help  Show help                                                [boolean]
 ```
 
-## Install
+## Usage
 
 ```sh
-yarn add @percolate/press
+yarn add @percolate/press --dev
 npx press -h
 ```
 
@@ -32,7 +32,7 @@ yarn watch
 
 ### Testing profiles
 
-Given the following aws config/credentials:
+Given the following AWS config/credentials:
 
 ```ini
 # ~/.aws/config
@@ -57,7 +57,7 @@ Important: `aws-sdk` supports profiles for `~/.aws/credentials` but not `~/.aws/
 
 ## Containerized version
 
-A containerized version of `@percolate/press` can be found at 667005031541.dkr.ecr.us-west-1.amazonaws.com/percolate/blend/press:latest
+A containerized version of `@percolate/press` can be found on our private registry 667005031541.dkr.ecr.us-west-1.amazonaws.com/percolate/blend/press:latest
 
 ### Usage example
 
@@ -81,7 +81,7 @@ jobs:
         steps:
             - checkout
             - setup_remote_docker
-            # VERSION should match `press release --version=${VERSION}` (defaults to `${CIRCLE_SHA1}`)
+            # VERSION must match `press release --version=${VERSION}` (defaults to `${CIRCLE_SHA1}`)
             - run: docker build --tag my_image . --build-arg VERSION=${CIRCLE_SHA1}
             - run: docker save my_image > /tmp/my_image.tar
             - persist_to_workspace:
@@ -117,12 +117,16 @@ workflows:
 `@percolate/press` relies on other packages in this monorepo (ex. `@percolate/cli-utils`).
 By splitting the build process, we're able to simplify the docker build logic drastrically and optimize the image to only include runtime dependencies.
 
-Build flow:
+Build flow found in [.circleci/config.yml](https://github.com/percolate/blend/blob/master/.circleci/config.yml) for details.:
 
-1. build and publish `@percolate/press` (npm package):
+1. build and publish `@percolate/press` to NPM:
     1. install blend dependencies to build packages
     1. build `@percolate/press` and its dependencies
     1. publish `@percolate/press` [NPM](https://www.npmjs.com/package/@percolate/press).
-1. build and publish `blend/press` (docker image):
+1. build and publish `percolate/blend/press` to ECR:
     1. build docker image off latest `@percolate/press` version
     1. leverage `@percolate/press` to push image
+
+---
+
+[See root README.md](https://github.com/percolate/blend/blob/master/README.md)

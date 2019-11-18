@@ -15,14 +15,12 @@ interface ICoverageOpts {
 
 export const coverageCmd: CommandModule<{}, ICoverageOpts> = {
     command: 'coverage',
-    describe: 'Report test coverage on git diff',
+    describe: `Check diff coverage (bypass with "${SKIP_COVERAGE}" in latest commit message)`,
     builder: args => {
-        return args
-            .option('dir', {
-                desc: 'Check diff against changes in specific directory',
-                type: 'string',
-            })
-            .epilog(`Include "${SKIP_COVERAGE}" in the latest commit message to bypass`)
+        return args.option('dir', {
+            desc: 'Check diff against changes in specific directory',
+            type: 'string',
+        })
     },
     handler: argv => {
         if (git.isMaster()) return cleanExit("Skipped: 'master' branch")

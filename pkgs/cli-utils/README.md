@@ -1,11 +1,11 @@
 # @percolate/cli-utils
 
-This repo aims to provide very lightweight utils commonly used in CLI.
+Lightweight utils commonly used in CLI.
 
-## Setting up a new repo
+## Usage
 
 ```sh
-yarn add @percolate/cli-utils
+yarn add @percolate/cli-utils --dev
 ```
 
 ## API
@@ -23,3 +23,7 @@ yarn watch
 ```
 
 `yarn run` for all options.
+
+---
+
+[See root README.md](https://github.com/percolate/blend/blob/master/README.md)
