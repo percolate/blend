@@ -74,7 +74,7 @@ export const base = {
         'no-shadow-restricted-names': 'error',
         'no-tabs': 'error',
         'no-throw-literal': 'error',
-        'no-unused-expressions': 'error',
+        'no-unused-expressions': 'off', // typescript-eslint conflict
         'no-useless-call': 'error',
         'no-useless-computed-key': 'error',
         'no-useless-constructor': 'error',
@@ -116,6 +116,7 @@ export const base = {
         ],
         '@typescript-eslint/no-namespace': ['error', { allowDeclarations: true }],
         '@typescript-eslint/no-non-null-assertion': 'off',
+        '@typescript-eslint/no-unused-expressions': 'error',
         '@typescript-eslint/no-unused-vars': ['error', { ignoreRestSiblings: true, argsIgnorePattern: '^_' }],
         '@typescript-eslint/no-use-before-define': ['error', 'nofunc'],
         '@typescript-eslint/no-var-requires': 'off', // dupe import/no-commonjs
