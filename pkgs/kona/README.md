@@ -94,7 +94,7 @@ console.log(config)
 ## Configs
 
 Kona ships with commonly used static configs (ex. `.vscode/settings.json`, `tsconfig.json`...).
-They are located in [configs/](./configs/).
+They are located in [configs/](https://github.com/percolate/blend/tree/master/pkgs/kona/configs).
 
 ```json
 // tsconfig.js

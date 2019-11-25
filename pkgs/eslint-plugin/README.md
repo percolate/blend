@@ -67,11 +67,11 @@ module.exports = {
 
 ## Supported Configs
 
--   [See configs](src/configs)
+-   [See configs](https://github.com/percolate/blend/tree/master/pkgs/eslint-plugin/src/configs)
 
 ## Supported Rules
 
--   [See rules](docs/rules)
+-   [See rules](https://github.com/percolate/blend/tree/master/pkgs/eslint-plugin/docs/rules)
 
 ---
 
