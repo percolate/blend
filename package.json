@@ -39,5 +39,12 @@
     "hooks": {
       "commit-msg": "node_modules/.bin/kona commit preCommit"
     }
+  },
+  "resolutions": {
+    "**/cobertura-parse/mocha": "7.1.1",
+    "**/golang-cover-parse/mocha": "7.1.1",
+    "**/jacoco-parse/mocha": "7.1.1",
+    "**/commitizen/minimist": "1.2.5",
+    "**/optimist/minimist": "1.2.5"
   }
 }
