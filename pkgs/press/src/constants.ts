@@ -5,4 +5,4 @@ export const REGION = 'us-west-1'
 export const SENTRY_CLI = resolve(__dirname, '../node_modules/.bin/sentry-cli')
 export const TAG_BRANCH_PREFIX = 'branch-'
 export const TAG_COMMIT_PREFIX = 'commit-'
-export const TAG_VERSION_PREFIX = 'version-'
+export const TAG_VERSION_PREFIX = process.env.TAG_VERSION_PREFIX || 'v'

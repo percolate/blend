@@ -173,7 +173,7 @@ async function pushLatest(ecr: AWS.ECR, repoUri: string, opts: IPushOpts) {
         // check if semver is newer than latest
         const latestVersion = getPrefixedValue(TAG_VERSION_PREFIX, latestImageTags)
         if (latestVersion && semverUtils.gt(latestVersion, semver)) {
-            return cleanExit(`Newer version has already been push to ":latest" (${latestVersion})`)
+            return cleanExit(`Newer version has already been pushed to ":latest" (${latestVersion})`)
         }
     } else {
         // check if current commit hash is an ancestor of the latest image commit hash
@@ -181,7 +181,7 @@ async function pushLatest(ecr: AWS.ECR, repoUri: string, opts: IPushOpts) {
         if (latestHash) {
             execSync(`git merge-base --is-ancestor ${latestHash} ${hash}`, {
                 onError: () => {
-                    cleanExit(`Newer hash has already been push to ":latest" (${latestHash})`)
+                    cleanExit(`Newer hash has already been pushed to ":latest" (${latestHash})`)
                 },
             })
         }
