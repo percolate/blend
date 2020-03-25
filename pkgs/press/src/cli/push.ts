@@ -143,7 +143,7 @@ export const pushCmd: CommandModule<{ image: string }, IPushOpts> = {
 }
 
 function getTag({ branch, hash, semver }: IPushOpts) {
-    if (semver) return TAG_VERSION_PREFIX + semver
+    if (semver) return semver
     if (git.isMaster(branch)) return TAG_COMMIT_PREFIX + hash
     const cleanBranch = branch.replace(/[^a-zA-Z0-9_-]/g, '').replace(/-/g, '_')
     return TAG_BRANCH_PREFIX + `${cleanBranch}-${hash}`
@@ -153,6 +153,12 @@ function getPrefixedValue(prefix: string, tags?: string[]) {
     if (!tags) return ''
     const imageTag = tags.find(tag => tag.startsWith(prefix))
     return imageTag ? imageTag.replace(prefix, '') : ''
+}
+
+function getSemverValue(tags?: string[]) {
+    if (!tags) return ''
+    const imageTag = tags.find(tag => semverUtils.valid(tag))
+    return imageTag ? imageTag : ''
 }
 
 async function pushLatest(ecr: AWS.ECR, repoUri: string, opts: IPushOpts) {
@@ -171,7 +177,8 @@ async function pushLatest(ecr: AWS.ECR, repoUri: string, opts: IPushOpts) {
 
     if (semver) {
         // check if semver is newer than latest
-        const latestVersion = getPrefixedValue(TAG_VERSION_PREFIX, latestImageTags)
+        const latestVersion =
+            getPrefixedValue(TAG_VERSION_PREFIX, latestImageTags) || getSemverValue(latestImageTags)
         if (latestVersion && semverUtils.gt(latestVersion, semver)) {
             return cleanExit(`Newer version has already been pushed to ":latest" (${latestVersion})`)
         }
