@@ -143,8 +143,9 @@ export const pushCmd: CommandModule<{ image: string }, IPushOpts> = {
 }
 
 function getTag({ branch, hash, semver }: IPushOpts) {
-    if (semver) return semver
-    if (git.isMaster(branch)) return TAG_COMMIT_PREFIX + hash
+    const isMaster = git.isMaster(branch)
+    if (semver && isMaster) return semver
+    if (isMaster) return TAG_COMMIT_PREFIX + hash
     const cleanBranch = branch.replace(/[^a-zA-Z0-9_-]/g, '').replace(/-/g, '_')
     return TAG_BRANCH_PREFIX + `${cleanBranch}-${hash}`
 }
