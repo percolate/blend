@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.2.0](https://github.com/percolate/blend/tree/master/pkgs/press/compare/@percolate/press@1.1.0...@percolate/press@1.2.0) (2020-06-09)
+
+
+### Features
+
+* update docker image to use node 14 ([2f6f38e](https://github.com/percolate/blend/tree/master/pkgs/press/commit/2f6f38e6e7caab85e7b65c3d2d22efc38b8de4b7))
+
+
+
+
+
 # [1.1.0](https://github.com/percolate/blend/tree/master/pkgs/press/compare/@percolate/press@1.0.9...@percolate/press@1.1.0) (2020-06-09)
 
 
