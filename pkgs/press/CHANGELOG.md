@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.1.0](https://github.com/percolate/blend/tree/master/pkgs/press/compare/@percolate/press@1.0.9...@percolate/press@1.1.0) (2020-06-09)
+
+
+### Features
+
+* add support for GitHub Actions ([2fd08c4](https://github.com/percolate/blend/tree/master/pkgs/press/commit/2fd08c4794e91fbc3524caa7bb43b12a4209afd5))
+
+
+
+
+
 ## [1.0.9](https://github.com/percolate/blend/tree/master/pkgs/press/compare/@percolate/press@1.0.8...@percolate/press@1.0.9) (2020-05-14)
 
 **Note:** Version bump only for package @percolate/press
