@@ -4,14 +4,9 @@
     // runs prettier
     "editor.formatOnSave": true,
     // eslint
-    "eslint.autoFixOnSave": true,
-    "eslint.validate": [
-        "graphql",
-        "javascript",
-        "javascriptreact",
-        { "language": "typescript", "autoFix": true },
-        { "language": "typescriptreact", "autoFix": true }
-    ],
+    "editor.codeActionsOnSave": {
+        "source.fixAll.eslint": true
+    },
     // tslint
     "tslint.enable": false
 }
