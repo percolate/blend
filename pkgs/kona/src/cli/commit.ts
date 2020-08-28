@@ -11,8 +11,8 @@ import { resolve } from 'path'
 
 // no @types
 /* eslint-disable import/no-commonjs */
-const lint = require('@commitlint/lint')
-const load = require('@commitlint/load')
+const lint = require('@commitlint/lint').default
+const load = require('@commitlint/load').default
 const { bootstrap } = require('commitizen/dist/cli/git-cz')
 
 interface ICommitArgs {
