@@ -27,7 +27,7 @@ commands:
 executors:
   node:
     docker:
-      - image: node:14-alpine
+      - image: node:12-alpine
     working_directory: /percolate/blend
 
 jobs:
