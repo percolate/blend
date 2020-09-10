@@ -1,6 +1,6 @@
 {
   "name": "@percolate/kona",
-  "version": "3.2.4",
+  "version": "3.2.5",
   "description": "Percolate CLI",
   "license": "CPAL-1.0",
   "repository": "https://github.com/percolate/blend/tree/master/pkgs/kona",
