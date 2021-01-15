@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [3.3.0](https://github.com/percolate/blend/tree/master/pkgs/kona/compare/@percolate/kona@3.2.4...@percolate/kona@3.3.0) (2021-01-15)
+
+
+### Features
+
+* add ability to specify tsconfig path ([8039d70](https://github.com/percolate/blend/tree/master/pkgs/kona/commit/8039d70685633fb73086588312f40a096f6acc27))
+
+
+
+
+
 ## [3.2.4](https://github.com/percolate/blend/tree/master/pkgs/kona/compare/@percolate/kona@3.2.2...@percolate/kona@3.2.4) (2020-09-10)
 
 
