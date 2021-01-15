@@ -60,7 +60,8 @@ jobs:
       - run: apk add --no-cache docker
       - npm_login
       - run: yarn global add @percolate/press
-      - setup_remote_docker
+      - setup_remote_docker:
+          version: 19.03.13
       - run:
           command: |
             docker build \
