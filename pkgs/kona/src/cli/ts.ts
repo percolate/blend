@@ -14,18 +14,27 @@ export const tsCmd: CommandModule<{}, ITsCmdOpts> = {
     command: 'ts [path..]',
     describe: 'Type check with TypeScript',
     handler: async argv => {
-        const filterPaths = argv.path && argv.path.length ? argv.path : [process.cwd()]
+        const paths = argv.path && argv.path.length ? argv.path : [process.cwd()]
+        const [filePaths, dirPaths] = paths.reduce<string[][]>(
+            (arr, path) => {
+                const absPath = root(path)
+                if (fs.isFile(absPath)) arr[0].push(absPath)
+                else arr[1].push(absPath)
+                return arr
+            },
+            [[], []]
+        )
         const absConfigBlobs = config.tsConfigs.map(path => root(path))
-        const configPaths = fs
-            .getAbsFilePaths(root(), {
-                filterPaths,
-            })
-            .filter(path => mm.any(path, absConfigBlobs))
+        const configPaths = filePaths.length
+            ? filePaths
+            : fs
+                  .getAbsFilePaths(root(), {
+                      filterPaths: dirPaths,
+                  })
+                  .filter(path => mm.any(path, absConfigBlobs))
 
         if (!configPaths.length) {
-            return console.log(
-                `No tsconfig files found matching "${config.tsConfigs}" in "${filterPaths.join(',')}"`
-            )
+            return console.log(`No tsconfig files found at or in "${paths.join(',')}"`)
         }
 
         const exitCodes = await pMap(configPaths, typeCheck, {
@@ -39,7 +48,7 @@ export const tsCmd: CommandModule<{}, ITsCmdOpts> = {
 function typeCheck(tsConfig: string) {
     return new Promise<number>(success => {
         console.log(`Type checking ${tsConfig}...`)
-        const child = spawn('npx', ['tsc', '--project', tsConfig, '--noEmit'], {
+        const child = spawn('npx', ['tsc', '--project', tsConfig], {
             shell: true,
             stdio: 'inherit',
         })
