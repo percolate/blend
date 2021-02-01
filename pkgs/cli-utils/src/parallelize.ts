@@ -1,4 +1,5 @@
 import { spawn } from 'child_process'
+
 import { getMaxCpus } from './getMaxCpus'
 
 const EXIT_CODES = { error: 1, success: 0 }

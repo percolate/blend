@@ -1,4 +1,5 @@
-import { RuleTester, Linter } from 'eslint'
+import { Linter, RuleTester } from 'eslint'
+
 import { importBlacklist } from '../importBlacklist'
 
 const parserOptions: Linter.ParserOptions = {

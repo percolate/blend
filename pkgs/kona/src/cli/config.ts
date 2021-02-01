@@ -1,7 +1,8 @@
+import { inspect } from 'util'
 import { CommandModule } from 'yargs'
+
 import { config } from '../config'
 import { PROJECT_CONFIG } from '../constants'
-import { inspect } from 'util'
 
 export const configCmd: CommandModule = {
     command: 'config',

@@ -44,5 +44,9 @@
     "**/cobertura-parse/mocha": "7.1.1",
     "**/golang-cover-parse/mocha": "7.1.1",
     "**/jacoco-parse/mocha": "7.1.1"
+  },
+  "volta": {
+    "node": "12.18.0",
+    "yarn": "1.22.10"
   }
 }

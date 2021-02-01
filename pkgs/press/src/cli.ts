@@ -1,4 +1,5 @@
 import * as yargs from 'yargs'
+
 import { pushCmd } from './cli/push'
 import { releaseCmd } from './cli/release'
 import { sentryCliCmd } from './cli/sentryCli'

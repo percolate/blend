@@ -1,8 +1,9 @@
-import { CommandModule } from 'yargs'
-import { SKIP_COVERAGE, BIN_DIR } from '../constants'
 import { cleanExit, color, execSync, forceExit, git } from '@percolate/cli-utils'
 import { resolve } from 'path'
+import { CommandModule } from 'yargs'
+
 import { config } from '../config'
+import { BIN_DIR, SKIP_COVERAGE } from '../constants'
 import { root } from '../root'
 
 const COVERAGE_THRESHOLD = 90

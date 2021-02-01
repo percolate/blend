@@ -1,4 +1,5 @@
 import { RuleTester } from 'eslint'
+
 import { noAllowConsole } from '../noAllowConsole'
 
 const ruleTester = new RuleTester()

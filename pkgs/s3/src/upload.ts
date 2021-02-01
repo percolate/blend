@@ -1,11 +1,12 @@
-import * as crypto from 'crypto'
 import { fs } from '@percolate/cli-utils'
+import * as crypto from 'crypto'
+import { createReadStream } from 'fs'
 import * as mime from 'mime-types'
-import { S3 } from './s3'
-import { inspect } from 'util'
 import { resolve } from 'path'
 import { performance } from 'perf_hooks'
-import { createReadStream } from 'fs'
+import { inspect } from 'util'
+
+import { S3 } from './s3'
 
 const MD5CHKSUM = 'md5chksum'
 

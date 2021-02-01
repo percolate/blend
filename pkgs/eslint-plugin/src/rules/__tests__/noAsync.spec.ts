@@ -1,4 +1,5 @@
 import { RuleTester } from 'eslint'
+
 import { noAsync } from '../noAsync'
 
 const parser = require.resolve('@typescript-eslint/parser')

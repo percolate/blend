@@ -1,4 +1,5 @@
 import { RuleTester } from 'eslint'
+
 import { fakeServer } from '../fakeServer'
 
 const ruleTester = new RuleTester()

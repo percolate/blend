@@ -1,7 +1,6 @@
 import { base } from './configs/base'
 import { node } from './configs/node'
 import { react } from './configs/react'
-
 import { cjsDefault } from './rules/cjsDefault'
 import { fakeServer } from './rules/fakeServer'
 import { importBlacklist } from './rules/importBlacklist'

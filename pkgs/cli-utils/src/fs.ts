@@ -1,7 +1,7 @@
-import * as mm from 'micromatch'
 import * as fs from 'fs'
+import * as mm from 'micromatch'
 import fsReadDirRecursive = require('fs-readdir-recursive')
-import { dirname, resolve, isAbsolute } from 'path'
+import { dirname, isAbsolute, resolve } from 'path'
 
 // https://github.com/substack/node-mkdirp/blob/f2003bbcffa80f8c9744579fabab1212fc84545a/index.js#L55
 export function ensureDir(p: string, made?: boolean): boolean {

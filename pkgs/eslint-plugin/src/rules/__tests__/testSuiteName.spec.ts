@@ -1,4 +1,5 @@
 import { RuleTester } from 'eslint'
+
 import { testSuiteName } from '../testSuiteName'
 
 const ruleTester = new RuleTester()

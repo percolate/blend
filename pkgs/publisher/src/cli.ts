@@ -1,7 +1,7 @@
+import { cleanExit, Color, color, execSync, forceExit, fs } from '@percolate/cli-utils'
 import { docopt } from 'docopt'
-import * as semver from 'semver'
 import { resolve } from 'path'
-import { fs, forceExit, cleanExit, execSync, color, Color } from '@percolate/cli-utils'
+import * as semver from 'semver'
 
 const doc = `
 Publish package if the package.json version is newer than NPM's

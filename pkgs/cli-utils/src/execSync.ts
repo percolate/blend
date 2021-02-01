@@ -1,6 +1,7 @@
-import { forceExit } from './forceExit'
 import * as childProcess from 'child_process'
+
 import { color } from './color'
+import { forceExit } from './forceExit'
 
 interface IExecSyncBaseOpts extends childProcess.ExecSyncOptions {
     onError?(err: Error): void
