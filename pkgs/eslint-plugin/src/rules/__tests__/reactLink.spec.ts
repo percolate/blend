@@ -1,4 +1,5 @@
-import { RuleTester, Linter } from 'eslint'
+import { Linter, RuleTester } from 'eslint'
+
 import { reactLink } from '../reactLink'
 
 const parserOptions: Linter.ParserOptions = {

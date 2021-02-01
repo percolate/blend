@@ -1,5 +1,5 @@
-import * as htmlTags from 'html-tags'
 import { Rule } from 'eslint'
+import * as htmlTags from 'html-tags'
 
 export const noJsxIdAttrs: Rule.RuleModule = {
     meta: {

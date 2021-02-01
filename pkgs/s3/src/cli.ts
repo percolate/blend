@@ -1,11 +1,12 @@
 require('console.table')
+import { forceExit, fs } from '@percolate/cli-utils'
 import { docopt } from 'docopt'
-import { fs, forceExit } from '@percolate/cli-utils'
 import * as mm from 'micromatch'
-import { S3 } from './s3'
-import { upload, IUploaderOpts } from './upload'
 import { resolve } from 'path'
+
 import { parseS3Uri } from './parse_s3_uri'
+import { S3 } from './s3'
+import { IUploaderOpts, upload } from './upload'
 import pMap = require('p-map')
 
 const DOC = `S3 file manager

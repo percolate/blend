@@ -1,8 +1,9 @@
-import { CommandModule } from 'yargs'
+import { color, forceExit, fs, IParallelizeOpts, parallelize } from '@percolate/cli-utils'
 import * as mm from 'micromatch'
-import { color, fs, forceExit, parallelize, IParallelizeOpts } from '@percolate/cli-utils'
-import { root } from '../root'
+import { CommandModule } from 'yargs'
+
 import { config } from '../config'
+import { root } from '../root'
 
 interface ILintArgs {
     cache?: boolean

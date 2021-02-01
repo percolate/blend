@@ -1,5 +1,6 @@
-import { RuleTester, Linter } from 'eslint'
+import { Linter, RuleTester } from 'eslint'
 import { resolve } from 'path'
+
 import { noReactPropTypes } from '../noReactPropTypes'
 
 const filename = resolve(__dirname, './fixtures/foo.js')

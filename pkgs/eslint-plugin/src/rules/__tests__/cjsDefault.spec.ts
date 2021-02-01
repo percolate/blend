@@ -1,6 +1,7 @@
-import { cjsDefault } from '../cjsDefault'
-import { RuleTester, Linter } from 'eslint'
+import { Linter, RuleTester } from 'eslint'
 import { resolve } from 'path'
+
+import { cjsDefault } from '../cjsDefault'
 
 const filename = resolve(__dirname, './fixtures/foo.js')
 const parserOptions: Linter.ParserOptions = {

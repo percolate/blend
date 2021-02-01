@@ -1,4 +1,4 @@
-import { git, execSync, forceExit } from '@percolate/cli-utils'
+import { execSync, forceExit, git } from '@percolate/cli-utils'
 
 export function getBranch() {
     if (process.env.GITHUB_ACTIONS && process.env.GITHUB_REF) {

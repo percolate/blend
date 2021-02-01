@@ -1,8 +1,9 @@
-import { CommandModule } from 'yargs'
 import { forceExit, fs, getMaxCpus } from '@percolate/cli-utils'
-import { root } from '../root'
-import { config } from '../config'
 import * as mm from 'micromatch'
+import { CommandModule } from 'yargs'
+
+import { config } from '../config'
+import { root } from '../root'
 import pMap = require('p-map')
 import { spawn } from 'child_process'
 

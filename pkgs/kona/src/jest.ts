@@ -1,4 +1,5 @@
 import { Config } from '@jest/types'
+
 import { config } from './config'
 import { root } from './root'
 

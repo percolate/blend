@@ -1,8 +1,9 @@
-import { CommandModule } from 'yargs'
-import { execSync, git, forceExit, cleanExit } from '@percolate/cli-utils'
+import { cleanExit, execSync, forceExit, git } from '@percolate/cli-utils'
 import * as AWS from 'aws-sdk'
-import { PUSH_COMMIT, TAG_COMMIT_PREFIX, REGION, TAG_BRANCH_PREFIX, TAG_VERSION_PREFIX } from '../constants'
 import * as semverUtils from 'semver'
+import { CommandModule } from 'yargs'
+
+import { PUSH_COMMIT, REGION, TAG_BRANCH_PREFIX, TAG_COMMIT_PREFIX, TAG_VERSION_PREFIX } from '../constants'
 import { getBranch, getHash, getRepoName } from '../defaults'
 
 interface IPushOpts {

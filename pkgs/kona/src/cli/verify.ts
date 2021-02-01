@@ -1,11 +1,12 @@
-import { CommandModule } from 'yargs'
 import { color, execSync, forceExit, fs } from '@percolate/cli-utils'
-import { root } from '../root'
-import * as mm from 'micromatch'
-import { dirname, resolve, relative } from 'path'
 import { readFileSync, writeFileSync } from 'fs'
+import * as mm from 'micromatch'
+import { dirname, relative, resolve } from 'path'
+import { CommandModule } from 'yargs'
+
 import { config } from '../config'
 import { BIN_DIR } from '../constants'
+import { root } from '../root'
 import isEqual = require('lodash.isequal')
 import uniq = require('lodash.uniq')
 

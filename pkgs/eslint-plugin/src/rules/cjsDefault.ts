@@ -1,5 +1,5 @@
 const Exports = require('eslint-plugin-import/lib/ExportMap').default
-import { Rule, Linter } from 'eslint'
+import { Linter, Rule } from 'eslint'
 
 export const cjsDefault: Rule.RuleModule = {
     meta: {

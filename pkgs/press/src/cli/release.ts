@@ -1,8 +1,9 @@
-import { CommandModule } from 'yargs'
-import { execSync, git, cleanExit } from '@percolate/cli-utils'
+import { cleanExit, execSync, git } from '@percolate/cli-utils'
 import { basename } from 'path'
-import { getHash, getBranch, getRepoName } from '../defaults'
+import { CommandModule } from 'yargs'
+
 import { SENTRY_CLI } from '../constants'
+import { getBranch, getHash, getRepoName } from '../defaults'
 
 interface IReleaseOpts {
     branch: string

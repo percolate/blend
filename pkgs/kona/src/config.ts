@@ -1,8 +1,9 @@
-import { PROJECT_CONFIG } from './constants'
 import { fs } from '@percolate/cli-utils'
-import { root } from './root'
 import { readFileSync } from 'fs'
-import { resolve, relative } from 'path'
+import { relative, resolve } from 'path'
+
+import { PROJECT_CONFIG } from './constants'
+import { root } from './root'
 
 interface IConfig {
     /** globs to enforce commit messages `kona commit validate` */

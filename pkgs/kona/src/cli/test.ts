@@ -1,7 +1,8 @@
-import { CommandModule, Options } from 'yargs'
-import * as jest from 'jest-cli/build/cli/args'
 import { execSync, fs, getMaxCpus } from '@percolate/cli-utils'
+import * as jest from 'jest-cli/build/cli/args'
 import { resolve } from 'path'
+import { CommandModule, Options } from 'yargs'
+
 import { BIN_DIR } from '../constants'
 import { root } from '../root'
 

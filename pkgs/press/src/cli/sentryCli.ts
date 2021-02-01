@@ -1,8 +1,9 @@
-import { CommandModule } from 'yargs'
-import { getRepoName, getBranch } from '../defaults'
-import { execSync, git, cleanExit } from '@percolate/cli-utils'
+import { cleanExit, execSync, git } from '@percolate/cli-utils'
 import { basename } from 'path'
+import { CommandModule } from 'yargs'
+
 import { SENTRY_CLI } from '../constants'
+import { getBranch, getRepoName } from '../defaults'
 
 export const sentryCliCmd: CommandModule = {
     command: 'sentry-cli',

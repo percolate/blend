@@ -1,13 +1,15 @@
-import { CommandModule } from 'yargs'
-import { SKIP_COVERAGE, PROJECT_CONFIG } from '../constants'
-import { cleanExit, forceExit, git } from '@percolate/cli-utils'
-import * as mm from 'micromatch'
-import { readFileSync } from 'fs'
 import format from '@commitlint/format'
+import { cleanExit, forceExit, git } from '@percolate/cli-utils'
+import { readFileSync } from 'fs'
+import * as mm from 'micromatch'
+import { CommandModule } from 'yargs'
+
+import { PROJECT_CONFIG, SKIP_COVERAGE } from '../constants'
 import pMap = require('p-map')
+import { resolve } from 'path'
+
 import { config } from '../config'
 import { root } from '../root'
-import { resolve } from 'path'
 
 // no @types
 /* eslint-disable import/no-commonjs */
