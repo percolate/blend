@@ -1,6 +1,6 @@
 {
   "name": "@percolate/cli-utils",
-  "version": "0.1.3",
+  "version": "0.1.5",
   "description": "Percolate CLI utils",
   "license": "CPAL-1.0",
   "repository": "https://github.com/percolate/blend/tree/master/pkgs/core",

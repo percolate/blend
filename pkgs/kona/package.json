@@ -1,6 +1,6 @@
 {
   "name": "@percolate/kona",
-  "version": "3.3.0",
+  "version": "3.3.2",
   "description": "Percolate CLI",
   "license": "CPAL-1.0",
   "repository": "https://github.com/percolate/blend/tree/master/pkgs/kona",
@@ -29,7 +29,7 @@
     "@commitlint/lint": "11.0.0",
     "@commitlint/load": "11.0.0",
     "@connectis/diff-test-coverage": "1.5.3",
-    "@percolate/cli-utils": "0.1.3",
+    "@percolate/cli-utils": "0.1.5",
     "commitizen": "4.2.1",
     "find-up": "4.1.0",
     "husky": "3.0.9",
