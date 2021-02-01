@@ -40,18 +40,10 @@ yarn run
 
 All packages are published under the [@percolate](https://www.npmjs.com/org/percolate) organization on NPM.
 
-Publishing is done in two parts:
-
-1. "version" handled by you, the developer
-1. "publish" handled by CircleCI which deploys master automatically by checking which package versions haven't been published yet.
-
-Once you're ready to publish your changes (usually after a PR is approved), run the following and follow instructions:
-
-```sh
-yarn lerna:version
-```
-
-Merge your branch into master and wait for CI to publish your changes.
+1. Open a PR with your changes
+2. Once your PR is approved (but not merged), run `yarn lerna:version` on your local branch and follow the instructions
+3. Merge your PR into master
+4. CircleCI will deploy master automatically by checking which package versions haven't been published yet and then publish them
 
 ## License
 
