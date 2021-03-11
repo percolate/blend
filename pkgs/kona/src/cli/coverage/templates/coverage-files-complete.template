@@ -1,0 +1,8 @@
+<% if(Object.keys(coverageByFile).length){ %>Diff coverage statistics:
+------------------------------------------------------------------------------
+|     lines      |    branches    |   functions    |   path
+------------------------------------------------------------------------------
+<% Object.entries(coverageByFile).forEach(coverage => { %>| ${displayCoverage(coverage[1], 'lines', true)} | ${displayCoverage(coverage[1], 'branches', true)} | ${displayCoverage(coverage[1], 'functions', true)} | ${getRelativePath(coverage[1].file)}
+<% }); %>------------------------------------------------------------------------------
+<% } else { %>No coverage information found for any of the new lines in the diff.
+<% } %>

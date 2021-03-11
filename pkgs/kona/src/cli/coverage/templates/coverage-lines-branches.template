@@ -1,0 +1,7 @@
+<% if(Object.keys(coverageByFile).length){ %>Diff branch coverage results:
+<% Object.entries(coverageByFile).forEach(coverage => { if(Object.keys(coverage[1].branches.details).length){ %>------------------------------------------------------------------------------
+${getRelativePath(coverage[1].file)}
+------------------------------------------------------------------------------
+<% Object.entries(additionsByFile[coverage[0]].lines).forEach(addition => { %>${displayBranchCoverageLine(coverage[0], addition[0], addition[1])}<% }); %>------------------------------------------------------------------------------
+
+<% }}); %><% } %>

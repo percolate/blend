@@ -1,0 +1,7 @@
+<% if(Object.keys(coverageByFile).length){ %>Diff line coverage results:
+<% Object.entries(coverageByFile).forEach(coverage => { if(Object.keys(coverage[1].lines.details).length){ %>------------------------------------------------------------------------------
+${getRelativePath(coverage[1].file)}
+------------------------------------------------------------------------------
+<% Object.entries(additionsByFile[file].lines).forEach(addition => { %>${displayLineCoverageLine(coverage[0], addition[0], addition[1])}<% }); %>------------------------------------------------------------------------------
+
+<% }}); %><% } %>

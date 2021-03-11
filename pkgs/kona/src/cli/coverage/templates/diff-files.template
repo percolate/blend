@@ -1,0 +1,5 @@
+<% if(Object.keys(coverageByFile).length){ %>Diff files:
+
+<% Object.entries(additionsByFile).forEach(addition => { %>  ${getRelativePath(addition[1].to)}
+<% }); %><% } else { %>No diff information found.
+<% } %>
