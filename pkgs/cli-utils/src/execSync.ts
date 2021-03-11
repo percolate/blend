@@ -4,7 +4,7 @@ import { color } from './color'
 import { forceExit } from './forceExit'
 
 interface IExecSyncBaseOpts extends childProcess.ExecSyncOptions {
-    onError?(err: childProcess.SpawnSyncReturns<string>): void
+    onError?(err: Error): void
     verbose?: boolean
 }
 
