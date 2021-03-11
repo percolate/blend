@@ -18,7 +18,9 @@
     "@types/fs-readdir-recursive": "1.0.0",
     "@types/jest": "24.0.22",
     "@types/lodash.chunk": "4.2.6",
+    "@types/lodash.clonedeep": "4.5.6",
     "@types/lodash.isequal": "4.5.5",
+    "@types/lodash.template": "4.5.0",
     "@types/lodash.uniq": "4.5.6",
     "@types/micromatch": "3.1.0",
     "@types/mime-types": "2.1.0",
@@ -39,11 +41,6 @@
     "hooks": {
       "commit-msg": "node_modules/.bin/kona commit preCommit"
     }
-  },
-  "resolutions": {
-    "**/cobertura-parse/mocha": "7.1.1",
-    "**/golang-cover-parse/mocha": "7.1.1",
-    "**/jacoco-parse/mocha": "7.1.1"
   },
   "volta": {
     "node": "12.18.0",
