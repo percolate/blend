@@ -36,8 +36,6 @@ console.log = (...args: string[]) => {
 // eslint-disable-next-line import/no-commonjs
 const { coverageCmd } = require('../coverage')
 
-const generateLcov = () => execSync(`npx kona test --coverage`)
-
 const branchExists = (branch: string) => {
     let exists: boolean
     exists = !!execSync(`git branch --list ${branch}`, {
@@ -89,11 +87,14 @@ beforeEach(() => {
     resetBranches()
     execSync('git branch feature')
     execSync('git checkout feature')
+    execSync(`mkdir ${fixturePath}/tmp`)
+    execSync(`mkdir ${fixturePath}/tmp/reports`)
 })
 
 afterEach(() => {
     jest.clearAllMocks()
     resetBranches()
+    execSync(`rm -rf ${fixturePath}/tmp`)
 })
 
 afterAll(() => {
@@ -108,7 +109,24 @@ it('should not run on master', () => {
 })
 
 it('should not report if nothing changes', async () => {
-    generateLcov()
+    const coverage = `
+TN:
+SF:util.ts
+FN:1,(anonymous_0)
+FN:2,(anonymous_1)
+FNF:2
+FNH:1
+FNDA:1,(anonymous_0)
+FNDA:0,(anonymous_1)
+DA:1,1
+DA:2,1
+LF:2
+LH:2
+BRF:0
+BRH:0
+end_of_record    
+`
+    fs.writeFileSync(`${fixturePath}/tmp/reports/lcov.info`, coverage, 'utf8')
     await cmd()
     expect(getOutput()).toMatchSnapshot()
 })
@@ -117,9 +135,27 @@ it('should not report deletions', async () => {
     const changes = `export const add = (num1: number, num2: number) => num1 + num2
 `
 
+    const coverage = `
+TN:
+SF:util.ts
+FN:1,(anonymous_0)
+FN:2,(anonymous_1)
+FNF:2
+FNH:1
+FNDA:1,(anonymous_0)
+FNDA:0,(anonymous_1)
+DA:1,1
+DA:2,1
+LF:2
+LH:2
+BRF:0
+BRH:0
+end_of_record    
+`
+
     fs.writeFileSync(`${fixturePath}/util.ts`, changes, 'utf8')
+    fs.writeFileSync(`${fixturePath}/tmp/reports/lcov.info`, coverage, 'utf8')
     commitChanges()
-    generateLcov()
     await cmd()
     expect(getOutput()).toMatchSnapshot()
 })
@@ -130,9 +166,27 @@ export const subtract = (num1: number, num2: number) => num1 - num2
 export const math = { add, subtract }
 `
 
+    const coverage = `
+TN:
+SF:util.ts
+FN:1,(anonymous_0)
+FN:2,(anonymous_1)
+FNF:2
+FNH:1
+FNDA:1,(anonymous_0)
+FNDA:0,(anonymous_1)
+DA:1,1
+DA:2,1
+LF:2
+LH:2
+BRF:0
+BRH:0
+end_of_record    
+`
+
     fs.writeFileSync(`${fixturePath}/util.ts`, changes, 'utf8')
+    fs.writeFileSync(`${fixturePath}/tmp/reports/lcov.info`, coverage, 'utf8')
     commitChanges()
-    generateLcov()
     await cmd()
     expect(getOutput()).toMatchSnapshot()
 })
@@ -143,9 +197,30 @@ export const subtract = (num1: number, num2: number) => num1 - num2
 export const divide = (num1: number, num2: number) => num1 / num2
 `
 
+    const coverage = `
+TN:
+SF:util.ts
+FN:1,(anonymous_0)
+FN:2,(anonymous_1)
+FN:3,(anonymous_2)
+FNF:3
+FNH:1
+FNDA:1,(anonymous_0)
+FNDA:0,(anonymous_1)
+FNDA:0,(anonymous_2)
+DA:1,1
+DA:2,1
+DA:3,1
+LF:3
+LH:3
+BRF:0
+BRH:0
+end_of_record
+`
+
     fs.writeFileSync(`${fixturePath}/util.ts`, changes, 'utf8')
+    fs.writeFileSync(`${fixturePath}/tmp/reports/lcov.info`, coverage, 'utf8')
     commitChanges()
-    generateLcov()
     await cmd()
     expect(getOutput()).toMatchSnapshot()
 })
@@ -154,10 +229,29 @@ it('should report new branches', async () => {
     const changes = `export const add = (num1: number, num2: number) => num1 ? num1 + num2 : num1
 export const subtract = (num1: number, num2: number) => num1 - num2
 `
+    const coverage = `
+TN:
+SF:util.ts
+FN:1,(anonymous_0)
+FN:2,(anonymous_1)
+FNF:2
+FNH:1
+FNDA:1,(anonymous_0)
+FNDA:0,(anonymous_1)
+DA:1,1
+DA:2,1
+LF:2
+LH:2
+BRDA:1,0,0,1
+BRDA:1,0,1,0
+BRF:2
+BRH:1
+end_of_record
+`
 
     fs.writeFileSync(`${fixturePath}/util.ts`, changes, 'utf8')
+    fs.writeFileSync(`${fixturePath}/tmp/reports/lcov.info`, coverage, 'utf8')
     commitChanges()
-    generateLcov()
     await cmd()
     expect(getOutput()).toMatchSnapshot()
 })
@@ -169,9 +263,33 @@ export const divide = (num1: number, num2: number) => num1 / num2
 export const math = { add, divide, subtract }
 `
 
+    const coverage = `
+TN:
+SF:util.ts
+FN:1,(anonymous_0)
+FN:2,(anonymous_1)
+FN:3,(anonymous_2)
+FNF:3
+FNH:1
+FNDA:1,(anonymous_0)
+FNDA:0,(anonymous_1)
+FNDA:0,(anonymous_2)
+DA:1,1
+DA:2,1
+DA:3,1
+DA:4,1
+LF:4
+LH:4
+BRDA:1,0,0,1
+BRDA:1,0,1,0
+BRF:2
+BRH:1
+end_of_record
+`
+
     fs.writeFileSync(`${fixturePath}/util.ts`, changes, 'utf8')
+    fs.writeFileSync(`${fixturePath}/tmp/reports/lcov.info`, coverage, 'utf8')
     commitChanges()
-    generateLcov()
     await cmd()
     expect(getOutput()).toMatchSnapshot()
 })
@@ -183,11 +301,56 @@ export const divide = (num1: number, num2: number) => num1 / num2
 export const math = { add, divide, subtract }
 `
 
+    const coverage = `
+TN:
+SF:util.ts
+FN:1,(anonymous_0)
+FN:2,(anonymous_1)
+FN:3,(anonymous_2)
+FNF:3
+FNH:1
+FNDA:1,(anonymous_0)
+FNDA:0,(anonymous_1)
+FNDA:0,(anonymous_2)
+DA:1,1
+DA:2,1
+DA:3,1
+DA:4,1
+LF:4
+LH:4
+BRDA:1,0,0,1
+BRDA:1,0,1,0
+BRF:2
+BRH:1
+end_of_record
+TN:
+SF:util1.ts
+FN:1,(anonymous_0)
+FN:2,(anonymous_1)
+FN:3,(anonymous_2)
+FNF:3
+FNH:0
+FNDA:0,(anonymous_0)
+FNDA:0,(anonymous_1)
+FNDA:0,(anonymous_2)
+DA:1,0
+DA:2,0
+DA:3,0
+DA:4,0
+LF:4
+LH:0
+BRDA:1,0,0,0
+BRDA:1,0,1,0
+BRF:2
+BRH:0
+end_of_record
+`
+
     fs.writeFileSync(`${fixturePath}/util.ts`, changes, 'utf8')
     execSync(`touch ${fixturePath}/util1.ts`)
     fs.writeFileSync(`${fixturePath}/util1.ts`, changes, 'utf8')
+    fs.writeFileSync(`${fixturePath}/tmp/reports/lcov.info`, coverage, 'utf8')
     commitChanges()
-    generateLcov()
     await cmd()
     expect(getOutput()).toMatchSnapshot()
 })

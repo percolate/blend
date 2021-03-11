@@ -23,6 +23,7 @@ exports[`should report all three 1`] = `
 Computing coverage on diff...
 Diff files:
 
+  tmp/reports/lcov.info
   util.ts
 
 Diff coverage results:
@@ -64,6 +65,7 @@ exports[`should report changes across multiple files 1`] = `
 Computing coverage on diff...
 Diff files:
 
+  tmp/reports/lcov.info
   util.ts
   util1.ts
 
@@ -116,6 +118,7 @@ exports[`should report new branches 1`] = `
 Computing coverage on diff...
 Diff files:
 
+  tmp/reports/lcov.info
   util.ts
 
 Diff coverage results:
@@ -153,6 +156,7 @@ exports[`should report new functions 1`] = `
 Computing coverage on diff...
 Diff files:
 
+  tmp/reports/lcov.info
   util.ts
 
 Diff coverage results:
@@ -189,35 +193,8 @@ ERROR: Insufficient function coverage of 0% (0/1). Required 90%."
 exports[`should report new lines 1`] = `
 "Fetching latest master...
 Computing coverage on diff...
-Diff files:
-
-  util.ts
-
-Diff coverage results:
-
-  F = Function coverage
-  L = Line coverage
-  B = Branch coverage
-
-------------------------------------------------------------------------------
-util.ts
-------------------------------------------------------------------------------
-1                 export const add = (num1: number, num2: number) => num1 + num2
-2                 export const subtract = (num1: number, num2: number) => num1 - num2
-3   L             export const math = { add, subtract }
-------------------------------------------------------------------------------
+No diff information found.
 
 
-Diff coverage statistics:
-------------------------------------------------------------------------------
-|     lines      |    branches    |   functions    |   path
-------------------------------------------------------------------------------
-| 100% (1/1)     | 100% (0/0)     | 100% (0/0)     | util.ts
-------------------------------------------------------------------------------
-
-Total diff coverage:
-
- - lines: 100% (1/1)
- - branches: 100% (0/0)
- - functions: 100% (0/0)"
+No coverage information found for any of the new lines in the diff."
 `;
