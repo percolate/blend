@@ -68,6 +68,8 @@ const removeVersionControl = () => {
 const resetVersionControl = () => {
     removeVersionControl()
     execSync('git init')
+    execSync('git config user.name "someone"')
+    execSync('git config user.email "someone@someplace.com"')
     commitChanges()
 }
 
