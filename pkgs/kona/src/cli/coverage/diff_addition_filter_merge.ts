@@ -105,9 +105,11 @@ function removeLineChange(
     index: number,
     allChanges: Change[]
 ) {
-    const chunkChanges = allChanges.slice(index - change.ln + 1, index + 1)
+    const chunkChanges = allChanges.slice(0, index + 1)
     const shouldRemove = !chunkChanges.some(chunkChange => {
-        const line = chunkChange.type === 'normal' ? chunkChange.ln2 : chunkChange.ln
+        let line
+        if (chunkChange.type === 'normal') line = chunkChange.ln2
+        if (chunkChange.type === 'add') line = chunkChange.ln
         return line === change.ln
     })
     if (shouldRemove) {
