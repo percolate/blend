@@ -1,7 +1,7 @@
 import _yargs = require('yargs/yargs')
 import { commitCmd } from './cli/commit'
 import { configCmd } from './cli/config'
-import { coverageCmd } from './cli/coverage'
+import { coverageCmd } from './cli/coverage/coverage'
 import { lintCmd } from './cli/lint'
 import { testCmd } from './cli/test'
 import { tsCmd } from './cli/ts'

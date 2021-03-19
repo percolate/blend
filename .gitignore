@@ -6,3 +6,4 @@ pkgs/*/tmp/
 pkgs/*/yarn-error.log
 yarn-error.log
 tmp/
+**/tmp/

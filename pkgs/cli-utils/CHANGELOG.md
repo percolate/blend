@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.1.6](https://github.com/percolate/blend/tree/master/pkgs/core/compare/@percolate/cli-utils@0.1.5...@percolate/cli-utils@0.1.6) (2021-03-19)
+
+
+### Bug Fixes
+
+* execSync arg type ([f861d80](https://github.com/percolate/blend/tree/master/pkgs/core/commit/f861d80553cf45ae34a458cdb405b0f04662455d))
+
+
+
+
+
 ## [0.1.5](https://github.com/percolate/blend/tree/master/pkgs/core/compare/@percolate/cli-utils@0.1.3...@percolate/cli-utils@0.1.5) (2021-02-01)
 
 **Note:** Version bump only for package @percolate/cli-utils

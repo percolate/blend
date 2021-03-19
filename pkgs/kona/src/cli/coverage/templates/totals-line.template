@@ -1,0 +1,1 @@
+<% if(Object.keys(additionsByFile).length && Object.keys(coverageByFile).length){ %>Total diff coverage: ${displayCoverage(totals, 'lines')}<% } %>
