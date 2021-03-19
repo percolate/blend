@@ -70,7 +70,7 @@ function mergeDetails(
 function createSection(details: Partial<Detail>[], hitKey: IMergeSectionOpts['hitKey']) {
     return {
         found: details.length,
-        hit: details.reduce((hits, detail) => (hits + detail[hitKey]! ? 1 : 0), 0),
+        hit: details.reduce((hits, detail) => hits + (detail[hitKey]! ? 1 : 0), 0),
         details,
     }
 }

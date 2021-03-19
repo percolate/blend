@@ -61,7 +61,7 @@ function mergeChanges(fileDiffs: File[]) {
     const lines = Object.entries(changes)
         .map(entry => {
             const [, change] = entry
-            const line = change.type === 'normal' ? change.ln1 : change.ln
+            const line = change.type === 'normal' ? change.ln2 : change.ln
             return [line, change.content.substr(1)]
         })
         .reduce((obj, change) => ({ ...obj, [change[0]]: change[1] }), {})
@@ -94,7 +94,7 @@ function reduceChanges(
 }
 
 function setLineChange(result: { [key: number]: Change }, change: Change) {
-    const line = change.type === 'normal' ? change.ln1 : change.ln
+    const line = change.type === 'normal' ? change.ln2 : change.ln
     result[line] = change
     return result
 }
@@ -107,7 +107,7 @@ function removeLineChange(
 ) {
     const chunkChanges = allChanges.slice(index - change.ln + 1, index + 1)
     const shouldRemove = !chunkChanges.some(chunkChange => {
-        const line = chunkChange.type === 'normal' ? chunkChange.ln1 : chunkChange.ln
+        const line = chunkChange.type === 'normal' ? chunkChange.ln2 : chunkChange.ln
         return line === change.ln
     })
     if (shouldRemove) {

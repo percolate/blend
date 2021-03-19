@@ -65,7 +65,7 @@ function filterCoverageSection(coverageSection: Section, addedLines: number[], h
     const details = coverageSection.details.filter(detail => addedLines.includes(detail.line))
     return {
         found: details.length,
-        hit: details.reduce((hits, detail) => (hits + detail[hitKey] ? 1 : 0), 0),
+        hit: details.reduce((hits, detail) => hits + (detail[hitKey] ? 1 : 0), 0),
         details,
     }
 }

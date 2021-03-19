@@ -157,7 +157,7 @@ function getLineBranchesCoverage(branchesCoverageDetails: CoverageDetails, lineN
     )
     return {
         found: branchCoverageList.length,
-        hit: branchCoverageList.reduce((hits, branchCoverage) => (hits + branchCoverage.taken! ? 1 : 0), 0),
+        hit: branchCoverageList.reduce((hits, branchCoverage) => hits + (branchCoverage.taken! ? 1 : 0), 0),
     }
 }
 

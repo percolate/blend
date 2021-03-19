@@ -45,16 +45,15 @@ Diff coverage statistics:
 ------------------------------------------------------------------------------
 |     lines      |    branches    |   functions    |   path
 ------------------------------------------------------------------------------
-|  33% (1/3)     |  50% (1/2)     |  50% (1/2)     | util.ts
+| 100% (3/3)     |  50% (1/2)     |  50% (1/2)     | util.ts
 ------------------------------------------------------------------------------
 
 Total diff coverage:
 
- - lines: 33% (1/3)
+ - lines: 100% (3/3)
  - branches: 50% (1/2)
  - functions: 50% (1/2)
 
-ERROR: Insufficient line coverage of 33% (1/3). Required 90%.
 ERROR: Insufficient branch coverage of 50% (1/2). Required 80%.
 ERROR: Insufficient function coverage of 50% (1/2). Required 90%."
 `;
@@ -96,17 +95,17 @@ Diff coverage statistics:
 ------------------------------------------------------------------------------
 |     lines      |    branches    |   functions    |   path
 ------------------------------------------------------------------------------
-|  33% (1/3)     |  50% (1/2)     |  50% (1/2)     | util.ts
+| 100% (3/3)     |  50% (1/2)     |  50% (1/2)     | util.ts
 |   0% (0/4)     |   0% (0/2)     |   0% (0/3)     | util1.ts
 ------------------------------------------------------------------------------
 
 Total diff coverage:
 
- - lines: 14% (1/7)
+ - lines: 42% (3/7)
  - branches: 25% (1/4)
  - functions: 20% (1/5)
 
-ERROR: Insufficient line coverage of 14% (1/7). Required 90%.
+ERROR: Insufficient line coverage of 42% (3/7). Required 90%.
 ERROR: Insufficient branch coverage of 25% (1/4). Required 80%.
 ERROR: Insufficient function coverage of 20% (1/5). Required 90%."
 `;
