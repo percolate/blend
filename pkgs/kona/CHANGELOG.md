@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [3.4.1](https://github.com/percolate/blend/tree/master/pkgs/kona/compare/@percolate/kona@3.4.0...@percolate/kona@3.4.1) (2021-03-20)
+
+
+### Bug Fixes
+
+* issue where coverage was reported incorrectly ([295630d](https://github.com/percolate/blend/tree/master/pkgs/kona/commit/295630d5f0801c2cf9f398cca2affbe1f19fbbc0))
+
+
+
+
+
 # [3.4.0](https://github.com/percolate/blend/tree/master/pkgs/kona/compare/@percolate/kona@3.3.2...@percolate/kona@3.4.0) (2021-03-19)
 
 
