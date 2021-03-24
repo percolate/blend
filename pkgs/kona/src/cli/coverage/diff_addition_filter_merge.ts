@@ -15,8 +15,7 @@ export function filterAndMergeDiffAdditions(
     const resultsNoDevNull = fileDiffs.filter(fileDiff => fileDiff.to && fileDiff.to !== '/dev/null')
 
     const resultsNoFiltered = resultsNoDevNull.filter(
-        fileDiff =>
-            !diff.filterGlobs.length || micromatch.some(fileDiff.to!, diff.filterGlobs, { matchBase: true })
+        fileDiff => !diff.filterGlobs.length || micromatch.some(fileDiff.to!, diff.filterGlobs)
     )
 
     const resultsGroupedByTo = resultsNoFiltered.reduce<{ [key: string]: File[] }>(
