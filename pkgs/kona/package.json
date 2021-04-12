@@ -45,7 +45,7 @@
     "micromatch": "4.0.2",
     "p-map": "3.0.0",
     "parse-diff": "0.7.1",
-    "yargs": "14.2.0",
+    "yargs": "16.2.0",
     "yarn-deduplicate": "1.1.1"
   },
   "peerDependencies": {
