@@ -1,6 +1,6 @@
 {
   "name": "@percolate/kona",
-  "version": "3.4.3",
+  "version": "3.4.4",
   "description": "Percolate CLI",
   "license": "CPAL-1.0",
   "repository": "https://github.com/percolate/blend/tree/master/pkgs/kona",
@@ -25,12 +25,12 @@
     "watch": "tsc --build tsconfig.json --watch --preserveWatchOutput"
   },
   "dependencies": {
-    "@commitlint/config-conventional": "11.0.0",
-    "@commitlint/format": "11.0.0",
-    "@commitlint/lint": "11.0.0",
-    "@commitlint/load": "11.0.0",
-    "@percolate/cli-utils": "0.1.9",
-    "commitizen": "4.2.1",
+    "@commitlint/config-conventional": "12.1.1",
+    "@commitlint/format": "12.1.1",
+    "@commitlint/lint": "12.1.1",
+    "@commitlint/load": "12.1.1",
+    "@percolate/cli-utils": "0.1.10",
+    "commitizen": "4.2.3",
     "fast-glob": "3.2.5",
     "find-up": "4.1.0",
     "husky": "3.0.9",
@@ -43,9 +43,9 @@
     "lodash.template": "4.5.0",
     "lodash.uniq": "4.5.0",
     "micromatch": "4.0.2",
-    "p-map": "3.0.0",
+    "p-map": "4.0.0",
     "parse-diff": "0.7.1",
-    "yargs": "14.2.0",
+    "yargs": "16.2.0",
     "yarn-deduplicate": "1.1.1"
   },
   "peerDependencies": {

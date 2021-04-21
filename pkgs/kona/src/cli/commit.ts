@@ -1,4 +1,7 @@
 import format from '@commitlint/format'
+import lint from '@commitlint/lint'
+import load from '@commitlint/load'
+import { LintOutcome } from '@commitlint/types'
 import { cleanExit, forceExit, git } from '@percolate/cli-utils'
 import { readFileSync } from 'fs'
 import * as mm from 'micromatch'
@@ -13,8 +16,6 @@ import { root } from '../root'
 
 // no @types
 /* eslint-disable import/no-commonjs */
-const lint = require('@commitlint/lint').default
-const load = require('@commitlint/load').default
 const { bootstrap } = require('commitizen/dist/cli/git-cz')
 
 interface ICommitArgs {
@@ -83,13 +84,20 @@ export const commitCmd: CommandModule<{}, ICommitArgs> = {
     },
 }
 
+interface IReport {
+    errorCount: number
+    results: LintOutcome[]
+    valid: boolean
+    warningCount: number
+}
+
 async function validate(messages: string[]) {
     if (!messages.length) return
 
     const { rules } = await load({ extends: ['@commitlint/config-conventional'] }).catch(forceExit)
     const results = await pMap(messages, m => lint(m, rules)).catch(forceExit)
     const report = results.reduce(
-        (info, result) => {
+        (info: IReport, result) => {
             info.errorCount += result.errors.length
             info.results.push(result)
             info.valid = result.valid ? info.valid : false
