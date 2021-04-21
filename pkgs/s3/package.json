@@ -1,6 +1,6 @@
 {
   "name": "@percolate/s3",
-  "version": "1.2.8",
+  "version": "1.2.9",
   "description": "CLI for various S3 commands",
   "license": "CPAL-1.0",
   "repository": "https://github.com/percolate/blend/tree/master/pkgs/s3",
@@ -19,7 +19,7 @@
     "watch": "tsc --build tsconfig.json --watch --preserveWatchOutput"
   },
   "dependencies": {
-    "@percolate/cli-utils": "0.1.9",
+    "@percolate/cli-utils": "0.1.10",
     "aws-sdk": "2.885.0",
     "console.table": "0.10.0",
     "docopt": "0.6.2",
