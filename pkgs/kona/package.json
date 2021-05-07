@@ -30,7 +30,7 @@
     "@commitlint/lint": "12.1.1",
     "@commitlint/load": "12.1.1",
     "@percolate/cli-utils": "0.1.10",
-    "commitizen": "4.2.3",
+    "commitizen": "4.2.4",
     "fast-glob": "3.2.5",
     "find-up": "4.1.0",
     "husky": "3.0.9",
