@@ -3,6 +3,14 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.2.11](https://github.com/percolate/blend/tree/master/pkgs/press/compare/@percolate/press@1.2.9...@percolate/press@1.2.11) (2021-05-11)
+
+**Note:** Version bump only for package @percolate/press
+
+
+
+
+
 ## [1.2.10](https://github.com/percolate/blend/tree/master/pkgs/press/compare/@percolate/press@1.2.9...@percolate/press@1.2.10) (2021-04-21)
 
 **Note:** Version bump only for package @percolate/press
