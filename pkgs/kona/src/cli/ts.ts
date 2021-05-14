@@ -32,7 +32,7 @@ export const tsCmd: CommandModule<{}, ITsCmdOpts> = {
                   .getAbsFilePaths(root(), {
                       filterPaths: dirPaths,
                   })
-                  .filter(path => mm.any(path, absConfigBlobs))
+                  .filter(path => mm.any(path, fs.pathToGlob(absConfigBlobs)))
 
         if (!configPaths.length) {
             return console.log(`No tsconfig files found at or in "${paths.join(',')}"`)
