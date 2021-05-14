@@ -11,7 +11,7 @@ import isEqual = require('lodash.isequal')
 import uniq = require('lodash.uniq')
 
 const PRETTIER_CONFIG = '@percolate/kona/configs/prettier.json'
-const PRECOMMIT_CMD = 'node_modules/.bin/kona commit preCommit'
+const PRECOMMIT_CMD = 'npx kona commit preCommit'
 
 // eslint-disable-next-line import/no-commonjs
 const { listDuplicates } = require('yarn-deduplicate') // no @types/yarn-deduplicate

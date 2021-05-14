@@ -1,7 +1,13 @@
 import * as fs from 'fs'
 import * as mm from 'micromatch'
 import fsReadDirRecursive = require('fs-readdir-recursive')
-import { dirname, isAbsolute, resolve } from 'path'
+import { dirname, isAbsolute, posix, resolve, sep } from 'path'
+
+// ensures paths used with mm work cross platform
+// https://github.com/micromatch/micromatch#backslashes
+export function pathToGlob(path: string) {
+    return path.split(sep).join(posix.sep)
+}
 
 // https://github.com/substack/node-mkdirp/blob/f2003bbcffa80f8c9744579fabab1212fc84545a/index.js#L55
 export function ensureDir(p: string, made?: boolean): boolean {
@@ -73,7 +79,7 @@ export function getAbsFilePaths(dir: string, opts: { filterPaths?: string[]; cwd
                 return false
             })
         })
-        return output.filter(file => mm.isMatch(file, `${dir}/**`, { dot: true }))
+        return output.filter(file => mm.isMatch(file, `${pathToGlob(dir)}/**`, { dot: true }))
     }
 
     return readDir(dir).map(file => resolve(dir, file))

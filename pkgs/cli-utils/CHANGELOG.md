@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.1.12](https://github.com/percolate/blend/tree/master/pkgs/core/compare/@percolate/cli-utils@0.1.11...@percolate/cli-utils@0.1.12) (2021-05-14)
+
+
+### Bug Fixes
+
+* lint command on windows ([91fafe2](https://github.com/percolate/blend/tree/master/pkgs/core/commit/91fafe2ecc9ab4ca781743460aa91e41dc4c4793))
+* ts command on windows ([c62163f](https://github.com/percolate/blend/tree/master/pkgs/core/commit/c62163f7e98f27124fce3c01f4f26f3ed814685e))
+
+
+
+
+
 ## [0.1.11](https://github.com/percolate/blend/tree/master/pkgs/core/compare/@percolate/cli-utils@0.1.9...@percolate/cli-utils@0.1.11) (2021-05-11)
 
 **Note:** Version bump only for package @percolate/cli-utils

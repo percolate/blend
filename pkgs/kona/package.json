@@ -1,6 +1,6 @@
 {
   "name": "@percolate/kona",
-  "version": "3.4.5",
+  "version": "3.4.6",
   "description": "Percolate CLI",
   "license": "CPAL-1.0",
   "repository": "https://github.com/percolate/blend/tree/master/pkgs/kona",
@@ -20,7 +20,7 @@
     "src"
   ],
   "scripts": {
-    "copy-files": "rm -rf ./dist/cli/coverage/templates mkdir ./dist/cli/coverage/templates && cp -R ./src/cli/coverage/templates/. ./dist/cli/coverage/templates/",
+    "copy-files": "shx rm -rf ./dist/cli/coverage/templates && shx mkdir ./dist/cli/coverage/templates && shx cp -R ./src/cli/coverage/templates/. ./dist/cli/coverage/templates/",
     "build": "tsc --build tsconfig.build.json && yarn copy-files",
     "watch": "tsc --build tsconfig.json --watch --preserveWatchOutput"
   },
@@ -29,7 +29,7 @@
     "@commitlint/format": "12.1.1",
     "@commitlint/lint": "12.1.1",
     "@commitlint/load": "12.1.1",
-    "@percolate/cli-utils": "0.1.11",
+    "@percolate/cli-utils": "0.1.12",
     "commitizen": "4.2.4",
     "fast-glob": "3.2.5",
     "find-up": "4.1.0",

@@ -9,7 +9,7 @@ import { CommandModule } from 'yargs'
 
 import { PROJECT_CONFIG, SKIP_COVERAGE } from '../constants'
 import pMap = require('p-map')
-import { resolve } from 'path'
+import { join, resolve } from 'path'
 
 import { config } from '../config'
 import { root } from '../root'
@@ -59,7 +59,7 @@ export const commitCmd: CommandModule<{}, ICommitArgs> = {
                     if (!matchLintPaths) return
 
                     // note: paths.root guarantees .git exists
-                    const message = readFileSync(root('.git/COMMIT_EDITMSG'), 'utf8')
+                    const message = readFileSync(root(join('.git', 'COMMIT_EDITMSG')), 'utf8')
                     await validate([message])
                 },
             })
@@ -78,7 +78,7 @@ export const commitCmd: CommandModule<{}, ICommitArgs> = {
         // remove the command name so it's not confused for a file
         process.argv = process.argv.filter(arg => arg !== COMMIT_CMD)
         bootstrap({
-            cliPath: resolve(require.resolve('commitizen'), '../..'),
+            cliPath: resolve(require.resolve('commitizen'), join('..', '..')),
             config: { path: 'cz-conventional-changelog' },
         })
     },

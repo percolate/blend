@@ -3,6 +3,7 @@ import { spawn } from 'child_process'
 import { getMaxCpus } from './getMaxCpus'
 
 const EXIT_CODES = { error: 1, success: 0 }
+const COMMAND_PROMPT_CHAR_LIMIT = 7000 // actual limit is 8191 but we're playing it safe
 
 export interface IParallelizeOpts {
     cmd: string
@@ -52,7 +53,8 @@ function processFiles({ cmd, cwd, files, maxChunkSize = Infinity, cpus, outputs 
     log(`Files found: ${numFiles}`)
     if (!numFiles) return [EXIT_CODES.success]
 
-    const totalProcesses = Math.min(numFiles, cpus)
+    const cpProcesses = Math.ceil(files.join(' ').length / (COMMAND_PROMPT_CHAR_LIMIT - cmd.length - 1))
+    const totalProcesses = Math.max(Math.min(numFiles, cpus), cpProcesses)
     const safeChunkSize = Math.min(Math.ceil(numFiles / totalProcesses), maxChunkSize)
 
     log(`Parallel processes: ${totalProcesses}`)
