@@ -4,10 +4,10 @@
   "repository": "https://github.com/percolate/blend",
   "scripts": {
     "build": "lerna run build",
-    "clean": "lerna exec 'rm -rf dist/ node_modules/ tmp/' && rm -rf node_modules/ tmp/",
+    "clean": "lerna exec \"shx rm -rf dist/ node_modules/ tmp/\" && shx rm -rf node_modules/ tmp/",
     "lerna:publish": "lerna publish from-package",
     "lerna:version": "lerna version --conventional-commits --exact",
-    "postinstall": "cd node_modules/.bin && rm -f kona && ln -s ../../pkgs/kona/bin/kona kona"
+    "postinstall": "cd node_modules/.bin && shx rm -f kona && shx ln -s ../../pkgs/kona/bin/kona kona"
   },
   "devDependencies": {
     "@percolate/eslint-plugin": "link:./pkgs/eslint-plugin",
@@ -30,6 +30,7 @@
     "jest": "26.6.3",
     "lerna": "3.18.4",
     "prettier": "1.19.1",
+    "shx": "0.3.3",
     "ts-jest": "26.4.4",
     "typescript": "3.8.3"
   },
@@ -39,7 +40,7 @@
   ],
   "husky": {
     "hooks": {
-      "commit-msg": "node_modules/.bin/kona commit preCommit"
+      "commit-msg": "npx kona commit preCommit"
     }
   },
   "volta": {
