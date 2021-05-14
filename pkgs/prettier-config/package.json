@@ -1,6 +1,6 @@
 {
   "name": "@percolate/prettier-config",
-  "version": "0.1.9",
+  "version": "0.1.10",
   "description": "Percolate prettier config",
   "repository": "https://github.com/percolate/blend/tree/master/pkgs/prettier-config",
   "license": "CPAL-1.0",

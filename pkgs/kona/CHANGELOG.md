@@ -3,6 +3,19 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [3.4.6](https://github.com/percolate/blend/tree/master/pkgs/kona/compare/@percolate/kona@3.4.5...@percolate/kona@3.4.6) (2021-05-14)
+
+
+### Bug Fixes
+
+* commit command on windows ([8b12abf](https://github.com/percolate/blend/tree/master/pkgs/kona/commit/8b12abf1d2cc2c6433df12a1d5392c1899ebbfe7))
+* ts command on windows ([c62163f](https://github.com/percolate/blend/tree/master/pkgs/kona/commit/c62163f7e98f27124fce3c01f4f26f3ed814685e))
+* verify command on windows ([4a10129](https://github.com/percolate/blend/tree/master/pkgs/kona/commit/4a10129e9894f36ca021c76ba3d3047aad1e1e82))
+
+
+
+
+
 ## [3.4.5](https://github.com/percolate/blend/tree/master/pkgs/kona/compare/@percolate/kona@3.4.3...@percolate/kona@3.4.5) (2021-05-11)
 
 **Note:** Version bump only for package @percolate/kona
