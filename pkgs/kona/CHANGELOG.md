@@ -3,6 +3,14 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [3.4.8](https://github.com/percolate/blend/tree/master/pkgs/kona/compare/@percolate/kona@3.4.7...@percolate/kona@3.4.8) (2021-08-17)
+
+**Note:** Version bump only for package @percolate/kona
+
+
+
+
+
 ## [3.4.7](https://github.com/percolate/blend/tree/master/pkgs/kona/compare/@percolate/kona@3.4.6...@percolate/kona@3.4.7) (2021-07-27)
 
 **Note:** Version bump only for package @percolate/kona
