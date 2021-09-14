@@ -11,9 +11,9 @@ export const cjsDefault: Rule.RuleModule = {
         fixable: 'code',
     },
 
-    create: function(context) {
+    create: function (context) {
         return {
-            CallExpression: function(node: any) {
+            CallExpression: function (node: any) {
                 // verify `require()` with one argument
                 if (node.callee.name !== 'require' || node.arguments.length !== 1) return null
 
@@ -46,7 +46,7 @@ export const cjsDefault: Rule.RuleModule = {
                     context.report({
                         message: 'requiring ES module must reference default',
                         node,
-                        fix: function(fixer) {
+                        fix: function (fixer) {
                             return fixer.insertTextAfter(node, '.default')
                         },
                     })

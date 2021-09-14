@@ -9,10 +9,7 @@ export const sentryCliCmd: CommandModule = {
     command: 'sentry-cli',
     describe: 'sentry-cli proxy with master gating and project injection',
     builder: args => {
-        return args
-            .strict(false)
-            .help(false)
-            .version(false)
+        return args.strict(false).help(false).version(false)
     },
     handler: () => {
         if (!git.isMaster(getBranch())) return cleanExit('sentry-cli only runs on master')

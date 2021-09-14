@@ -53,26 +53,22 @@ ruleTester.run('react-link', reactLink, {
             parserOptions,
         },
         {
-            code:
-                'import Link from "/link.jsx"; var props = { other: "stuff" }; <Link to="/path" {...props} />',
+            code: 'import Link from "/link.jsx"; var props = { other: "stuff" }; <Link to="/path" {...props} />',
             options,
             parserOptions,
         },
         {
-            code:
-                'import Redirect from "/redirect.jsx"; var bar = 1; <Redirect from="/foo" to="/foo/:foo/:bar" to_params={{ bar, foo: 1 }} />',
+            code: 'import Redirect from "/redirect.jsx"; var bar = 1; <Redirect from="/foo" to="/foo/:foo/:bar" to_params={{ bar, foo: 1 }} />',
             options,
             parserOptions,
         },
         {
-            code:
-                'import Redirect from "/redirect.jsx"; var bar = "/bar"; <Redirect from="/foo" to={bar} skip />',
+            code: 'import Redirect from "/redirect.jsx"; var bar = "/bar"; <Redirect from="/foo" to={bar} skip />',
             options,
             parserOptions,
         },
         {
-            code:
-                'import ExternalLink from "/external_link.jsx"; var url = "example.com"; <ExternalLink to={url} />',
+            code: 'import ExternalLink from "/external_link.jsx"; var url = "example.com"; <ExternalLink to={url} />',
             options: [
                 {
                     modules: [{ import: '/external_link.jsx' }],
@@ -144,15 +140,13 @@ ruleTester.run('react-link', reactLink, {
             errors: ['"to_params" prop missing'],
         },
         {
-            code:
-                'import Redirect from "/redirect.jsx"; var params = { foo: 1 } ;<Redirect to="/:foo" to_params={params} />',
+            code: 'import Redirect from "/redirect.jsx"; var params = { foo: 1 } ;<Redirect to="/:foo" to_params={params} />',
             options,
             parserOptions,
             errors: ['"to_params" must be an object with keys declared inline'],
         },
         {
-            code:
-                'import Redirect from "/redirect.jsx"; <Redirect from="/:bar" from_params={{ foo: 1 }} to="/:foo/:bar" to_params={{ foo: 1 }} />',
+            code: 'import Redirect from "/redirect.jsx"; <Redirect from="/:bar" from_params={{ foo: 1 }} to="/:foo/:bar" to_params={{ foo: 1 }} />',
             options,
             parserOptions,
             errors: [
@@ -168,8 +162,7 @@ ruleTester.run('react-link', reactLink, {
             errors: ['"skip" prop is not needed'],
         },
         {
-            code:
-                'import Redirect from "/redirect.jsx"; <Redirect to="/:foo1" from="/:foo-bar" to_params={{ foo1: 1 }} from_params={{ "foo-bar": 1 }}/>',
+            code: 'import Redirect from "/redirect.jsx"; <Redirect to="/:foo1" from="/:foo-bar" to_params={{ foo1: 1 }} from_params={{ "foo-bar": 1 }}/>',
             options,
             parserOptions,
             errors: [

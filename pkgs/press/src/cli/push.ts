@@ -114,10 +114,7 @@ export const pushCmd: CommandModule<{ image: string }, IPushOpts> = {
         }
 
         // login to docker and test credentials
-        const { authorizationData } = await ecr
-            .getAuthorizationToken()
-            .promise()
-            .catch(forceExit)
+        const { authorizationData } = await ecr.getAuthorizationToken().promise().catch(forceExit)
         if (!authorizationData || (authorizationData && !authorizationData![0])) {
             return forceExit('Unable to get authorization token')
         }

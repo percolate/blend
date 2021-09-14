@@ -12,7 +12,7 @@ export const fakeServer: Rule.RuleModule = {
         fixable: 'code',
     },
 
-    create: function(context) {
+    create: function (context) {
         return {
             CallExpression: (node: any) => {
                 let calleeName

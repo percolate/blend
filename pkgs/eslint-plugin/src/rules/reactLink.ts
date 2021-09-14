@@ -76,12 +76,12 @@ export const reactLink: Rule.RuleModule = {
         ],
     },
 
-    create: function(context) {
+    create: function (context) {
         const specifierLookup: ISpecifierLookup = {}
         const { modules = [] } = context.options[0] || {}
 
         return {
-            ImportDeclaration: function(node: any) {
+            ImportDeclaration: function (node: any) {
                 // ensure options exist
                 if (!modules.length) {
                     context.report({
@@ -104,7 +104,7 @@ export const reactLink: Rule.RuleModule = {
                     specifierLookup[firstSpecifier.local.name] = matchingModule
                 }
             },
-            'JSXElement:exit': function(node: any) {
+            'JSXElement:exit': function (node: any) {
                 // <a href /> used as a link is forbidden
                 if (isLink(context, node)) {
                     return context.report({

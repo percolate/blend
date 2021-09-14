@@ -9,7 +9,7 @@ export const noRootArrowFn: Rule.RuleModule = {
         },
     },
 
-    create: function(context) {
+    create: function (context) {
         const verify = (parentNode: any, node: any) => {
             if (node.type === 'ArrowFunctionExpression') {
                 context.report({
