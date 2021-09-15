@@ -3,7 +3,7 @@ import * as childProcess from 'child_process'
 import { color } from './color'
 import { forceExit } from './forceExit'
 
-const maxBuffer = 1024 * 2560
+const maxBuffer = 2560 * 2560
 
 interface IExecSyncBaseOpts extends childProcess.ExecSyncOptions {
     onError?(err: Error): void
