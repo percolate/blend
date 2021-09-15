@@ -25,18 +25,8 @@ export interface IUploaderOpts {
 }
 
 export async function upload(options: IUploaderOpts) {
-    const {
-        acl,
-        cacheControl,
-        contentTypeFallback,
-        cwd,
-        debug,
-        force,
-        path,
-        s3,
-        s3Key,
-        skipChecksum,
-    } = options
+    const { acl, cacheControl, contentTypeFallback, cwd, debug, force, path, s3, s3Key, skipChecksum } =
+        options
 
     const absPath = resolve(cwd || process.cwd(), path)
     if (!fs.isFile(absPath)) throw new Error(`${absPath} must be a file`)

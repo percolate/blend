@@ -27,7 +27,7 @@ export const testSuiteName: Rule.RuleModule = {
         ],
     },
 
-    create: function(context) {
+    create: function (context) {
         const options = context.options[0] || {}
         const basePaths: string[] = options.basePaths || ['/']
         return {

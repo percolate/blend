@@ -45,9 +45,9 @@ export const importBlacklist: Rule.RuleModule = {
         ],
     },
 
-    create: function(context) {
+    create: function (context) {
         return {
-            ImportDeclaration: function(node: any) {
+            ImportDeclaration: function (node: any) {
                 const options: IOptions[] = context.options[0] || []
 
                 if (!options.length) {

@@ -11,7 +11,7 @@ Examples of **incorrect** code for this rule:
 const MyComponent = () => {}
 export const MyComponent = () => {}
 exports.MyComponent = () => {}
-module.exports = { MyComponent: () => {}, myComp: function() {} }
+module.exports = { MyComponent: () => {}, myComp: function () {} }
 ```
 
 Examples of **correct** code for this rule:

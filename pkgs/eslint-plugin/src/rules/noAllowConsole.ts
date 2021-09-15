@@ -9,7 +9,7 @@ export const noAllowConsole: Rule.RuleModule = {
         },
     },
 
-    create: function(context) {
+    create: function (context) {
         return {
             MemberExpression: (node: any) => {
                 const hasError =

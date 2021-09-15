@@ -5,7 +5,7 @@
 Examples of **incorrect** code for this rule:
 
 ```js
-it('should...', function() {
+it('should...', function () {
     this.fakeServer.autoRespond = true // autoRespond is on by default
     this.fakeServer.autoRespond = false // fakeServer.respond is no longer synchronous
 

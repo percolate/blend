@@ -10,7 +10,7 @@ export const noJsxIdAttrs: Rule.RuleModule = {
         },
     },
 
-    create: function(context) {
+    create: function (context) {
         return {
             JSXAttribute: (node: any) => {
                 if (node.name.name !== 'id') return

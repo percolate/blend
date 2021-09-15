@@ -11,7 +11,7 @@ export const noReactPropTypes: Rule.RuleModule = {
         },
     },
 
-    create: function(context) {
+    create: function (context) {
         return {
             ImportSpecifier: (node: any) => {
                 if (node.imported.name === 'PropTypes') {

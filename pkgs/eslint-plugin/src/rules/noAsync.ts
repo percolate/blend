@@ -10,8 +10,8 @@ export const noAsync: Rule.RuleModule = {
         },
     },
 
-    create: function(context) {
-        const verify = function(node: any) {
+    create: function (context) {
+        const verify = function (node: any) {
             if (IS_SPEC.test(context.getFilename())) return
             if (!node.async) return
 

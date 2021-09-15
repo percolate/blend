@@ -34,10 +34,10 @@ export function publisherCli() {
     const pkgJson: IPackageJson = require(packageJsonPath)
 
     // helper functions
-    const log = function(msg: string, coloring: Color = 'grey') {
+    const log = function (msg: string, coloring: Color = 'grey') {
         console.log(`${pkgJson.name}@${pkgJson.version} ${color(msg, coloring)}`)
     }
-    const skip = function(msg: string) {
+    const skip = function (msg: string) {
         log(`skipped: ${msg}`, 'green')
         return cleanExit()
     }
