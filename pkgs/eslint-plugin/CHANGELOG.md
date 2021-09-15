@@ -3,6 +3,14 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.1.18](https://github.com/percolate/blend/tree/master/pkgs/eslint-plugin/compare/@percolate/eslint-plugin@1.1.17...@percolate/eslint-plugin@1.1.18) (2021-09-15)
+
+**Note:** Version bump only for package @percolate/eslint-plugin
+
+
+
+
+
 ## [1.1.17](https://github.com/percolate/blend/tree/master/pkgs/eslint-plugin/compare/@percolate/eslint-plugin@1.1.16...@percolate/eslint-plugin@1.1.17) (2021-09-15)
 
 **Note:** Version bump only for package @percolate/eslint-plugin
