@@ -1566,12 +1566,45 @@
     "@octokit/openapi-types" "^10.2.2"
 
 "@percolate/eslint-plugin@link:./pkgs/eslint-plugin":
-  version "0.0.0"
-  uid ""
+  version "1.1.19"
+  dependencies:
+    "@typescript-eslint/eslint-plugin" "2.7.0"
+    "@typescript-eslint/parser" "2.7.0"
+    eslint-import-resolver-node "0.3.2"
+    eslint-plugin-eslint-comments "3.1.2"
+    eslint-plugin-filenames "1.3.2"
+    eslint-plugin-import "2.18.2"
+    eslint-plugin-lodash "6.0.0"
+    eslint-plugin-react "7.16.0"
+    eslint-plugin-react-hooks "2.2.0"
+    eslint-plugin-simple-import-sort "7.0.0"
+    html-tags "3.1.0"
 
 "@percolate/kona@link:./pkgs/kona":
-  version "0.0.0"
-  uid ""
+  version "3.4.11"
+  dependencies:
+    "@commitlint/config-conventional" "12.1.1"
+    "@commitlint/format" "12.1.1"
+    "@commitlint/lint" "12.1.1"
+    "@commitlint/load" "12.1.1"
+    "@percolate/cli-utils" "0.1.17"
+    commitizen "4.2.4"
+    fast-glob "3.2.5"
+    find-up "4.1.0"
+    husky "3.0.9"
+    jest "26.6.3"
+    jest-junit "10.0.0"
+    jest-watch-typeahead "0.5.0"
+    lcov-parse "1.0.0"
+    lodash.clonedeep "4.5.0"
+    lodash.isequal "4.5.0"
+    lodash.template "4.5.0"
+    lodash.uniq "4.5.0"
+    micromatch "4.0.2"
+    p-map "4.0.0"
+    parse-diff "0.7.1"
+    yargs "16.2.0"
+    yarn-deduplicate "1.1.1"
 
 "@sentry/cli@1.49.0":
   version "1.49.0"
@@ -7219,9 +7252,9 @@ qs@^6.9.4:
     side-channel "^1.0.4"
 
 qs@~6.5.2:
-  version "6.5.2"
-  resolved "https://registry.yarnpkg.com/qs/-/qs-6.5.2.tgz#cb3ae806e8740444584ef154ce8ee98d403f3e36"
-  integrity sha512-N5ZAX4/LxJmF+7wN74pUD6qAh9/wnvdQcjq9TZjevvXzSUo7bfmw91saqMjzGS2xq91/odN2dW/WOl7qQHNDGA==
+  version "6.5.3"
+  resolved "https://registry.yarnpkg.com/qs/-/qs-6.5.3.tgz#3aeeffc91967ef6e35c0e488ef46fb296ab76aad"
+  integrity sha512-qxXIEh4pCGfHICj1mAJQ2/2XVZkjCDTcEgfoSQxc/fYivUZxTkk7L3bDBJSoNrEzXI17oUO5Dp07ktqE5KzczA==
 
 query-string@^6.13.8:
   version "6.14.1"
