@@ -42,7 +42,7 @@
     "lodash.isequal": "4.5.0",
     "lodash.template": "4.5.0",
     "lodash.uniq": "4.5.0",
-    "micromatch": "4.0.2",
+    "micromatch": "4.0.5",
     "p-map": "4.0.0",
     "parse-diff": "0.7.1",
     "yargs": "16.2.0",
