@@ -19,7 +19,7 @@
     "@percolate/cli-utils": "0.1.17",
     "@sentry/cli": "1.49.0",
     "aws-sdk": "2.885.0",
-    "semver": "6.3.0",
+    "semver": "7.5.2",
     "yargs": "16.2.0"
   },
   "publishConfig": {
