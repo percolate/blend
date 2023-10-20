@@ -1,11 +1,11 @@
 {
   "name": "@percolate/kona",
-  "version": "3.4.11",
+  "version": "3.4.12",
   "description": "Percolate CLI",
   "license": "CPAL-1.0",
   "repository": "https://github.com/percolate/blend/tree/master/pkgs/kona",
   "engines": {
-    "node": "^12",
+    "node": "^14",
     "yarn": "^1.19"
   },
   "bin": {
