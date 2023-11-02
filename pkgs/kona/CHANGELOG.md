@@ -11,14 +11,6 @@ See [Conventional Commits](https://conventionalcommits.org) for commit guideline
 
 
 
-## [3.4.12](https://github.com/percolate/blend/tree/master/pkgs/kona/compare/@percolate/kona@3.4.10...@percolate/kona@3.4.12) (2023-10-16)
-
-**Note:** Version bump only for package @percolate/kona
-
-
-
-
-
 
 ## [3.4.11](https://github.com/percolate/blend/tree/master/pkgs/kona/compare/@percolate/kona@3.4.10...@percolate/kona@3.4.11) (2021-09-15)
 
