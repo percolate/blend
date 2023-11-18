@@ -21,7 +21,7 @@
   "dependencies": {
     "@percolate/cli-utils": "0.1.17",
     "docopt": "0.6.2",
-    "semver": "6.3.0"
+    "semver": "7.5.2"
   },
   "volta": {
     "extends": "../../package.json"
