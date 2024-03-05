@@ -73,6 +73,11 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
+      - name: Install Git dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y ca-certificates git
+
       - name: Install Docker client
         run: apk add --no-cache docker
 
