@@ -67,14 +67,21 @@ jobs:
   press:
     needs: core
     runs-on: ubuntu-latest
-    container:
-      image: node:14-alpine
+    # container:
+    #   image: node:14-alpine
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      - name: Install Docker client / Git
-        run: apk add --no-cache docker git
+      - uses: actions/setup-node@v3
+        with:
+          node-version: '14'
+
+      - name: Install dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y ca-certificates git openssh-client
+          yarn --pure-lockfile --cache-folder /tmp/.yarn_cache
 
       - name: NPM login
         run: echo "//registry.npmjs.org/:_authToken=${{ secrets.NPMJS_TOKEN }}" >> ~/.npmrc
