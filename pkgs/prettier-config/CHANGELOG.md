@@ -3,6 +3,14 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.1.17](https://github.com/percolate/blend/tree/master/pkgs/prettier-config/compare/@percolate/prettier-config@0.1.16...@percolate/prettier-config@0.1.17) (2024-04-22)
+
+**Note:** Version bump only for package @percolate/prettier-config
+
+
+
+
+
 ## [0.1.16](https://github.com/percolate/blend/tree/master/pkgs/prettier-config/compare/@percolate/prettier-config@0.1.15...@percolate/prettier-config@0.1.16) (2023-10-20)
 
 **Note:** Version bump only for package @percolate/prettier-config
