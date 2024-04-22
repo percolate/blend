@@ -9,6 +9,9 @@ jobs:
   core:
     runs-on: ubuntu-latest
     steps:
+      - name: Check git version
+        run: git --version
+
       - name: Checkout repository
         uses: actions/checkout@v4
         with:
@@ -17,11 +20,13 @@ jobs:
       - uses: actions/setup-node@v3
         with:
           node-version: '14'
+
       - name: Install dependencies
         run: |
           sudo apt-get update
           sudo apt-get install -y ca-certificates git openssh-client
           yarn --pure-lockfile --cache-folder /tmp/.yarn_cache
+
       - name: Cache node modules
         uses: actions/cache@v3
         with:
@@ -31,15 +36,28 @@ jobs:
           key: ${{ runner.os }}-node-${{ hashFiles('yarn.lock') }}
           restore-keys: |
             ${{ runner.os }}-node-
+
       - name: NPM login
         run: echo "//registry.npmjs.org/:_authToken=${{ secrets.NPMJS_TOKEN }}" >> ~/.npmrc
+
       - name: Verify .git directory
-        run: ls -la .git
+        run: |
+          ls -la .git
+
       - name: Build, verify, ts, lint, commit validate, test, and coverage
-        run: npx lerna run build && npx kona verify && npx kona ts && npx kona lint && npx kona commit validate && npx kona test --coverage && npx kona coverage
+        run: |
+          npx lerna run build
+          npx kona verify
+          npx kona ts
+          npx kona lint
+          npx kona commit validate
+          npx kona test --coverage
+          npx kona coverage
+
       - name: Deploy
         if: github.ref == 'refs/heads/master'
         run: yarn lerna:publish --yes
+
       - name: Store test results
         uses: actions/upload-artifact@v3
         with:
@@ -49,27 +67,29 @@ jobs:
   press:
     needs: core
     runs-on: ubuntu-latest
+    container:
+      image: node:14-alpine
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
-      - uses: actions/setup-node@v3
-        with:
-          node-version: '14'
-      - name: Install dependencies
-        run: |
-          sudo apt-get update
-          sudo apt-get install -y ca-certificates git openssh-client
-          yarn --pure-lockfile --cache-folder /tmp/.yarn_cache
+
+      - name: Install Docker client
+        run: apk add --no-cache docker
+
       - name: NPM login
         run: echo "//registry.npmjs.org/:_authToken=${{ secrets.NPMJS_TOKEN }}" >> ~/.npmrc
+
       - name: Install Press
         run: yarn global add @percolate/press
+
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v1
+
       - name: Build and push Docker images
-        env:
-          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
-          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
         run: |
-          docker build --build-arg NPMJS_TOKEN=${{ secrets.NPMJS_TOKEN }} --build-arg VERSION=$(press --version) --tag blend/press pkgs/press
+          docker build \
+            --build-arg NPMJS_TOKEN \
+            --build-arg VERSION=$(press --version) \
+            --tag blend/press \
+            pkgs/press
           press push blend/press --repo="percolate/blend/press" --semver=$(press --version)
