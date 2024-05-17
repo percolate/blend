@@ -1,6 +1,6 @@
 {
   "name": "@percolate/publisher",
-  "version": "0.1.19",
+  "version": "0.1.20",
   "description": "Publish package if version is newer than NPM's",
   "repository": "https://github.com/percolate/blend/tree/master/pkgs/publisher",
   "bin": {
@@ -19,7 +19,7 @@
     "access": "public"
   },
   "dependencies": {
-    "@percolate/cli-utils": "0.1.20",
+    "@percolate/cli-utils": "0.1.21",
     "docopt": "0.6.2",
     "semver": "6.3.0"
   },
