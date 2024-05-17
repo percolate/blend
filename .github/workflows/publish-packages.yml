@@ -5,9 +5,6 @@ on:
     branches:
       - master
 
-env:
-  NPMJS_TOKEN: ${{ secrets.NPMJS_TOKEN }}
-
 jobs:
   core:
     runs-on: ubuntu-latest
@@ -41,7 +38,7 @@ jobs:
             ${{ runner.os }}-node-
 
       - name: NPM login
-        run: echo "//registry.npmjs.org/:_authToken=${NPMJS_TOKEN}" >> ~/.npmrc
+        run: echo "//registry.npmjs.org/:_authToken=${{ secrets.NPMJS_TOKEN }}" >> ~/.npmrc
 
       - name: Verify .git directory
         run: |
@@ -70,17 +67,24 @@ jobs:
   press:
     needs: core
     runs-on: ubuntu-latest
-    container:
-      image: node:14-alpine
+    # container:
+    #   image: node:14-alpine
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      - name: Install Docker client
-        run: apk add --no-cache docker
+      - uses: actions/setup-node@v3
+        with:
+          node-version: '14'
+
+      - name: Install dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y ca-certificates git openssh-client
+          yarn --pure-lockfile --cache-folder /tmp/.yarn_cache
 
       - name: NPM login
-        run: echo "//registry.npmjs.org/:_authToken=${NPMJS_TOKEN}" >> ~/.npmrc
+        run: echo "//registry.npmjs.org/:_authToken=${{ secrets.NPMJS_TOKEN }}" >> ~/.npmrc
 
       - name: Install Press
         run: yarn global add @percolate/press
@@ -89,9 +93,12 @@ jobs:
         uses: docker/setup-buildx-action@v1
 
       - name: Build and push Docker images
+        env:
+          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
         run: |
           docker build \
-            --build-arg NPMJS_TOKEN \
+            --build-arg NPMJS_TOKEN=${{ secrets.NPMJS_TOKEN }} \
             --build-arg VERSION=$(press --version) \
             --tag blend/press \
             pkgs/press
