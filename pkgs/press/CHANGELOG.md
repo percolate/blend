@@ -3,6 +3,10 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.2.22](https://github.com/percolate/blend/compare/@percolate/press@1.2.21...@percolate/press@1.2.22) (2024-05-17)
+
+**Note:** Version bump only for package @percolate/press
+
 ## [1.2.21](https://github.com/percolate/blend/compare/@percolate/press@1.2.20...@percolate/press@1.2.21) (2024-05-17)
 
 **Note:** Version bump only for package @percolate/press

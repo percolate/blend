@@ -3,6 +3,10 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.1.21](https://github.com/percolate/blend/compare/@percolate/publisher@0.1.20...@percolate/publisher@0.1.21) (2024-05-17)
+
+**Note:** Version bump only for package @percolate/publisher
+
 ## [0.1.20](https://github.com/percolate/blend/compare/@percolate/publisher@0.1.17...@percolate/publisher@0.1.20) (2024-05-17)
 
 **Note:** Version bump only for package @percolate/publisher

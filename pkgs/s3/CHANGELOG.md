@@ -3,6 +3,10 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.2.21](https://github.com/percolate/blend/compare/@percolate/s3@1.2.20...@percolate/s3@1.2.21) (2024-05-17)
+
+**Note:** Version bump only for package @percolate/s3
+
 ## [1.2.20](https://github.com/percolate/blend/compare/@percolate/s3@1.2.17...@percolate/s3@1.2.20) (2024-05-17)
 
 **Note:** Version bump only for package @percolate/s3
