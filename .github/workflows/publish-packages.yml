@@ -3,7 +3,7 @@ name: Build and Deploy
 on:
   push:
     branches:
-      - test-imiller-fix
+      - master
 
 jobs:
   core:
@@ -55,7 +55,7 @@ jobs:
           npx kona coverage
 
       - name: Deploy
-        if: github.ref == 'refs/heads/test-imiller-fix'
+        if: github.ref == 'refs/heads/master'
         run: yarn lerna:publish --yes
 
       - name: Store test results
