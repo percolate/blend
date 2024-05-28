@@ -5,8 +5,8 @@
   "license": "CPAL-1.0",
   "repository": "https://github.com/percolate/blend/tree/master/pkgs/kona",
   "engines": {
-    "node": "^14",
-    "yarn": "^1.19"
+    "node": ">=14",
+    "yarn": ">=1.19"
   },
   "bin": {
     "kona": "./bin/kona"
