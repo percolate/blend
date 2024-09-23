@@ -18,8 +18,8 @@
   "dependencies": {
     "@percolate/cli-utils": "0.1.23",
     "@sentry/cli": "1.49.0",
-    "aws-sdk": "2.885.0",
-    "semver": "6.3.0",
+    "aws-sdk": "2.1354.0",
+    "semver": "6.3.1",
     "yargs": "16.2.0"
   },
   "publishConfig": {
